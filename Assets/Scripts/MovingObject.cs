@@ -33,7 +33,7 @@ public class MovingObject : MonoBehaviour {
             !(xDir == 0 && yDir == 0))
         {
             BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
-                //Debug.Log("Call Action - Move: About to start Smooth Movement");
+                Debug.Log("Call Action - Move: About to start Smooth Movement");
                 StartCoroutine(SmoothMovement(end));
             }));
         }
@@ -54,7 +54,7 @@ public class MovingObject : MonoBehaviour {
             !(xDir == 0 && yDir == 0))
         {
             BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
-                //Debug.Log("Call Action - Move: About to start Smooth Movement");
+                Debug.Log("Call Action - Move: About to start Melee Attack");
                 StartCoroutine(SmoothMelee(end, str, middleFunc));
             }));
         }

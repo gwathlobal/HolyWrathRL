@@ -44,9 +44,6 @@ public class AbilitySweepAttack : Ability
 
         Level level = BoardManager.instance.level;
 
-        int dx = target.mob.x - actor.x;
-        int dy = target.mob.y - actor.y;
-
         List<Mob> affectedMobs = new List<Mob>();
 
         level.CheckSurroundings(target.mob.x, target.mob.y, true,

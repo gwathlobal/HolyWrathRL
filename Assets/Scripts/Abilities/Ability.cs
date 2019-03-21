@@ -32,14 +32,15 @@ public enum AbilityCostType
 public enum AbilityTypeEnum
 {
     abilNone,
-    abilVorpaniteClaws, abilFlamingSword, abilClaws,
+    abilVorpaniteClaws, abilHolySword, abilClaws,
     abilShootSpikes, abilLightBolt,
     abilSprint,
     abilBlock,
     abilDodge, abilJump,
     abilDivineVengeance,
     abilHealSelf, abilMindBurn, 
-    abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins,
+    abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
+    abilFireFists, abilFlamingArrow,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -137,7 +138,7 @@ public class AbilityTypes
 
         Add(new AbilityClaws());
 
-        Add(new AbilityFlamingSword());
+        Add(new AbilityHolySword());
 
         Add(new AbilityVorpaniteClaws());
 
@@ -229,6 +230,17 @@ public class AbilityTypes
 
         Add(new AbilityBurdenOfSins());
 
+        Add(new AbilitySyphonLight());
+
+        //============================
+        //
+        // FIERY RAGE ABILITIES
+        // 
+        //============================
+
+        Add(new AbilityFireFists());
+
+        Add(new AbilityFlamingArrow());
     }
 
     private static void Add(Ability ability)

@@ -119,7 +119,7 @@ public class MobTypes
         armorPR.Add(DmgTypeEnum.Fire, 80);
         armorPR.Add(DmgTypeEnum.Holy, 100);
         Add(MobTypeEnum.mobAngel, "Angel", mobAngel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
-            AbilityTypeEnum.abilFlamingSword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilSprint, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
+            AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilSprint, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindBurn, AbilityTypeEnum.abilDivineVengeance});

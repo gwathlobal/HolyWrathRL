@@ -137,32 +137,7 @@ public class BoardManager : MonoBehaviour {
                 }
             }
         }
-        /*
-        while (curMobId < mobs.Count)
-        {
-            if (mobs.ContainsKey(curMobId))
-            {
-                Mob mob = mobs[curMobId];
-                if (mob.curAP > 0 && !mob.CheckDead())
-                {
-                    msgLog.SetHasMessageThisTurn(false);
-                    mob.AiFunction();
-                    mobActed = true;
-                    if (playersTurn)
-                    {
-                        msgLog.SetPlayerStartedTurn(true);
-                        return;
-                    }
 
-
-                    msgLog.FinalizeMsg();
-                }
-            }
-            curMobId++;
-        }
-
-        curMobId = 0;
-        */
         if (mobActed)
         {
             mobActed = false;
@@ -179,7 +154,9 @@ public class BoardManager : MonoBehaviour {
 
             foreach (int mobId in mobs.Keys)
             {
+                msgLog.SetHasMessageThisTurn(false);
                 if (!mobs[mobId].CheckDead()) mobs[mobId].OnTick();
+                msgLog.FinalizeMsg();
             }
             /*
             for (int id = 0; id < mobs.Count; id++) 

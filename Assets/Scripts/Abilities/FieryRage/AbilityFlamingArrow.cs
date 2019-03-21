@@ -3,23 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityLightBolt : Ability
+public class AbilityFlamingArrow : Ability
 {
-    public AbilityLightBolt()
+    public AbilityFlamingArrow()
     {
-        id = AbilityTypeEnum.abilLightBolt;
-        stdName = "Light Bolt";
+        id = AbilityTypeEnum.abilFlamingArrow;
+        stdName = "Flaming Arrow";
         spd = MobType.NORMAL_AP;
-        cost = 5;
+        cost = 4;
         passive = false;
         slot = AbilitySlotCategoty.abilRanged;
-        category = AbilityPlayerCategory.abilCommon;
+        category = AbilityPlayerCategory.abilFieryRage;
         doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
     {
-        return "Attack the enemy from range for 5 Holy dmg.";
+        return "Attack the enemy from range for 5 Fire dmg. Places a Burning effect on the target that deals 3 Fire dmg for 5 turns.";
     }
 
     public override string Name(Mob mob)
@@ -53,15 +53,16 @@ public class AbilityLightBolt : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        string str = String.Format("{0} shoots a light bolt. ", actor.name);
+        string str = String.Format("{0} shoots a flaming arrow. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
 
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Fire);
+        target.mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
 
         GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
-        projectile.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 0, 255);
+        projectile.GetComponent<SpriteRenderer>().color = new Color32(255, 168, 0, 255);
         projectile.GetComponent<MovingObject>().MoveProjectile(target.mob.x, target.mob.y, dmg + " <i>DMG</i>",
             () =>
             {
@@ -112,6 +113,8 @@ public class AbilityLightBolt : Ability
 
     public override bool CheckRequirements(Mob mob, List<AbilityTypeEnum> addedAbils)
     {
-        return true;
+        if ((addedAbils.Contains(AbilityTypeEnum.abilFireFists) || mob.abilities.ContainsKey(AbilityTypeEnum.abilFireFists)))
+            return true;
+        else return false;
     }
 }

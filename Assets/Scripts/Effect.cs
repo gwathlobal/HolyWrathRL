@@ -9,7 +9,7 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 
 public enum EffectTypeEnum
 {
-    effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins
+    effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning
 }
 
 public class EffectType {
@@ -132,6 +132,30 @@ public class EffectTypes
                 actor.CalculateArmor();
             },
             null);
+        Add(EffectTypeEnum.effectSyphonLight, "Syphon Light", new Color32(255, 0, 0, 255),
+            null,
+            null,
+            null,
+            null);
+        Add(EffectTypeEnum.effectBurning, "Burning", new Color32(255, 168, 0, 255),
+            null,
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                int dmg = 0;
+                dmg += Mob.InflictDamage(null, actor, 3, DmgTypeEnum.Fire);
+                if (BoardManager.instance.level.visible[actor.x, actor.y])
+                {
+                    Vector3 pos = new Vector3(actor.x, actor.y, 0);
+                    UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", pos);
+                }
+                BoardManager.instance.CreateBlooddrop(actor.x, actor.y);
+                if (actor.CheckDead())
+                {
+                    actor.MakeDead(null, true, true, false);
+                }
+            });
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,

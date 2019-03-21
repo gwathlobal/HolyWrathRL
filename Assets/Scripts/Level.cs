@@ -92,6 +92,7 @@ public class Level {
         mobs[mob.x, mob.y] = null;
         mobList.Remove(mob);
         BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+            Debug.Log("Removing mob " + mob.name + " from level");
             mob.go.SetActive(false);
             BoardAnimationController.instance.RemoveProcessedAnimation();
         }));

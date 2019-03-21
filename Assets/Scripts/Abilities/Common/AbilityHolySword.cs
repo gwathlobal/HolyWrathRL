@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AbilityFlamingSword : Ability
+public class AbilityHolySword : Ability
 {
-    public AbilityFlamingSword()
+    public AbilityHolySword()
     {
-        id = AbilityTypeEnum.abilFlamingSword;
-        stdName = "Flaming sword";
+        id = AbilityTypeEnum.abilHolySword;
+        stdName = "Holy Sword";
         spd = MobType.NORMAL_AP;
         cost = 0;
         passive = true;
@@ -18,12 +18,12 @@ public class AbilityFlamingSword : Ability
 
     public override string Description(Mob mob)
     {
-        return "Attack the enemy in melee for 5 Physical dmg and 5 Fire dmg. Can sever limbs on target dearh.";
+        return "Attack the enemy in melee for 5 Physical dmg and 5 Holy dmg. Can sever limbs on target dearh.";
     }
 
     public override string Name(Mob mob)
     {
-        return "Flaming sword";
+        return stdName;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -40,7 +40,7 @@ public class AbilityFlamingSword : Ability
     {
         int dmg = 0;
         dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical);
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Fire);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy);
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

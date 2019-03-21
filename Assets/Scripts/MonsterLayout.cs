@@ -27,9 +27,11 @@ public abstract class MonsterLayout {
         {
             player = new PlayerMob(MobTypeEnum.mobAngel, 1, 1);
             
-            player.curAbils[0] = AbilityTypeEnum.abilHealSelf;
-            player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
-            
+            //player.curAbils[0] = AbilityTypeEnum.abilHealSelf;
+            //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
+            player.meleeAbil = AbilityTypeEnum.abilFireFists;
+            player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
+
         }
         else
         {

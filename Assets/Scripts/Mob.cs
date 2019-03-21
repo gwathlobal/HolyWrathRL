@@ -395,7 +395,14 @@ public class Mob
         // remove Blindness
         if (dmg > 0 && target.GetEffect(EffectTypeEnum.effectBlindness) != null)
             target.RemoveEffect(EffectTypeEnum.effectBlindness);
-            
+
+        // transfer health from Syphon Light
+        if (dmg > 0 && target.GetEffect(EffectTypeEnum.effectSyphonLight) != null &&
+            attacker != null && target.GetEffect(EffectTypeEnum.effectSyphonLight).actor == attacker)
+        {
+            attacker.curHP += dmg / 2;
+            if (target.curHP > target.maxHP) attacker.curHP = attacker.maxHP;
+        }
 
         return dmg;
     }
