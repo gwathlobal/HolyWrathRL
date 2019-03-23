@@ -39,8 +39,8 @@ public class AbilityHolySword : Ability
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical);
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical, null);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy, null);
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

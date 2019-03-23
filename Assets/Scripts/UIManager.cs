@@ -35,6 +35,7 @@ public class UIManager : MonoBehaviour {
     private GameObject selectorGO;
     public Vector2Int selectorPos;
     public GameObject projectilePrefab;
+    public GameObject explosionPrefab;
 
     public ExecFunc execFunc;
     public int curAbility;

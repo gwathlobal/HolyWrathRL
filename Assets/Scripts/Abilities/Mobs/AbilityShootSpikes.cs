@@ -57,7 +57,7 @@ public class AbilityShootSpikes : Ability
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical, null);
 
         GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
         projectile.GetComponent<SpriteRenderer>().color = new Color32(188, 110, 0, 255);

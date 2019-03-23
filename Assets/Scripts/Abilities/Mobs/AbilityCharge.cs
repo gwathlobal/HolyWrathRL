@@ -77,7 +77,7 @@ public class AbilityCharge : Ability
             actor.SetPosition(fx, fy);
             actor.mo.Move(actor.x, actor.y);
 
-            Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical);
+            Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical, null);
             actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

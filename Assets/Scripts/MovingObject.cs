@@ -33,7 +33,7 @@ public class MovingObject : MonoBehaviour {
             !(xDir == 0 && yDir == 0))
         {
             BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
-                Debug.Log("Call Action - Move: About to start Smooth Movement");
+                //Debug.Log("Call Action - Move: About to start Smooth Movement");
                 StartCoroutine(SmoothMovement(end));
             }));
         }
@@ -54,7 +54,7 @@ public class MovingObject : MonoBehaviour {
             !(xDir == 0 && yDir == 0))
         {
             BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
-                Debug.Log("Call Action - Move: About to start Melee Attack");
+                //Debug.Log("Call Action - Move: About to start Melee Attack");
                 StartCoroutine(SmoothMelee(end, str, middleFunc));
             }));
         }
@@ -83,6 +83,47 @@ public class MovingObject : MonoBehaviour {
         else
         {
             Destroy(this.gameObject);
+        }
+    }
+
+    public void DisappearAfterAWhile(int tx, int ty)
+    {
+        if (BoardManager.instance.level.visible[tx, ty])
+        {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+                StartCoroutine(SmoothDisappear());
+            }));
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    public void ConeExplosion(int sx, int sy, List<Vector2Int> dstLine, List<Vector3Int> mobStr)
+    {
+        List<Vector2Int> explosions = new List<Vector2Int>();
+        Level level = BoardManager.instance.level;
+        foreach (Vector2Int dst in dstLine)
+        {
+            LOS_FOV.DrawLine(sx, sy, dst.x, dst.y,
+                (int x, int y, int prev_x, int prev_y) =>
+                {
+                    bool blocks = TerrainTypes.terrainTypes[level.terrain[x, y]].blocksProjectiles;
+                    if (blocks) return false;
+
+                    if (!(sx == x && sy == y) && level.visible[x,y])
+                    {
+                        explosions.Add(new Vector2Int(x, y));
+                    }
+                    return true;
+                });
+        }
+        if (explosions.Count > 0) {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
+                StartCoroutine(SmoothConeExplosion(sx, sy, explosions, mobStr));
+            }));
         }
     }
 
@@ -189,4 +230,59 @@ public class MovingObject : MonoBehaviour {
         
     }
 
+    protected IEnumerator SmoothDisappear()
+    {
+        float curTime = 0;
+
+        while (curTime < moveTime)
+        {
+            curTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        Destroy(this.gameObject);
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+
+    }
+
+    protected IEnumerator SmoothConeExplosion(int sx, int sy, List<Vector2Int> explosionPos, List<Vector3Int> mobStr)
+    {
+        List<GameObject> explosions = new List<GameObject>();
+
+        int row = 0;
+        float waitTime = 0.03f;
+
+        while (row <= 6)
+        {
+            foreach (Vector2Int pos in explosionPos)
+            {
+                if (Level.GetSimpleDistance(sx, sy, pos.x, pos.y) == row)
+                {
+                    GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+                    explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    explosions.Add(explosion);
+                };
+            }
+
+            foreach (Vector3Int pos in mobStr)
+            {
+                if (Level.GetSimpleDistance(sx, sy, pos.x, pos.y) == row)
+                {
+                    UIManager.instance.CreateFloatingText(pos.z + " <i>DMG</i>", new Vector3(pos.x, pos.y, 0));
+                };
+            }
+
+            row++;
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        for (int i = explosions.Count - 1; i >= 0; i--)
+        {
+            Destroy(explosions[i]);
+        }
+
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+
+    }
 }

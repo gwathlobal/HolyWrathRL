@@ -10,7 +10,7 @@ public class AbilityFlamingArrow : Ability
         id = AbilityTypeEnum.abilFlamingArrow;
         stdName = "Flaming Arrow";
         spd = MobType.NORMAL_AP;
-        cost = 4;
+        cost = 10;
         passive = false;
         slot = AbilitySlotCategoty.abilRanged;
         category = AbilityPlayerCategory.abilFieryRage;
@@ -58,7 +58,7 @@ public class AbilityFlamingArrow : Ability
 
 
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Fire);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Fire, null);
         target.mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
 
         GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);

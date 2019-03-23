@@ -10,7 +10,7 @@ public class AbilityJudgement : Ability
         id = AbilityTypeEnum.abilJudgement;
         stdName = "Judgement";
         spd = MobType.NORMAL_AP;
-        cost = 30;
+        cost = 20;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
@@ -52,7 +52,7 @@ public class AbilityJudgement : Ability
         else if ((float)target.mob.curHP / target.mob.maxHP > 0.25) dmg = 20;
         else dmg = 30;
 
-        dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical);
+        dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical, null);
 
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>

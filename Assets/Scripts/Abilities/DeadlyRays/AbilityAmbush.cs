@@ -10,7 +10,7 @@ public class AbilityAmbush : Ability
         id = AbilityTypeEnum.abilAmbush;
         stdName = "Ambush";
         spd = MobType.NORMAL_AP;
-        cost = 40;
+        cost = 30;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
@@ -76,7 +76,7 @@ public class AbilityAmbush : Ability
             actor.SetPosition(fx, fy);
             actor.mo.Move(actor.x, actor.y);
 
-            dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical);
+            dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical, null);
             actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

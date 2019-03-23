@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +10,8 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 
 public enum EffectTypeEnum
 {
-    effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning
+    effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
+    effectFireAura
 }
 
 public class EffectType {
@@ -144,7 +146,7 @@ public class EffectTypes
             (Effect effect, Mob actor) =>
             {
                 int dmg = 0;
-                dmg += Mob.InflictDamage(null, actor, 3, DmgTypeEnum.Fire);
+                dmg += Mob.InflictDamage(null, actor, 3, DmgTypeEnum.Fire, null);
                 if (BoardManager.instance.level.visible[actor.x, actor.y])
                 {
                     Vector3 pos = new Vector3(actor.x, actor.y, 0);
@@ -155,6 +157,57 @@ public class EffectTypes
                 {
                     actor.MakeDead(null, true, true, false);
                 }
+            });
+        Add(EffectTypeEnum.effectFireAura, "Fire Aura", new Color32(255, 168, 0, 255),
+            null,
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                List<Mob> mobs = new List<Mob>();
+                Level level = BoardManager.instance.level;
+                level.CheckSurroundings(actor.x, actor.y, false,
+                    (int x, int y) =>
+                    {
+                        if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction)) 
+                        {
+                            mobs.Add(level.mobs[x, y]);
+                        }
+                    });
+
+                foreach (Mob mob in mobs)
+                {
+                    int dmg = 0;
+                    dmg += Mob.InflictDamage(actor, mob, 10, DmgTypeEnum.Fire,
+                        (int dmg1) =>
+                        {
+                            string str;
+                            if (dmg1 <= 0)
+                            {
+                                str = String.Format("{0} takes no fire dmg from the fire aura. ",
+                                    mob.name);
+                            }
+                            else
+                            {
+                                str = String.Format("{0} takes {1} fire dmg from the fire aura. ",
+                                    mob.name,
+                                    dmg1);
+                            }
+                            return str;
+                        });
+                    mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
+                    if (BoardManager.instance.level.visible[mob.x, mob.y])
+                    {
+                        Vector3 pos = new Vector3(mob.x, mob.y, 0);
+                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", pos);
+                    }
+                    BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
+                    if (mob.CheckDead())
+                    {
+                        mob.MakeDead(actor, true, true, false);
+                    }
+                }
+                
             });
     }
 

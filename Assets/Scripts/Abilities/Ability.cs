@@ -40,7 +40,7 @@ public enum AbilityTypeEnum
     abilDivineVengeance,
     abilHealSelf, abilMindBurn, 
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
-    abilFireFists, abilFlamingArrow,
+    abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -241,6 +241,10 @@ public class AbilityTypes
         Add(new AbilityFireFists());
 
         Add(new AbilityFlamingArrow());
+
+        Add(new AbilityFireAura());
+
+        Add(new AbilityBreathOfFire());
     }
 
     private static void Add(Ability ability)

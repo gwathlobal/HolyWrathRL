@@ -57,7 +57,7 @@ public class AbilitySweepAttack : Ability
         {
             int dmg = 10;
 
-            dmg = Mob.InflictDamage(actor, mob, dmg, DmgTypeEnum.Physical);
+            dmg = Mob.InflictDamage(actor, mob, dmg, DmgTypeEnum.Physical, null);
 
             actor.mo.MeleeAttack(mob.x - actor.x, mob.y - actor.y, dmg + " <i>DMG</i>",
                 () =>

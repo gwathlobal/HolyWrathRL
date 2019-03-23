@@ -58,7 +58,7 @@ public class AbilityLightBolt : Ability
 
 
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy);
+        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Holy, null);
 
         GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
         projectile.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 0, 255);

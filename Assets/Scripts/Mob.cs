@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
 public enum AttemptMoveResultEnum
 {
@@ -21,6 +22,8 @@ public struct AttemptMoveResult
         mob = _mob;
     }
 }
+
+public delegate string dmg_string(int dmg);
 
 public class Mob  
 {
@@ -342,7 +345,9 @@ public class Mob
         else return false;
     }
 
-    public static int InflictDamage(Mob attacker, Mob target, int initDmg, DmgTypeEnum dmgType)
+
+
+    public static int InflictDamage(Mob attacker, Mob target, int initDmg, DmgTypeEnum dmgType, dmg_string dmg_string)
     {
         string str = "";
         int dmg = initDmg;
@@ -351,7 +356,7 @@ public class Mob
         dmg -= target.armorDR[dmgType];
         dmg = (dmg < 0) ? 0 : dmg;
 
-        if (attacker != null && dmg > 0)
+        if (attacker != null && dmg > 0 && dmg_string == null)
         {
             str = String.Format("{0} hits {1} for {2} {3} dmg. ",
                 attacker.name,
@@ -360,7 +365,7 @@ public class Mob
                 DmgTypes.dmgTypes[dmgType].name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
         }
-        else if (attacker != null && dmg == 0)
+        else if (attacker != null && dmg == 0 && dmg_string == null)
         {
             str = String.Format("{0} hits {1}, but {1} takes no {2} damage. ",
                 attacker.name,
@@ -368,7 +373,7 @@ public class Mob
                 DmgTypes.dmgTypes[dmgType].name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
         }
-        else if (attacker == null && dmg > 0)
+        else if (attacker == null && dmg > 0 && dmg_string == null)
         {
             str = String.Format("{0} takes {1} {2} dmg. ",
                 target.name,
@@ -376,11 +381,16 @@ public class Mob
                 DmgTypes.dmgTypes[dmgType].name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
         }
-        else if (attacker == null && dmg == 0)
+        else if (attacker == null && dmg == 0 && dmg_string == null)
         {
             str = String.Format("{0} takes no {1} dmg. ",
                 target.name,
                 DmgTypes.dmgTypes[dmgType].name);
+            BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
+        }
+        else if (dmg_string != null)
+        {
+            str = dmg_string(dmg);
             BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
         }
 
@@ -409,7 +419,7 @@ public class Mob
 
     public bool CheckDead()
     {
-        if (curHP <= 0) return true;
+        if (curHP <= 0 || ifDead) return true;
         else return false;
     }
 
@@ -532,7 +542,7 @@ public class Mob
     {
         List<Effect> effectsToRemove = new List<Effect>();
 
-        foreach(EffectTypeEnum effectType in effects.Keys)
+        foreach(EffectTypeEnum effectType in effects.Keys.ToList())
         {
             if (EffectTypes.effectTypes[effectType].OnEffectTick != null)
             {

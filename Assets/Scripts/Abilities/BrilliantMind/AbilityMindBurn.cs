@@ -42,7 +42,7 @@ public class AbilityMindBurn : Ability
         string str = String.Format("{0} invokes mind burn. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        Mob.InflictDamage(actor, target.mob, 30, DmgTypeEnum.Mind);
+        Mob.InflictDamage(actor, target.mob, 30, DmgTypeEnum.Mind, null);
         if (target.mob.CheckDead())
         {
             target.mob.MakeDead(actor, true, true, false);
