@@ -8,6 +8,7 @@ public class Feature  {
     public int id;
     public int x = 0;
     public int y = 0;
+    public int counter = 0;
 
     public GameObject go;
 

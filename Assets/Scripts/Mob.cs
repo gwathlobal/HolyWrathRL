@@ -695,6 +695,8 @@ public class Mob
 
         if (GetEffect(EffectTypeEnum.effectRegenerate) != null)
             regen += 4;
+        if (GetEffect(EffectTypeEnum.effectMinorRegeneration) != null)
+            regen += 3;
 
         regenHP = regen;
     }

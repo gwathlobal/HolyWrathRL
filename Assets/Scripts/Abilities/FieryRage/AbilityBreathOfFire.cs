@@ -115,16 +115,28 @@ public class AbilityBreathOfFire : Ability
                     bool blocks = TerrainTypes.terrainTypes[level.terrain[x, y]].blocksProjectiles;
                     if (blocks) return false;
 
-                    /*
-                    if (!(actor.x == x && actor.y == y))
-                    {
-                        GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(x, y, 0), Quaternion.identity);
-                        explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
-                        explosion.GetComponent<MovingObject>().DisappearAfterAWhile(x, y);
-                    }
-                    */
                     if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction) && !affectedMobs.Contains(level.mobs[x, y]))
                         affectedMobs.Add(level.mobs[x, y]);
+
+                    if (UnityEngine.Random.Range(0, 4) == 0 && !(actor.x == x && actor.y == y))
+                    {
+                        bool empty = true;
+                        foreach (Feature feature in level.features[x, y])
+                        {
+                            if (feature.idType == FeatureTypeEnum.featFire)
+                            {
+                                empty = false;
+                                break;
+                            }
+                        }
+                        if (empty)
+                        {
+                            Feature fire = new Feature(FeatureTypeEnum.featFire, x, y);
+                            fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire;
+                            BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
+                        }
+                    }
+
                     return true;
                 });
         }
@@ -146,7 +158,7 @@ public class AbilityBreathOfFire : Ability
                 mob.MakeDead(actor, true, true, false);
             }
         }
-        actor.mo.ConeExplosion(actor.x, actor.y, dstLine, mobStr);
+        actor.mo.ExplosionCone(actor.x, actor.y, dstLine, mobStr);
 
     }
 

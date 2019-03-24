@@ -6,7 +6,8 @@ using UnityEngine.UI;
 public delegate void SmoothMeleeMiddleFunc();
 
 
-public class MovingObject : MonoBehaviour {
+public class MovingObject : MonoBehaviour
+{
 
     public float moveTime;
     public float inverseMoveTime;
@@ -14,7 +15,8 @@ public class MovingObject : MonoBehaviour {
     //protected bool finishedMove = true;
 
     // Use this for initialization
-    void Awake() {
+    void Awake()
+    {
         inverseMoveTime = 1f / moveTime;
         rb2D = GetComponent<Rigidbody2D>();
     }
@@ -32,7 +34,8 @@ public class MovingObject : MonoBehaviour {
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
                 //Debug.Log("Call Action - Move: About to start Smooth Movement");
                 StartCoroutine(SmoothMovement(end));
             }));
@@ -53,7 +56,8 @@ public class MovingObject : MonoBehaviour {
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
                 //Debug.Log("Call Action - Move: About to start Melee Attack");
                 StartCoroutine(SmoothMelee(end, str, middleFunc));
             }));
@@ -76,7 +80,8 @@ public class MovingObject : MonoBehaviour {
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
                 StartCoroutine(SmoothMovementProjectile(end, str, middleFunc));
             }));
         }
@@ -90,7 +95,8 @@ public class MovingObject : MonoBehaviour {
     {
         if (BoardManager.instance.level.visible[tx, ty])
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
                 StartCoroutine(SmoothDisappear());
             }));
         }
@@ -100,7 +106,7 @@ public class MovingObject : MonoBehaviour {
         }
     }
 
-    public void ConeExplosion(int sx, int sy, List<Vector2Int> dstLine, List<Vector3Int> mobStr)
+    public void ExplosionCone(int sx, int sy, List<Vector2Int> dstLine, List<Vector3Int> mobStr)
     {
         List<Vector2Int> explosions = new List<Vector2Int>();
         Level level = BoardManager.instance.level;
@@ -112,17 +118,37 @@ public class MovingObject : MonoBehaviour {
                     bool blocks = TerrainTypes.terrainTypes[level.terrain[x, y]].blocksProjectiles;
                     if (blocks) return false;
 
-                    if (!(sx == x && sy == y) && level.visible[x,y])
+                    if (!(sx == x && sy == y) && level.visible[x, y])
                     {
                         explosions.Add(new Vector2Int(x, y));
                     }
                     return true;
                 });
         }
-        if (explosions.Count > 0) {
+        if (explosions.Count > 0)
+        {
             BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
             {
-                StartCoroutine(SmoothConeExplosion(sx, sy, explosions, mobStr));
+                StartCoroutine(SmoothExplosionCone(sx, sy, explosions, mobStr));
+            }));
+        }
+    }
+
+    public void Explosion3x3(int sx, int sy)
+    {
+        bool result = false;
+        Level level = BoardManager.instance.level;
+        level.CheckSurroundings(sx, sy, true,
+            (int x, int y) =>
+            {
+                if (level.visible[x, y])
+                    result = true;
+            });
+        if (result)
+        {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            {
+                StartCoroutine(SmoothExplosion3x3(sx, sy));
             }));
         }
     }
@@ -227,7 +253,7 @@ public class MovingObject : MonoBehaviour {
 
         Destroy(this.gameObject);
         BoardAnimationController.instance.RemoveProcessedAnimation();
-        
+
     }
 
     protected IEnumerator SmoothDisappear()
@@ -246,7 +272,7 @@ public class MovingObject : MonoBehaviour {
 
     }
 
-    protected IEnumerator SmoothConeExplosion(int sx, int sy, List<Vector2Int> explosionPos, List<Vector3Int> mobStr)
+    protected IEnumerator SmoothExplosionCone(int sx, int sy, List<Vector2Int> explosionPos, List<Vector3Int> mobStr)
     {
         List<GameObject> explosions = new List<GameObject>();
 
@@ -260,7 +286,10 @@ public class MovingObject : MonoBehaviour {
                 if (Level.GetSimpleDistance(sx, sy, pos.x, pos.y) == row)
                 {
                     GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
-                    explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    if (Random.Range(0, 5) == 0)
+                        explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 168, 0, 255);
+                    else
+                        explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
                     explosions.Add(explosion);
                 };
             }
@@ -285,4 +314,44 @@ public class MovingObject : MonoBehaviour {
         BoardAnimationController.instance.RemoveProcessedAnimation();
 
     }
+
+    protected IEnumerator SmoothExplosion3x3(int sx, int sy)
+    {
+        List<GameObject> explosions = new List<GameObject>();
+        float waitTime = 0.1f;
+        Level level = BoardManager.instance.level;
+
+        if (level.visible[sx, sy])
+        {
+            GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(sx, sy, 0), Quaternion.identity);
+            if (Random.Range(0, 5) == 0)
+                explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 168, 0, 255);
+            else
+                explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+            explosions.Add(explosion);
+        }
+        yield return new WaitForSeconds(waitTime);
+
+        level.CheckSurroundings(sx, sy, false,
+            (int x, int y) =>
+            {
+                if (level.visible[x, y])
+                {
+                    GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                    if (Random.Range(0, 5) == 0)
+                        explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 168, 0, 255);
+                    else
+                        explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
+                    explosions.Add(explosion);
+                } 
+            });
+        yield return new WaitForSeconds(waitTime);
+
+        for (int i = explosions.Count - 1; i >= 0; i--)
+        {
+            Destroy(explosions[i]);
+        }
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+    }
+
 }

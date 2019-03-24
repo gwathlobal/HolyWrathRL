@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -17,6 +18,8 @@ public class BoardManager : MonoBehaviour {
     public Dictionary<int, Effect> effects;
     public PlayerMob player;
     public float prevTime = 0;
+
+    public List<Feature> featuresToRemove;
 
     public MessageLog msgLog;
 
@@ -69,6 +72,8 @@ public class BoardManager : MonoBehaviour {
         items = new Dictionary<int, Item>();
         features = new Dictionary<int, Feature>();
         effects = new Dictionary<int, Effect>();
+
+        featuresToRemove = new List<Feature>();
 
         msgLog = new MessageLog();
 
@@ -152,12 +157,26 @@ public class BoardManager : MonoBehaviour {
             }
             */
 
+            foreach (Feature feature in features.Values.ToList())
+            {
+                if (FeatureTypes.featureTypes[feature.idType].FeatOnTick != null)
+                    FeatureTypes.featureTypes[feature.idType].FeatOnTick(level, feature);
+            }
+
+            for (int i = featuresToRemove.Count - 1; i >= 0; i--) 
+            {
+                RemoveFeatureFromWorld(featuresToRemove[i]);
+            }
+            featuresToRemove.Clear();
+
             foreach (int mobId in mobs.Keys)
             {
                 msgLog.SetHasMessageThisTurn(false);
                 if (!mobs[mobId].CheckDead()) mobs[mobId].OnTick();
                 msgLog.FinalizeMsg();
             }
+
+            
             /*
             for (int id = 0; id < mobs.Count; id++) 
             {

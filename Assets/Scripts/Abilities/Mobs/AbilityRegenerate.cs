@@ -61,5 +61,6 @@ public class AbilityRegenerate : Ability
     public override bool CheckRequirements(Mob mob, List<AbilityTypeEnum> addedAbils)
     {
         return true;
+        
     }
 }

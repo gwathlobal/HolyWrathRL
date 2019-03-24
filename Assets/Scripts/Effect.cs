@@ -11,7 +11,7 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
-    effectFireAura
+    effectFireAura, effectMinorRegeneration
 }
 
 public class EffectType {
@@ -90,6 +90,7 @@ public class EffectTypes
                 actor.effects.Remove(effect.idType);
                 actor.CalculateHPRegen();
             }, null);
+
         Add(EffectTypeEnum.effectBlindness, "Blindness", new Color32(100, 100, 100, 255),
             null,
             (Effect effect, Mob actor) =>
@@ -101,6 +102,7 @@ public class EffectTypes
                 actor.effects.Remove(effect.idType);
                 actor.CalculateVisionRadius();
             }, null);
+
         Add(EffectTypeEnum.effectDivineVengeance, "Divine Vengeance", new Color32(0, 255, 255, 255),
             null,
             null,
@@ -110,6 +112,7 @@ public class EffectTypes
                 actor.curWP += 3;
                 if (actor.curWP > Mob.MAX_WP) actor.curWP = Mob.MAX_WP;
             });
+
         Add(EffectTypeEnum.effectInvisibility, "Invisibility", new Color32(100, 100, 100, 255),
             null,
             (Effect effect, Mob actor) =>
@@ -122,6 +125,7 @@ public class EffectTypes
             },
             null,
             null);
+
         Add(EffectTypeEnum.effectBurdenOfSins, "Burden of Sins", new Color32(0, 255, 255, 255),
             null,
             (Effect effect, Mob actor) =>
@@ -134,11 +138,13 @@ public class EffectTypes
                 actor.CalculateArmor();
             },
             null);
+
         Add(EffectTypeEnum.effectSyphonLight, "Syphon Light", new Color32(255, 0, 0, 255),
             null,
             null,
             null,
             null);
+
         Add(EffectTypeEnum.effectBurning, "Burning", new Color32(255, 168, 0, 255),
             null,
             null,
@@ -158,6 +164,7 @@ public class EffectTypes
                     actor.MakeDead(null, true, true, false);
                 }
             });
+
         Add(EffectTypeEnum.effectFireAura, "Fire Aura", new Color32(255, 168, 0, 255),
             null,
             null,
@@ -209,6 +216,18 @@ public class EffectTypes
                 }
                 
             });
+
+        Add(EffectTypeEnum.effectMinorRegeneration, "Minor Regeneration", new Color32(0, 255, 0, 255),
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateHPRegen();
+            },
+            (Effect effect, Mob actor) =>
+            {
+                actor.effects.Remove(effect.idType);
+                actor.CalculateHPRegen();
+            }, null);
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,

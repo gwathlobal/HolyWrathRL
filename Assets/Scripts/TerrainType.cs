@@ -9,6 +9,7 @@ public class TerrainType {
     public bool blocksMovement = false;
     public bool blocksVision = false;
     public bool blocksProjectiles = false;
+    public int catchesFire = 0;
     public Color color = new Color(255, 255, 255);
     public GameObject prefab;
 
@@ -36,18 +37,19 @@ public class TerrainTypes
 
         terrainTypes = new Dictionary<TerrainTypeEnum, TerrainType>();
 
-        Add(TerrainTypeEnum.terrainFloor, "Floor", terrainFloor, false, false, false, new Color(0, 255, 0));
-        Add(TerrainTypeEnum.terrainWall, "Wall", terrainWall, true, true, true, new Color(255, 255, 255));
-        Add(TerrainTypeEnum.terrainWindow, "Window", terrainWindow, true, false, true, new Color(0, 0, 255));
+        Add(TerrainTypeEnum.terrainFloor, "Floor", terrainFloor, false, false, false, new Color(0, 255, 0), 0);
+        Add(TerrainTypeEnum.terrainWall, "Wall", terrainWall, true, true, true, new Color(255, 255, 255), 0);
+        Add(TerrainTypeEnum.terrainWindow, "Window", terrainWindow, true, false, true, new Color(0, 0, 255), 0);
 
-        Add(TerrainTypeEnum.terrainStoneFloor, "Stone floor", terrainFloor, false, false, false, new Color32(106, 53, 53, 255));
-        Add(TerrainTypeEnum.terrainStoneFloorBright, "Stone floor", terrainFloor, false, false, false, new Color32(121, 88, 88, 255));
-        Add(TerrainTypeEnum.terrainStoneFloorBorder, "Stone floor", terrainFloor, true, true, true, new Color32(106, 53, 53, 255));
-        Add(TerrainTypeEnum.terrainStoneWall, "Stone floor", terrainWall, true, true, true, new Color32(106, 53, 53, 255));
+        Add(TerrainTypeEnum.terrainStoneFloor, "Stone floor", terrainFloor, false, false, false, new Color32(106, 53, 53, 255), 0);
+        Add(TerrainTypeEnum.terrainStoneFloorBright, "Stone floor", terrainFloor, false, false, false, new Color32(121, 88, 88, 255), 0);
+        Add(TerrainTypeEnum.terrainStoneFloorBorder, "Stone floor", terrainFloor, true, true, true, new Color32(106, 53, 53, 255), 0);
+        Add(TerrainTypeEnum.terrainStoneWall, "Stone wall", terrainWall, true, true, true, new Color32(106, 53, 53, 255), 0);
 
     }
 
-    private static void Add(TerrainTypeEnum _id, string _name, GameObject _prefab, bool _blocksMovement, bool _blocksVision, bool _blocksProjectiles, Color _color)
+    private static void Add(TerrainTypeEnum _id, string _name, GameObject _prefab, bool _blocksMovement, bool _blocksVision, bool _blocksProjectiles, Color _color, 
+        int _cathesFire)
     {
         TerrainType tt = new TerrainType()
         {
@@ -57,7 +59,8 @@ public class TerrainTypes
             blocksVision = _blocksVision,
             blocksProjectiles = _blocksProjectiles,
             prefab = _prefab,
-            color = _color
+            color = _color,
+            catchesFire = _cathesFire
         };
         terrainTypes.Add(_id, tt);
     }
