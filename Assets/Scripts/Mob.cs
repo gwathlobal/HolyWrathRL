@@ -196,6 +196,29 @@ public class Mob
                 nearestAlly = mob;
         }
 
+        if (GetEffect(EffectTypeEnum.effectFear) != null && nearestEnemy != null)
+        {
+            int dx = this.x - nearestEnemy.x, dy = this.y - nearestEnemy.y;
+
+            if (dx > 0) dx = 1;
+            else if (dx < 0) dx = -1;
+
+            if (dy > 0) dy = 1;
+            else if (dy < 0) dy = -1;
+
+            if (CanMoveToPos(this.x + dx, this.y + dy).result == AttemptMoveResultEnum.moveClear)
+            {
+                Move(dx, dy);
+                return;
+            }
+            else
+            {
+                MakeRandomMove();
+                return;
+            }
+
+        }
+
         Dictionary<int, List<AiPackageEnum>> sortedAiPackages = new Dictionary<int, List<AiPackageEnum>>();
         List<AiPackageEnum> value;
 

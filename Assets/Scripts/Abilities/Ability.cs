@@ -38,9 +38,10 @@ public enum AbilityTypeEnum
     abilBlock,
     abilDodge, abilJump,
     abilDivineVengeance,
-    abilHealSelf, abilMindBurn, 
+    abilHealSelf, 
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
+    abilMindBurn, abilFear,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -210,8 +211,6 @@ public class AbilityTypes
 
         Add(new AbilityHealSelf());
 
-        Add(new AbilityMindBurn());
-
         //============================
         //
         // DEADLY RAYS ABILITIES
@@ -251,6 +250,16 @@ public class AbilityTypes
         Add(new AbilityWarmingLight());
 
         Add(new AbilityLeapOfStrength());
+
+        //============================
+        //
+        // FIERY RAGE ABILITIES
+        // 
+        //============================
+
+        Add(new AbilityMindBurn());
+
+        Add(new AbilityFear());
     }
 
     private static void Add(Ability ability)

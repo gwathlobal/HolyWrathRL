@@ -42,7 +42,7 @@ public class AbilityBlindness : Ability
         string str = String.Format("{0} blinds {1}. ", actor.name, target.mob.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        target.mob.AddEffect(EffectTypeEnum.effectBlindness, actor, 3);
+        target.mob.AddEffect(EffectTypeEnum.effectBlindness, actor, 4);
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

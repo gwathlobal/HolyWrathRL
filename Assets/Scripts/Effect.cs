@@ -11,7 +11,7 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
-    effectFireAura, effectMinorRegeneration
+    effectFireAura, effectMinorRegeneration, effectFear
 }
 
 public class EffectType {
@@ -228,6 +228,12 @@ public class EffectTypes
                 actor.effects.Remove(effect.idType);
                 actor.CalculateHPRegen();
             }, null);
+
+        Add(EffectTypeEnum.effectFear, "Fear", new Color32(255, 0, 255, 255),
+            null,
+            null,
+            null, 
+            null);
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,
