@@ -78,7 +78,7 @@ public class MobType {
 
 public enum MobTypeEnum
 {
-    mobAngel, mobHomunculus, mobCrimsonImp, mobShadowImp, mobFiend, mobCrimsonDemon, mobShadowDemon, mobArchdemon, mobArchdevil, mobScavenger
+    mobAngel, mobHomunculus, mobCrimsonImp, mobShadowImp, mobFiend, mobCrimsonDemon, mobShadowDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul
 };
 
 public class MobTypes
@@ -93,6 +93,7 @@ public class MobTypes
     public static GameObject mobArchdemon;
     public static GameObject mobArchdevil;
     public static GameObject mobScavenger;
+    public static GameObject mobSplitSoul;
 
     public static Dictionary<MobTypeEnum, MobType> mobTypes;
 
@@ -108,6 +109,7 @@ public class MobTypes
         mobArchdemon = Resources.Load("Prefabs/Mobs/Archdemon") as GameObject;
         mobArchdevil = Resources.Load("Prefabs/Mobs/Archdevil") as GameObject;
         mobScavenger = Resources.Load("Prefabs/Mobs/Scavenger") as GameObject;
+        mobSplitSoul = Resources.Load("Prefabs/Mobs/Split Soul") as GameObject;
 
         mobTypes = new Dictionary<MobTypeEnum, MobType>();
 
@@ -123,6 +125,18 @@ public class MobTypes
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance});
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        armorPR.Add(DmgTypeEnum.Fire, 100);
+        armorPR.Add(DmgTypeEnum.Holy, 100);
+        armorPR.Add(DmgTypeEnum.Mind, 100);
+        armorPR.Add(DmgTypeEnum.Physical, 100);
+        Add(MobTypeEnum.mobSplitSoul, "Split Soul", mobSplitSoul, 10, 0, 0, 0, MobType.NORMAL_AP, FactionEnum.factionAngels,
+            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { },
+            new List<AbilityTypeEnum>() { });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

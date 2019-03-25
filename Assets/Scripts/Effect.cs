@@ -11,7 +11,7 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
-    effectFireAura, effectMinorRegeneration, effectFear
+    effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind
 }
 
 public class EffectType {
@@ -233,6 +233,36 @@ public class EffectTypes
             null,
             null,
             null, 
+            null);
+
+        Add(EffectTypeEnum.effectMeditate, "Meditation", new Color32(0, 255, 255, 255),
+            null,
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.curHP += actor.regenHP;
+                if (actor.curHP > actor.maxHP)
+                    actor.curHP = actor.maxHP;
+                actor.curFP += actor.regenFP;
+                if (actor.curFP > actor.maxFP)
+                    actor.curFP = actor.maxFP;
+            });
+
+        Add(EffectTypeEnum.effectImmobilize, "Immobilization", new Color32(255, 0, 255, 255),
+            null,
+            null,
+            null,
+            null);
+
+        Add(EffectTypeEnum.effectDominateMind, "Dominate Mind", new Color32(0, 255, 255, 255),
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                string str = String.Format("{0} no longer has its mind dominated. ", actor.name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+            },
             null);
     }
 

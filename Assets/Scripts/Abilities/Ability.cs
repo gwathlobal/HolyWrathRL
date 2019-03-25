@@ -41,7 +41,7 @@ public enum AbilityTypeEnum
     abilHealSelf, 
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
-    abilMindBurn, abilFear,
+    abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -260,6 +260,12 @@ public class AbilityTypes
         Add(new AbilityMindBurn());
 
         Add(new AbilityFear());
+
+        Add(new AbilityMeditate());
+
+        Add(new AbilityDominateMind());
+
+        Add(new AbilityTrapMind());
     }
 
     private static void Add(Ability ability)

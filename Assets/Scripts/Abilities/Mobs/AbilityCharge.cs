@@ -49,6 +49,7 @@ public class AbilityCharge : Ability
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)
     {
+        if (mob.GetEffect(EffectTypeEnum.effectImmobilize) != null) return false;
         return true;
     }
 

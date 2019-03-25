@@ -93,7 +93,11 @@ public class Mob
 
     public FactionEnum faction
     {
-        get { return MobTypes.mobTypes[idType].faction; }
+        get
+        {
+            if (GetEffect(EffectTypeEnum.effectDominateMind) != null) return GetEffect(EffectTypeEnum.effectDominateMind).actor.faction;
+            else return MobTypes.mobTypes[idType].faction;
+        }
     }
 
     public Mob(MobTypeEnum _idType, int _x, int _y)
@@ -209,11 +213,17 @@ public class Mob
             if (CanMoveToPos(this.x + dx, this.y + dy).result == AttemptMoveResultEnum.moveClear)
             {
                 Move(dx, dy);
+                pathDst.x = this.x;
+                pathDst.y = this.y;
+                path.Clear();
                 return;
             }
             else
             {
                 MakeRandomMove();
+                pathDst.x = this.x;
+                pathDst.y = this.y;
+                path.Clear();
                 return;
             }
 
@@ -309,6 +319,14 @@ public class Mob
 
     public bool Move(int xDir, int yDir)
     {
+        if (GetEffect(EffectTypeEnum.effectImmobilize) != null)
+        {
+            SetPosition(x, y);
+            mo.Move(x, y);
+            MakeAct(curMoveSpeed);
+            return true;
+        }
+
         AttemptMoveResult attemptMoveResult = CanMoveToPos(x + xDir, y + yDir);
         bool result = false;
 
@@ -709,6 +727,9 @@ public class Mob
         if (GetEffect(EffectTypeEnum.effectBlock) != null)
             regen = 0;
 
+        if (GetEffect(EffectTypeEnum.effectMeditate) != null)
+            regen *= 2;
+
         regenFP = regen;
     }
 
@@ -720,6 +741,9 @@ public class Mob
             regen += 4;
         if (GetEffect(EffectTypeEnum.effectMinorRegeneration) != null)
             regen += 3;
+
+        if (GetEffect(EffectTypeEnum.effectMeditate) != null)
+            regen *= 2;
 
         regenHP = regen;
     }

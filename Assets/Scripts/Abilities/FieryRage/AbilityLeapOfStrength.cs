@@ -35,6 +35,7 @@ public class AbilityLeapOfStrength : Ability
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)
     {
+        if (mob.GetEffect(EffectTypeEnum.effectImmobilize) != null) return false;
         return true;
     }
 
@@ -55,8 +56,6 @@ public class AbilityLeapOfStrength : Ability
                 if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction))
                 {
                     affectedMobs.Add(level.mobs[x, y]);
-
-
                 }
 
             });
