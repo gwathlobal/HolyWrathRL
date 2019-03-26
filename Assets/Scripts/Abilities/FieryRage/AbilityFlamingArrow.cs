@@ -9,12 +9,9 @@ public class AbilityFlamingArrow : Ability
     {
         id = AbilityTypeEnum.abilFlamingArrow;
         stdName = "Flaming Arrow";
-        spd = MobType.NORMAL_AP;
-        cost = 10;
         passive = false;
         slot = AbilitySlotCategoty.abilRanged;
         category = AbilityPlayerCategory.abilFieryRage;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityFlamingArrow : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 10;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

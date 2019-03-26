@@ -8,12 +8,9 @@ public class AbilityFireFists : Ability
     {
         id = AbilityTypeEnum.abilFireFists;
         stdName = "Fire Fists";
-        spd = MobType.NORMAL_AP;
-        cost = 0;
         passive = true;
         slot = AbilitySlotCategoty.abilMelee;
         category = AbilityPlayerCategory.abilFieryRage;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -24,6 +21,21 @@ public class AbilityFireFists : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 0;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

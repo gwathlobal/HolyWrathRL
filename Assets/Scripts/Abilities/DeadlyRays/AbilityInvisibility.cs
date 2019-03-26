@@ -9,13 +9,10 @@ public class AbilityInvisibility : Ability
     {
         id = AbilityTypeEnum.abilInvisibility;
         stdName = "Invisibility";
-        spd = MobType.NORMAL_AP / 2;
-        cost = 80;
         costType = AbilityCostType.wp;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -26,6 +23,21 @@ public class AbilityInvisibility : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP / 2;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 80;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

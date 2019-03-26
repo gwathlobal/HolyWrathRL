@@ -11,7 +11,8 @@ public delegate float OnEffectMoveSpeed(Effect effect);
 public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
-    effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind
+    effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
+    effectSilence
 }
 
 public class EffectType {
@@ -263,6 +264,31 @@ public class EffectTypes
                 string str = String.Format("{0} no longer has its mind dominated. ", actor.name);
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
             },
+            null);
+
+        Add(EffectTypeEnum.effectSplitSoulSource, "Split Soul", new Color32(255, 0, 0, 255),
+            null,
+            null,
+            null,
+            null);
+
+        Add(EffectTypeEnum.effectSplitSoulTarget, "Split Soul", new Color32(255, 0, 0, 255),
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.effects.Remove(effect.idType);
+                string str = String.Format("{0} ceases to exist. ", actor.name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+                actor.curHP = 0;
+                actor.MakeDead(null, false, false, false);
+            },
+            null);
+
+        Add(EffectTypeEnum.effectSilence, "Silence", new Color32(255, 0, 255, 255),
+            null,
+            null,
+            null,
             null);
     }
 

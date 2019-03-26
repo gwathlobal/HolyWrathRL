@@ -9,12 +9,9 @@ public class AbilityShootSpikes : Ability
     {
         id = AbilityTypeEnum.abilShootSpikes;
         stdName = "Shoot spikes";
-        spd = MobType.NORMAL_AP;
-        cost = 5;
         passive = false;
         slot = AbilitySlotCategoty.abilRanged;
         category = AbilityPlayerCategory.abilMobs;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityShootSpikes : Ability
     public override string Name(Mob mob)
     {
         return "Shoot spikes";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 5;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

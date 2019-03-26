@@ -9,13 +9,10 @@ public class AbilityDominateMind : Ability
     {
         id = AbilityTypeEnum.abilDominateMind;
         stdName = "Dominate Mind";
-        spd = MobType.NORMAL_AP;
-        cost = 120;
         costType = AbilityCostType.wp;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilBrilliantMind;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -26,6 +23,21 @@ public class AbilityDominateMind : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 120;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -8,12 +8,9 @@ public class AbilityDivineVengeance : Ability
     {
         id = AbilityTypeEnum.abilDivineVengeance;
         stdName = "Divine Vengeance";
-        spd = 0;
-        cost = 0;
         passive = true;
         slot = AbilitySlotCategoty.abilNone;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -24,6 +21,21 @@ public class AbilityDivineVengeance : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return 0;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 0;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

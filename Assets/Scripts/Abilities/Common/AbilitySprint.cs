@@ -9,12 +9,9 @@ public class AbilitySprint : Ability
     {
         id = AbilityTypeEnum.abilSprint;
         stdName = "Sprint";
-        spd = 0;
-        cost = 0;
         passive = false;
         slot = AbilitySlotCategoty.abilSprint;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilitySprint : Ability
     public override string Name(Mob mob)
     {
         return "Sprint";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return 0;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 0;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

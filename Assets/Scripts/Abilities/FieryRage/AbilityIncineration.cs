@@ -9,12 +9,9 @@ public class AbilityIncineration : Ability
     {
         id = AbilityTypeEnum.abilIncineration;
         stdName = "Incineration";
-        spd = MobType.NORMAL_AP;
-        cost = 40;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilFieryRage;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityIncineration : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 40;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -109,7 +121,8 @@ public class AbilityIncineration : Ability
         PlayerMob player = BoardManager.instance.player;
         Vector2Int pos = UIManager.instance.selectorPos;
 
-        if (level.visible[pos.x, pos.y])
+        if (level.visible[pos.x, pos.y] &&
+            TerrainTypes.terrainTypes[level.terrain[pos.x, pos.y]].blocksMovement == false)
         {
             BoardManager.instance.msgLog.ClearCurMsg();
             TargetStruct target = new TargetStruct(new Vector2Int(pos.x, pos.y), null);

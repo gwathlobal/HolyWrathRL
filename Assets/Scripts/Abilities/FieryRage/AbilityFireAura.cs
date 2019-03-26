@@ -9,12 +9,9 @@ public class AbilityFireAura : Ability
     {
         id = AbilityTypeEnum.abilFireAura;
         stdName = "Fire Aura";
-        spd = MobType.NORMAL_AP;
-        cost = 30;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilFieryRage;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityFireAura : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 30;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

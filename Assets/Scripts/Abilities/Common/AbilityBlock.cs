@@ -9,12 +9,9 @@ public class AbilityBlock : Ability
     {
         id = AbilityTypeEnum.abilBlock;
         stdName = "Block";
-        spd = MobType.NORMAL_AP;
-        cost = 10;
         passive = false;
         slot = AbilitySlotCategoty.abilBlock;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -28,6 +25,21 @@ public class AbilityBlock : Ability
     {
         if (mob.GetEffect(EffectTypeEnum.effectBlock) == null) return "Block";
         else return "Stop block";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 10;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -79,4 +91,5 @@ public class AbilityBlock : Ability
     {
         return true;
     }
+
 }

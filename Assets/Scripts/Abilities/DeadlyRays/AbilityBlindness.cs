@@ -9,12 +9,9 @@ public class AbilityBlindness : Ability
     {
         id = AbilityTypeEnum.abilBlindness;
         stdName = "Blindness";
-        spd = MobType.NORMAL_AP / 2;
-        cost = 40;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityBlindness : Ability
     public override string Name(Mob mob)
     {
         return "Blindness";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP / 2;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 40;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

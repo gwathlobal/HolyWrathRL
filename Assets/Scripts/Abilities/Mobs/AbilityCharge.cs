@@ -9,12 +9,9 @@ public class AbilityCharge : Ability
     {
         id = AbilityTypeEnum.abilCharge;
         stdName = "Charge";
-        spd = MobType.NORMAL_AP;
-        cost = 35;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilMobs;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityCharge : Ability
     public override string Name(Mob mob)
     {
         return "Charge";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 35;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

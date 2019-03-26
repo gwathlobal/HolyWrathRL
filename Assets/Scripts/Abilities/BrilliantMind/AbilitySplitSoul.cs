@@ -5,26 +5,51 @@ using UnityEngine;
 
 public class AbilitySplitSoul : Ability
 {
+
     public AbilitySplitSoul()
     {
         id = AbilityTypeEnum.abilSplitSoul;
         stdName = "Split Soul";
-        spd = MobType.NORMAL_AP;
-        cost = 60;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilBrilliantMind;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
     {
-        return "Split your soul to anchor it in place for 10 turns. While the anchor holds, you can reunite with your soul teleporting back to it.";
+        if (mob.GetEffect(EffectTypeEnum.effectSplitSoulSource) == null)
+            return "Split your soul to anchor it in place for 10 turns. While the anchor holds, you can reunite with your soul teleporting back to it.";
+        else
+            return "Teleport back to your anchored soul shard.";
     }
 
     public override string Name(Mob mob)
     {
-        return stdName;
+        if (mob.GetEffect(EffectTypeEnum.effectSplitSoulSource) == null)
+            return stdName;
+        else
+            return "Return to Soul";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        if (mob.GetEffect(EffectTypeEnum.effectSplitSoulSource) == null)
+            return 60;
+        else
+            return 0;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        if (mob.GetEffect(EffectTypeEnum.effectSplitSoulSource) == null)
+            return true;
+        else
+            return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -39,62 +64,33 @@ public class AbilitySplitSoul : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        string str = String.Format("{0} invokes incineration. ", actor.name);
-        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
-
-        List<Mob> affectedMobs = new List<Mob>();
-        Level level = BoardManager.instance.level;
-        level.CheckSurroundings(target.loc.x, target.loc.y, true,
-            (int x, int y) =>
-            {
-                if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction)) 
-                {
-                    affectedMobs.Add(level.mobs[x, y]);
-                }
-
-                if (UnityEngine.Random.Range(0, 4) == 0)
-                {
-                    Feature fire = new Feature(FeatureTypeEnum.featFire, x, y);
-                    fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire;
-                    BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
-                }
-            });
-
-        actor.mo.Explosion3x3(target.loc.x, target.loc.y);
-
-        foreach (Mob mob in affectedMobs)
+        if (actor.GetEffect(EffectTypeEnum.effectSplitSoulSource) == null)
         {
-            int dmg = 0;
-            dmg += Mob.InflictDamage(actor, mob, 15, DmgTypeEnum.Fire, (int dmg1) =>
-            {
-                string str1;
-                if (dmg1 <= 0)
-                {
-                    str1 = String.Format("{0} takes no fire dmg. ",
-                        mob.name);
-                }
-                else
-                {
-                    str1 = String.Format("{0} takes {1} fire dmg. ",
-                        mob.name,
-                        dmg1);
-                }
-                return str1;
-            });
-            mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
+            string str = String.Format("{0} splits its soul. ", actor.name);
+            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-            if (BoardManager.instance.level.visible[mob.x, mob.y])
-                UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+            Level level = BoardManager.instance.level;
+            Mob soul = new Mob(MobTypeEnum.mobSplitSoul, target.loc.x, target.loc.y);
+            soul.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+            BoardManager.instance.mobs.Add(soul.id, soul);
+            level.AddMobToLevel(soul, soul.x, soul.y);
 
-            if (mob.CheckDead())
-            {
-                mob.MakeDead(actor, true, true, false);
-            }
-
-            if (actor.GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
-                actor.GetAbility(AbilityTypeEnum.abilDivineVengeance).AbilityInvoke(actor, new TargetStruct(new Vector2Int(actor.x, actor.y), actor));
+            actor.AddEffect(EffectTypeEnum.effectSplitSoulSource, soul, 10);
+            soul.AddEffect(EffectTypeEnum.effectSplitSoulTarget, actor, 10);
+            soul.AddEffect(EffectTypeEnum.effectImmobilize, actor, Effect.CD_UNLIMITED);
         }
-        
+        else
+        {
+            Effect effect = actor.GetEffect(EffectTypeEnum.effectSplitSoulSource);
+            Mob soul = effect.actor;
+            int dx = soul.x;
+            int dy = soul.y;
+            soul.RemoveEffect(EffectTypeEnum.effectSplitSoulTarget);
+
+            actor.SetPosition(dx, dy);
+            actor.go.transform.position = new Vector3(dx, dy, 0);
+            actor.RemoveEffect(EffectTypeEnum.effectSplitSoulSource);
+        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -109,7 +105,9 @@ public class AbilitySplitSoul : Ability
         PlayerMob player = BoardManager.instance.player;
         Vector2Int pos = UIManager.instance.selectorPos;
 
-        if (level.visible[pos.x, pos.y])
+        if (level.visible[pos.x, pos.y] &&
+            level.mobs[pos.x, pos.y] == null &&
+            TerrainTypes.terrainTypes[level.terrain[pos.x,pos.y]].blocksMovement == false)
         {
             BoardManager.instance.msgLog.ClearCurMsg();
             TargetStruct target = new TargetStruct(new Vector2Int(pos.x, pos.y), null);
@@ -121,10 +119,11 @@ public class AbilitySplitSoul : Ability
 
     public override bool CheckRequirements(Mob mob, List<AbilityTypeEnum> addedAbils)
     {
-        if ((addedAbils.Contains(AbilityTypeEnum.abilFireFists) || mob.abilities.ContainsKey(AbilityTypeEnum.abilFireFists)) &&
-            (addedAbils.Contains(AbilityTypeEnum.abilFlamingArrow) || mob.abilities.ContainsKey(AbilityTypeEnum.abilFlamingArrow)) &&
-            (addedAbils.Contains(AbilityTypeEnum.abilFireAura) || mob.abilities.ContainsKey(AbilityTypeEnum.abilFireAura)) &&
-            (addedAbils.Contains(AbilityTypeEnum.abilBreathOfFire) || mob.abilities.ContainsKey(AbilityTypeEnum.abilBreathOfFire)))
+        if ((addedAbils.Contains(AbilityTypeEnum.abilMindBurn) || mob.abilities.ContainsKey(AbilityTypeEnum.abilMindBurn)) &&
+            (addedAbils.Contains(AbilityTypeEnum.abilFear) || mob.abilities.ContainsKey(AbilityTypeEnum.abilFear)) &&
+            (addedAbils.Contains(AbilityTypeEnum.abilMeditate) || mob.abilities.ContainsKey(AbilityTypeEnum.abilMeditate)) &&
+            (addedAbils.Contains(AbilityTypeEnum.abilDominateMind) || mob.abilities.ContainsKey(AbilityTypeEnum.abilDominateMind)) &&
+            (addedAbils.Contains(AbilityTypeEnum.abilTrapMind) || mob.abilities.ContainsKey(AbilityTypeEnum.abilTrapMind)))
             return true;
         else return false;
     }

@@ -9,12 +9,9 @@ public class AbilityDodge : Ability
     {
         id = AbilityTypeEnum.abilDodge;
         stdName = "Dodge";
-        spd = MobType.NORMAL_AP;
-        cost = 30;
         passive = false;
         slot = AbilitySlotCategoty.abilDodge;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityDodge : Ability
     public override string Name(Mob mob)
     {
         return "Dodge";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 30;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

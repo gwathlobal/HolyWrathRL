@@ -51,9 +51,9 @@ public abstract class Ability {
     public string stdName;
     public abstract string Name(Mob mob);
     public abstract string Description(Mob mob);
-    public float spd = MobType.NORMAL_AP;
+    public abstract float Spd(Mob mob);
     public bool passive;
-    public int cost = 0;
+    public abstract int Cost(Mob mob);
     public AbilityCostType costType = AbilityCostType.fp;
 
     public AbilitySlotCategoty slot;
@@ -63,7 +63,7 @@ public abstract class Ability {
     public abstract void AbilityInvoke(Mob actor, TargetStruct target);
     public abstract bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly);
     public abstract void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly);
-    public bool doesMapCheck;
+    public abstract bool DoesMapCheck(Mob mob);
     public abstract bool AbilityMapCheck(Ability ability);
     public abstract bool CheckRequirements(Mob mob, List<AbilityTypeEnum> addedAbils);
 
@@ -71,7 +71,7 @@ public abstract class Ability {
     {
         string result = "";
 
-        float _spd = spd / MobType.NORMAL_AP;
+        float _spd = Spd(mob) / MobType.NORMAL_AP;
 
         string turnStr = (_spd > 1) ? " turns. " : " turn. ";
         turnStr = (_spd != 0) ? _spd + turnStr : "";
@@ -89,7 +89,7 @@ public abstract class Ability {
                 break;
         }
 
-        string _cost = (cost != 0) ? String.Format("{0} {1}, ", cost, _costType) : "";
+        string _cost = (Cost(mob) != 0) ? String.Format("{0} {1}, ", Cost(mob), _costType) : "";
 
         string _passive = (passive == true) ? "Passive. " : ""; 
 
@@ -109,10 +109,10 @@ public abstract class Ability {
         switch (costType)
         {
             case AbilityCostType.wp:
-                if (actor.curWP >= cost) return true;
+                if (actor.curWP >= Cost(actor)) return true;
                 else return false;
             default:
-                if (actor.curFP >= cost) return true;
+                if (actor.curFP >= Cost(actor)) return true;
                 else return false;
         }
         
@@ -266,6 +266,10 @@ public class AbilityTypes
         Add(new AbilityDominateMind());
 
         Add(new AbilityTrapMind());
+
+        Add(new AbilitySplitSoul());
+
+        Add(new AbilitySphereOfSilence());
     }
 
     private static void Add(Ability ability)

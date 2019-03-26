@@ -9,12 +9,9 @@ public class AbilityJudgement : Ability
     {
         id = AbilityTypeEnum.abilJudgement;
         stdName = "Judgement";
-        spd = MobType.NORMAL_AP;
-        cost = 20;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityJudgement : Ability
     public override string Name(Mob mob)
     {
         return "Judgement";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 20;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

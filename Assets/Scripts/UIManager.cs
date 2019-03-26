@@ -199,7 +199,7 @@ public class UIManager : MonoBehaviour {
 
         anyBtnClicked = true;
 
-        if (!ability.doesMapCheck)
+        if (!ability.DoesMapCheck(player))
         {
             BoardManager.instance.msgLog.ClearCurMsg();
             TargetStruct target = new TargetStruct(new Vector2Int(player.x, player.y), player);

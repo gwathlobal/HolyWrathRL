@@ -9,12 +9,9 @@ public class AbilityNone : Ability
     {
         id = AbilityTypeEnum.abilNone;
         stdName = "None";
-        spd = MobType.NORMAL_AP;
-        cost = 0;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = false;
     }
 
     public override string Name(Mob mob)
@@ -25,6 +22,21 @@ public class AbilityNone : Ability
     public override string Description(Mob mob)
     {
         return "None";
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 00;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)

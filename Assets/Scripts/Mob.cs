@@ -625,8 +625,8 @@ public class Mob
             TargetStruct targetStruct = new TargetStruct(new Vector2Int(target.x, target.y), target);
             Ability ability = GetAbility(meleeAbil);
             ability.AbilityInvoke(this, targetStruct);
-            curFP -= ability.cost;
-            MakeAct(ability.spd);
+            curFP -= ability.Cost(this);
+            MakeAct(ability.Spd(this));
         }
         else
         {
@@ -649,11 +649,11 @@ public class Mob
                 curWP = 0;
                 break;
             default:
-                curFP -= ability.cost;
+                curFP -= ability.Cost(this);
                 break;
         }
         
-        MakeAct(ability.spd);
+        MakeAct(ability.Spd(this));
 
     }
 

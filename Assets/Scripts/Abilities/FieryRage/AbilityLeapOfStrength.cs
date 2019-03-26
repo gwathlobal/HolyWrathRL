@@ -9,13 +9,10 @@ public class AbilityLeapOfStrength : Ability
     {
         id = AbilityTypeEnum.abilLeapOfStrength;
         stdName = "Leap of Strength";
-        spd = MobType.NORMAL_AP;
-        cost = 90;
         costType = AbilityCostType.wp;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilFieryRage;
-        doesMapCheck = true;
     }
 
     public override string Description(Mob mob)
@@ -26,6 +23,21 @@ public class AbilityLeapOfStrength : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 90;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return true;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -116,6 +128,7 @@ public class AbilityLeapOfStrength : Ability
 
         if (level.visible[pos.x, pos.y] &&
             level.mobs[pos.x, pos.y] == null &&
+            TerrainTypes.terrainTypes[level.terrain[pos.x, pos.y]].blocksMovement == false &&
             Level.GetSimpleDistance(player.x, player.y, pos.x, pos.y) <= 6)
         {
             bool fresult = LOS_FOV.DrawLine(player.x, player.y, pos.x, pos.y,

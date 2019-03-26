@@ -8,12 +8,9 @@ public class AbilityHolySword : Ability
     {
         id = AbilityTypeEnum.abilHolySword;
         stdName = "Holy Sword";
-        spd = MobType.NORMAL_AP;
-        cost = 0;
         passive = true;
         slot = AbilitySlotCategoty.abilMelee;
         category = AbilityPlayerCategory.abilCommon;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -24,6 +21,21 @@ public class AbilityHolySword : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 0;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

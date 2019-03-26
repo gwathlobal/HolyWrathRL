@@ -9,13 +9,10 @@ public class AbilitySyphonLight : Ability
     {
         id = AbilityTypeEnum.abilSyphonLight;
         stdName = "Syphon Light";
-        spd = MobType.NORMAL_AP;
-        cost = 10;
         costType = AbilityCostType.wp;
         passive = false;
         slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilDeadlyRays;
-        doesMapCheck = false;
     }
 
     public override string Description(Mob mob)
@@ -26,6 +23,21 @@ public class AbilitySyphonLight : Ability
     public override string Name(Mob mob)
     {
         return stdName;
+    }
+
+    public override float Spd(Mob mob)
+    {
+        return MobType.NORMAL_AP;
+    }
+
+    public override int Cost(Mob mob)
+    {
+        return 10;
+    }
+
+    public override bool DoesMapCheck(Mob mob)
+    {
+        return false;
     }
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
