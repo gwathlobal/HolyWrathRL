@@ -42,6 +42,7 @@ public enum AbilityTypeEnum
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
+    abilAbsorbingShield, abilForceShot,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -270,6 +271,16 @@ public class AbilityTypes
         Add(new AbilitySplitSoul());
 
         Add(new AbilitySphereOfSilence());
+
+        //============================
+        //
+        // BASTION OF HOLINESS ABILITIES
+        // 
+        //============================
+
+        Add(new AbilityAbsorbingShield());
+
+        Add(new AbilityForceShot());
     }
 
     private static void Add(Ability ability)

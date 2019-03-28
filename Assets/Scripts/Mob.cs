@@ -42,6 +42,7 @@ public class Mob
     {
         get { return MobTypes.mobTypes[idType].maxFP; }
     }
+    public int curSH = 0;
     public int regenHP = 1;
     public int regenHPBase
     {
@@ -435,7 +436,34 @@ public class Mob
             BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
         }
 
-        target.curHP -= dmg;
+        int curDmg = dmg;
+        List<Effect> shieldsToRemove = new List<Effect>();
+        foreach (Effect effect in target.effects.Values)
+        {
+            int SV = effect.SV;
+            if (SV > 0)
+            {
+                if (curDmg >= SV)
+                {
+                    curDmg -= SV;
+                    effect.SV = 0;
+                    shieldsToRemove.Add(effect);
+                }
+                else
+                {
+                    effect.SV -= curDmg;
+                    curDmg = 0;
+                }
+            }
+        }
+        for (int i = shieldsToRemove.Count - 1; i >= 0; i--)
+        {
+            target.effects.Remove(shieldsToRemove[i].idType);
+        }
+        shieldsToRemove.Clear();
+        target.CalculateShieldValue();
+
+        target.curHP -= curDmg;
 
         // increase WP with Divine Vengeance
         if (attacker != null && attacker.GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
@@ -663,6 +691,7 @@ public class Mob
         {
             effects[effectType].cd = _cd;
             effects[effectType].actor = _actor;
+            effects[effectType].SV = EffectTypes.effectTypes[effectType].shieldValue;
         }
         else
         {
@@ -671,8 +700,9 @@ public class Mob
                 idType = effectType,
                 actor = _actor,
                 target = this,
-                cd = _cd
-            };
+                cd = _cd,
+                SV = EffectTypes.effectTypes[effectType].shieldValue
+        };
             effects.Add(effectType, effect);
             if (EffectTypes.effectTypes[effectType].OnEffectAdd != null)
                 EffectTypes.effectTypes[effectType].OnEffectAdd(effect, this);
@@ -846,5 +876,17 @@ public class Mob
     public bool GetFactionRelation(FactionEnum mobFaction)
     {
         return Factions.factions[faction].GetRelation(mobFaction);
+    }
+
+    public void CalculateShieldValue()
+    {
+        curSH = 0;
+        foreach (Effect effect in effects.Values)
+        {
+            if (effect.SV > 0)
+            {
+                curSH += effect.SV;
+            }
+        }
     }
 }

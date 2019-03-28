@@ -12,7 +12,7 @@ public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
     effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
-    effectSilence
+    effectSilence, effectAbsorbingShield
 }
 
 public class EffectType {
@@ -23,7 +23,7 @@ public class EffectType {
     public OnEffectRemove OnEffectRemove;
     public OnEffectTick OnEffectTick;
     public OnEffectMoveSpeed OnEffectMoveSpeed;
-
+    public int shieldValue;
 }
 
 public class Effect
@@ -34,6 +34,7 @@ public class Effect
     public Mob actor;
     public Mob target;
     public int cd;
+    public int SV;
 }
 
 public class EffectTypes
@@ -290,11 +291,24 @@ public class EffectTypes
             null,
             null,
             null);
+
+        Add(EffectTypeEnum.effectAbsorbingShield, "Absorbing Shield", new Color32(160, 160, 0, 255),
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateShieldValue();
+            },
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateShieldValue();
+            },
+            null,
+            10);
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,
         OnEffectMoveSpeed _OnEffectMoveSpeed,
-        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick)
+        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick, int _sv = 0)
     {
         EffectType e = new EffectType
         {
@@ -304,7 +318,8 @@ public class EffectTypes
             OnEffectAdd = _OnEffectAdd,
             OnEffectRemove = _OnEffectRemove,
             OnEffectTick = _OnEffectTick,
-            OnEffectMoveSpeed = _OnEffectMoveSpeed
+            OnEffectMoveSpeed = _OnEffectMoveSpeed,
+            shieldValue = _sv
         };
         effectTypes.Add(_id, e);
     }
