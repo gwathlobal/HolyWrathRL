@@ -159,8 +159,10 @@ public class BoardManager : MonoBehaviour {
 
             foreach (Feature feature in features.Values.ToList())
             {
+                msgLog.SetHasMessageThisTurn(false);
                 if (FeatureTypes.featureTypes[feature.idType].FeatOnTick != null)
                     FeatureTypes.featureTypes[feature.idType].FeatOnTick(level, feature);
+                msgLog.FinalizeMsg();
             }
 
             for (int i = featuresToRemove.Count - 1; i >= 0; i--) 

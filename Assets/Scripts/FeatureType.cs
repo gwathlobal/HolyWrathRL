@@ -5,11 +5,11 @@ using UnityEngine;
 
 public delegate Feature FeatCheckMerge(Level level, Feature newFeature);
 public delegate void FeatMergeFunc(Level level, Feature newFeature, Feature oldFeature);
-public delegate void FeatOnTick(Level level, Feature Feature);
+public delegate void FeatOnTick(Level level, Feature feature);
 
 public enum FeatureTypeEnum
 {
-    featBloodDrop, featBloodPool, featFire
+    featBloodDrop, featBloodPool, featFire, featHolyRune
 };
 
 public class FeatureType {
@@ -38,12 +38,14 @@ public class FeatureTypes
 
     public static GameObject featBloodPool;
     public static GameObject featFire;
+    public static GameObject featHolyRune;
     public static Dictionary<FeatureTypeEnum, FeatureType> featureTypes;
 
     public static void InitializeFeatureTypes()
     {
         featBloodPool = Resources.Load("Prefabs/Features/BloodPool") as GameObject;
         featFire = Resources.Load("Prefabs/Features/Fire") as GameObject;
+        featHolyRune = Resources.Load("Prefabs/Features/Holy Rune") as GameObject;
 
         featureTypes = new Dictionary<FeatureTypeEnum, FeatureType>();
 
@@ -150,6 +152,76 @@ public class FeatureTypes
                 }
             });
 
+        Add(FeatureTypeEnum.featHolyRune, "Holy Rune", featHolyRune, featHolyRune.GetComponent<SpriteRenderer>().color,
+            (Level level, Feature newFeature) =>
+            {
+                foreach (Feature feature in level.features[newFeature.x, newFeature.y])
+                {
+                    if (feature.idType == FeatureTypeEnum.featHolyRune)
+                        return feature;
+                }
+                return null;
+            },
+            (Level level, Feature newFeature, Feature oldFeature) =>
+            {
+                oldFeature.counter = newFeature.counter;
+                level.featureList.Remove(newFeature);
+                BoardManager.instance.RemoveFeatureFromWorld(newFeature);
+
+            },
+            (Level level, Feature feature) =>
+            {
+                if (level.mobs[feature.x, feature.y] != null && level.mobs[feature.x, feature.y].faction == FactionEnum.factionAngels)
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+                    mob.curHP += 3;
+                    if (mob.curHP > mob.maxHP)
+                        mob.curHP = mob.maxHP;
+                    mob.curFP += 3;
+                    if (mob.curFP > mob.maxFP)
+                        mob.curFP = mob.maxFP;
+                }
+                if (level.mobs[feature.x, feature.y] != null && 
+                    (level.mobs[feature.x, feature.y].faction == FactionEnum.factionDemons || level.mobs[feature.x, feature.y].faction == FactionEnum.factionBeasts))
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+                    int dmg = 0;
+                    dmg += Mob.InflictDamage(null, mob, 3, DmgTypeEnum.Holy,
+                        (int dmg1) =>
+                        {
+                            string str;
+                            if (dmg1 <= 0)
+                            {
+                                str = String.Format("{0} takes no holy dmg. ",
+                                    mob.name);
+                            }
+                            else
+                            {
+                                str = String.Format("{0} takes {1} holy dmg. ",
+                                    mob.name,
+                                    dmg1);
+                            }
+                            return str;
+                        });
+                    if (BoardManager.instance.level.visible[mob.x, mob.y])
+                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+
+                    BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
+                    if (mob.CheckDead())
+                    {
+                        mob.MakeDead(null, true, true, false);
+                    }
+                }
+
+                feature.counter--;
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    //level.featureList.Remove(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                    //BoardManager.instance.RemoveFeatureFromWorld(feature);
+                }
+            });
     }
 
     private static void Add(FeatureTypeEnum _id, string _name, GameObject _prefab, Color _color, 

@@ -25,6 +25,7 @@ public class EffectType {
     public OnEffectMoveSpeed OnEffectMoveSpeed;
     public int shieldValue;
     public bool reflectsProjectiles;
+    public bool canBePurged;
 }
 
 public class Effect
@@ -101,7 +102,7 @@ public class EffectTypes
             {
                 actor.effects.Remove(effect.idType);
                 actor.CalculateVisionRadius();
-            }, null);
+            }, null, 0, false, true);
 
         Add(EffectTypeEnum.effectDivineVengeance, "Divine Vengeance", new Color32(0, 255, 255, 255),
             null,
@@ -137,13 +138,13 @@ public class EffectTypes
                 actor.effects.Remove(effect.idType);
                 actor.CalculateArmor();
             },
-            null);
+            null, 0, false, true);
 
         Add(EffectTypeEnum.effectSyphonLight, "Syphon Light", new Color32(255, 0, 0, 255),
             null,
             null,
             null,
-            null);
+            null, 0, false, true);
 
         Add(EffectTypeEnum.effectBurning, "Burning", new Color32(255, 168, 0, 255),
             null,
@@ -163,7 +164,7 @@ public class EffectTypes
                 {
                     actor.MakeDead(null, true, true, false);
                 }
-            });
+            }, 0, false, true);
 
         Add(EffectTypeEnum.effectFireAura, "Fire Aura", new Color32(255, 168, 0, 255),
             null,
@@ -232,8 +233,8 @@ public class EffectTypes
         Add(EffectTypeEnum.effectFear, "Fear", new Color32(255, 0, 255, 255),
             null,
             null,
-            null, 
-            null);
+            null,
+            null, 0, false, true);
 
         Add(EffectTypeEnum.effectMeditate, "Meditation", new Color32(0, 255, 255, 255),
             null,
@@ -263,7 +264,7 @@ public class EffectTypes
                 string str = String.Format("{0} no longer has its mind dominated. ", actor.name);
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
             },
-            null);
+            null, 0, false, true);
 
         Add(EffectTypeEnum.effectSplitSoulSource, "Split Soul", new Color32(255, 0, 0, 255),
             null,
@@ -288,7 +289,7 @@ public class EffectTypes
             null,
             null,
             null,
-            null);
+            null, 0, false, true);
 
         Add(EffectTypeEnum.effectAbsorbingShield, "Absorbing Shield", new Color32(160, 160, 0, 255),
             null,
@@ -338,7 +339,7 @@ public class EffectTypes
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,
         OnEffectMoveSpeed _OnEffectMoveSpeed,
-        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick, int _sv = 0, bool _reflect = false)
+        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick, int _sv = 0, bool _reflect = false, bool _purged = false)
     {
         EffectType e = new EffectType
         {
@@ -350,7 +351,8 @@ public class EffectTypes
             OnEffectTick = _OnEffectTick,
             OnEffectMoveSpeed = _OnEffectMoveSpeed,
             shieldValue = _sv,
-            reflectsProjectiles = _reflect
+            reflectsProjectiles = _reflect,
+            canBePurged = _purged
         };
         effectTypes.Add(_id, e);
     }

@@ -33,7 +33,6 @@ public class AbilityCallArchangel : Ability
 
     public override int Cost(Mob mob)
     {
-        return 0;
         return 150;
     }
 
@@ -93,7 +92,6 @@ public class AbilityCallArchangel : Ability
 
     public override bool CheckRequirements(Mob mob, List<AbilityTypeEnum> addedAbils)
     {
-        return true;
         if ((addedAbils.Contains(AbilityTypeEnum.abilAbsorbingShield) || mob.abilities.ContainsKey(AbilityTypeEnum.abilAbsorbingShield)) &&
             (addedAbils.Contains(AbilityTypeEnum.abilForceShot) || mob.abilities.ContainsKey(AbilityTypeEnum.abilForceShot)) &&
             (addedAbils.Contains(AbilityTypeEnum.abilReflectiveBlock) || mob.abilities.ContainsKey(AbilityTypeEnum.abilReflectiveBlock)))
