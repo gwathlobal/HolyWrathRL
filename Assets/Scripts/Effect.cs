@@ -12,7 +12,7 @@ public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
     effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
-    effectSilence, effectAbsorbingShield
+    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime
 }
 
 public class EffectType {
@@ -24,6 +24,7 @@ public class EffectType {
     public OnEffectTick OnEffectTick;
     public OnEffectMoveSpeed OnEffectMoveSpeed;
     public int shieldValue;
+    public bool reflectsProjectiles;
 }
 
 public class Effect
@@ -63,10 +64,7 @@ public class EffectTypes
             }, null);
 
         Add(EffectTypeEnum.effectBlock, "Blocking", new Color32(255, 255, 0, 255),
-            (Effect effect) =>
-            {
-                return -0.5f;
-            },
+            null,
             (Effect effect, Mob actor) =>
             {
                 actor.CalculateMoveSpeed();
@@ -304,11 +302,43 @@ public class EffectTypes
             },
             null,
             10);
+
+        Add(EffectTypeEnum.effectReflectiveBlocking, "Reflective Blocking", new Color32(255, 255, 0, 255),
+           null,
+           (Effect effect, Mob actor) =>
+           {
+               actor.CalculateMoveSpeed();
+               actor.CalculateFPRegen();
+               actor.CalculateArmor();
+           },
+           (Effect effect, Mob actor) =>
+           {
+               actor.effects.Remove(effect.idType);
+               actor.CalculateMoveSpeed();
+               actor.CalculateFPRegen();
+               actor.CalculateArmor();
+
+               string str = String.Format("{0} stops blocking. ", actor.name);
+               BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+           }, null, 0, true);
+
+        Add(EffectTypeEnum.effectRemoveAfterTime, "Temporary", new Color32(255, 255, 0, 255),
+            null,
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.effects.Remove(effect.idType);
+                string str = String.Format("{0} ceases to exist. ", actor.name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+                actor.curHP = 0;
+                actor.MakeDead(null, false, false, false);
+            },
+            null);
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,
         OnEffectMoveSpeed _OnEffectMoveSpeed,
-        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick, int _sv = 0)
+        OnEffectAdd _OnEffectAdd, OnEffectRemove _OnEffectRemove, OnEffectTick _OnEffectTick, int _sv = 0, bool _reflect = false)
     {
         EffectType e = new EffectType
         {
@@ -319,7 +349,8 @@ public class EffectTypes
             OnEffectRemove = _OnEffectRemove,
             OnEffectTick = _OnEffectTick,
             OnEffectMoveSpeed = _OnEffectMoveSpeed,
-            shieldValue = _sv
+            shieldValue = _sv,
+            reflectsProjectiles = _reflect
         };
         effectTypes.Add(_id, e);
     }

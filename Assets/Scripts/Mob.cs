@@ -756,6 +756,8 @@ public class Mob
             regen = 0;
         if (GetEffect(EffectTypeEnum.effectBlock) != null)
             regen = 0;
+        if (GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
+            regen = 0;
 
         if (GetEffect(EffectTypeEnum.effectMeditate) != null)
             regen *= 2;
@@ -791,6 +793,15 @@ public class Mob
 
         // Blocking
         if (GetEffect(EffectTypeEnum.effectBlock) != null)
+        {
+            foreach (DmgTypeEnum dmgType in MobTypes.mobTypes[idType].armorPR.Keys)
+            {
+                armorPR[dmgType] += 50;
+            }
+        }
+
+        // Reflective Blocking
+        if (GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
         {
             foreach (DmgTypeEnum dmgType in MobTypes.mobTypes[idType].armorPR.Keys)
             {

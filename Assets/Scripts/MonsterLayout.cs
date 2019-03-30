@@ -31,6 +31,9 @@ public abstract class MonsterLayout {
             //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
             player.meleeAbil = AbilityTypeEnum.abilFireFists;
             player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
+            player.abilities.Add(AbilityTypeEnum.abilReflectiveBlock, true);
+            player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
+            UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
         }
         else

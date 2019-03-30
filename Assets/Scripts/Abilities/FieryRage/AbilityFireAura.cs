@@ -41,6 +41,9 @@ public class AbilityFireAura : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
+        if (nearestEnemy == null) return false;
+        if (actor.GetEffect(EffectTypeEnum.effectFireAura) == null) return true;
+        if (actor.GetEffect(EffectTypeEnum.effectFireAura).cd <= 1) return true;
         return false;
     }
 

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public delegate string OnHitProjectile(Mob attacker, Mob target);
+public delegate void PostProjectileFunc(Mob attacker, Mob target);
+
 public struct TargetStruct {
     public Vector2Int loc;
     public Mob mob;
@@ -42,7 +45,7 @@ public enum AbilityTypeEnum
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
-    abilAbsorbingShield, abilForceShot,
+    abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -119,6 +122,80 @@ public abstract class Ability {
         
     }
 
+    public static void ShootProjectile(Mob actor, Mob target, Color32 color, OnHitProjectile onHitProjectile, PostProjectileFunc postProjectileFunc)
+    {
+        string str;
+        bool reflect = false;
+        foreach (Effect effect in target.effects.Values)
+        {
+            if (EffectTypes.effectTypes[effect.idType].reflectsProjectiles)
+            {
+                reflect = true;
+                break;
+            }
+        }
+
+        if (!reflect)
+        {
+            str = onHitProjectile(actor, target);
+        }
+        else
+            str = "<i>REFLECT</i>";
+
+
+        GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
+        projectile.GetComponent<SpriteRenderer>().color = color;
+        projectile.GetComponent<MovingObject>().MoveProjectile(target.x, target.y, str,
+            () =>
+            {
+                if (!reflect)
+                    BoardManager.instance.CreateBlooddrop(target.x, target.y);
+            });
+
+        if (!reflect)
+        {
+            if (postProjectileFunc != null) postProjectileFunc(actor, target);
+        }
+
+        if (target.CheckDead())
+        {
+            target.MakeDead(actor, true, true, false);
+        }
+
+        if (reflect)
+        {
+            str = String.Format("{0} reflects the projectile. ", target.name);
+            BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
+
+            str = onHitProjectile(target, actor);
+
+            GameObject projectile2 = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(target.x, target.y, 0), Quaternion.identity);
+            projectile2.GetComponent<SpriteRenderer>().color = color;
+            projectile2.GetComponent<MovingObject>().MoveProjectile(actor.x, actor.y, str,
+                () =>
+                {
+                    BoardManager.instance.CreateBlooddrop(actor.x, actor.y);
+                });
+
+            if (postProjectileFunc != null)
+                postProjectileFunc(target, actor);
+
+            if (actor.CheckDead())
+            {
+                actor.MakeDead(target, true, true, false);
+            }
+
+            if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
+            {
+                target.curFP -= 30;
+                if (target.curFP <= 0)
+                {
+                    target.curFP = 0;
+                    target.RemoveEffect(EffectTypeEnum.effectReflectiveBlocking);
+                }
+            }
+        }
+    }
 }
 
 public class AbilityTypes
@@ -281,6 +358,10 @@ public class AbilityTypes
         Add(new AbilityAbsorbingShield());
 
         Add(new AbilityForceShot());
+
+        Add(new AbilityReflectiveBlock());
+
+        Add(new AbilityCallArchangel());
     }
 
     private static void Add(Ability ability)

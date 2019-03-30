@@ -54,64 +54,77 @@ public class AbilityForceShot : Ability
         string str = String.Format("{0} shoots a force bolt. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical, null);
-        
-        GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
-        projectile.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
-        projectile.GetComponent<MovingObject>().MoveProjectile(target.mob.x, target.mob.y, dmg + " <i>DMG</i>",
-            () =>
+        Ability.ShootProjectile(actor, target.mob, new Color32(255, 255, 255, 255),
+            (Mob attacker, Mob defender) =>
             {
-                BoardManager.instance.CreateBlooddrop(target.mob.x, target.mob.y);
+                string result_str;
+                int dmg = 0;
+                dmg += Mob.InflictDamage(attacker, defender, 5, DmgTypeEnum.Physical,
+                    (int dmg1) =>
+                    {
+                        string str1;
+                        if (dmg1 <= 0)
+                        {
+                            str1 = String.Format("{0} takes no physical dmg. ",
+                                defender.name);
+                        }
+                        else
+                        {
+                            str1 = String.Format("{0} takes {1} physical dmg. ",
+                                defender.name,
+                                dmg1);
+                        }
+                        return str1;
+                    });
+                result_str = dmg + " <i>DMG</i>";
+                return result_str;
+            },
+            (Mob attacker, Mob defender) =>
+            {
+                int dx, dy;
+                double a = Math.Atan2(actor.y - target.mob.y, actor.x - target.mob.x) * (180 / Math.PI);
+                if (a > 22.5 && a <= 67.5)
+                {
+                    dx = -1; dy = -1;
+                }
+                else if (a > 67.5 && a <= 112.5)
+                {
+                    dx = 0; dy = -1;
+                }
+                else if (a > 112.5 && a <= 157.5)
+                {
+                    dx = 1; dy = -1;
+                }
+                else if (a < -22.5 && a >= -67.5)
+                {
+                    dx = -1; dy = 1;
+                }
+                else if (a < -67.5 && a >= -112.5)
+                {
+                    dx = 0; dy = 1;
+                }
+                else if (a < -112.5 && a >= -157.5)
+                {
+                    dx = 1; dy = 1;
+                }
+                else if (a > 157.5 || a < -157.5)
+                {
+                    dx = 1; dy = 0;
+                }
+                else
+                {
+                    dx = -1; dy = 0;
+                }
+
+                dx = defender.x + dx;
+                dy = defender.y + dy;
+                Level level = BoardManager.instance.level;
+                if (level.mobs[dx, dy] == null)
+                {
+                    defender.SetPosition(dx, dy);
+                    defender.mo.Move(target.mob.x, target.mob.y);
+                }
             });
-
-        int dx, dy;
-        double a = Math.Atan2(actor.y - target.mob.y, actor.x - target.mob.x) * (180 / Math.PI);
-        if (a > 22.5 && a <= 67.5)
-        {
-            dx = -1; dy = -1;
-        }
-        else if (a > 67.5 && a <= 112.5)
-        {
-            dx = 0; dy = -1;
-        }
-        else if (a > 112.5 && a <= 157.5)
-        {
-            dx = 1; dy = -1;
-        }
-        else if (a < -22.5 && a >= -67.5)
-        {
-            dx = -1; dy = 1;
-        }
-        else if (a < -67.5 && a >= -112.5)
-        {
-            dx = 0; dy = 1;
-        }
-        else if (a < -112.5 && a >= -157.5)
-        {
-            dx = 1; dy = 1;
-        }
-        else if (a > 157.5 || a < -157.5)
-        {
-            dx = 1; dy = 0;
-        }
-        else
-        {
-           dx = -1; dy = 0;
-        }
-
-        dx = target.mob.x + dx;
-        dy = target.mob.y + dy;
-        Level level = BoardManager.instance.level;
-        if (level.mobs[dx, dy] == null)
-        {
-            target.mob.SetPosition(dx, dy);
-            target.mob.mo.Move(target.mob.x, target.mob.y);
-        }
-        if (target.mob.CheckDead())
-        {
-            target.mob.MakeDead(actor, true, true, false);
-        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

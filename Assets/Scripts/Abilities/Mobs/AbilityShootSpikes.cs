@@ -68,21 +68,32 @@ public class AbilityShootSpikes : Ability
         string str = String.Format("{0} shoots a spike. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical, null);
-
-        GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
-        projectile.GetComponent<SpriteRenderer>().color = new Color32(188, 110, 0, 255);
-        projectile.GetComponent<MovingObject>().MoveProjectile(target.mob.x, target.mob.y, dmg + " <i>DMG</i>",
-            () =>
+        Ability.ShootProjectile(actor, target.mob, new Color32(188, 110, 0, 255),
+            (Mob attacker, Mob defender) =>
             {
-                BoardManager.instance.CreateBlooddrop(target.mob.x, target.mob.y);
-            });
-
-        if (target.mob.CheckDead())
-        {
-            target.mob.MakeDead(actor, true, true, false);
-        }
+                string result_str;
+                int dmg = 0;
+                dmg += Mob.InflictDamage(attacker, defender, 5, DmgTypeEnum.Physical, 
+                    (int dmg1) =>
+                    {
+                        string str1;
+                        if (dmg1 <= 0)
+                        {
+                            str1 = String.Format("{0} takes no physical dmg. ",
+                                defender.name);
+                        }
+                        else
+                        {
+                            str1 = String.Format("{0} takes {1} physical dmg. ",
+                                defender.name,
+                                dmg1);
+                        }
+                        return str1;
+                    });
+                result_str = dmg + " <i>DMG</i>";
+                return result_str;
+            },
+            null);
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
