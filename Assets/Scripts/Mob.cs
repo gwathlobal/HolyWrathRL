@@ -817,6 +817,15 @@ public class Mob
                 armorPR[dmgType] -= 50;
             }
         }
+
+        // Minor Protection
+        if (GetEffect(EffectTypeEnum.effectMinorProtection) != null)
+        {
+            foreach (DmgTypeEnum dmgType in MobTypes.mobTypes[idType].armorDR.Keys)
+            {
+                armorDR[dmgType] += 2;
+            }
+        }
     }
 
     public void CalculateVisionRadius()

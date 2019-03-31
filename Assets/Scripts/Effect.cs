@@ -12,7 +12,7 @@ public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
     effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
-    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime
+    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime, effectAuraMinorProtection, effectMinorProtection
 }
 
 public class EffectType {
@@ -308,14 +308,12 @@ public class EffectTypes
            null,
            (Effect effect, Mob actor) =>
            {
-               actor.CalculateMoveSpeed();
                actor.CalculateFPRegen();
                actor.CalculateArmor();
            },
            (Effect effect, Mob actor) =>
            {
                actor.effects.Remove(effect.idType);
-               actor.CalculateMoveSpeed();
                actor.CalculateFPRegen();
                actor.CalculateArmor();
 
@@ -335,6 +333,54 @@ public class EffectTypes
                 actor.MakeDead(null, false, false, false);
             },
             null);
+
+        Add(EffectTypeEnum.effectMinorProtection, "Minor Protection", new Color32(255, 255, 0, 255),
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateArmor();
+            },
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateArmor();
+            },
+            null);
+
+        Add(EffectTypeEnum.effectAuraMinorProtection, "Minor Protection Aura", new Color32(255, 255, 0, 255),
+           null,
+           (Effect effect, Mob actor) =>
+           {
+               actor.AddEffect(EffectTypeEnum.effectMinorProtection, actor, 2);
+
+               Level level = BoardManager.instance.level;
+               level.CheckSurroundings(actor.x, actor.y, false,
+                   (int x, int y) =>
+                   {
+                       if (level.mobs[x, y] != null && actor.GetFactionRelation(level.mobs[x, y].faction))
+                       {
+                           Mob mob = level.mobs[x, y];
+
+                           mob.AddEffect(EffectTypeEnum.effectMinorProtection, actor, 2);
+                       }
+                   });
+           },
+           null,
+           (Effect effect, Mob actor) =>
+           {
+               actor.AddEffect(EffectTypeEnum.effectMinorProtection, actor, 2);
+
+               Level level = BoardManager.instance.level;
+               level.CheckSurroundings(actor.x, actor.y, false,
+                   (int x, int y) =>
+                   {
+                       if (level.mobs[x, y] != null && actor.GetFactionRelation(level.mobs[x, y].faction))
+                       {
+                           Mob mob = level.mobs[x, y];
+
+                           mob.AddEffect(EffectTypeEnum.effectMinorProtection, actor, 2);
+                       }
+                   });
+           });
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,

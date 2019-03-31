@@ -66,7 +66,8 @@ public class BottomPanelScript : MonoBehaviour {
                     }
                     if (!firstEffect) effects += ", ";
                     if (firstEffect) firstEffect = false;
-                    effects += String.Format("<color=#{2}>{0} [{1}]</color>", EffectTypes.effectTypes[eff.idType].name, eff.cd, 
+                    effects += String.Format("<color=#{2}>{0}{1}</color>", EffectTypes.effectTypes[eff.idType].name,
+                        (eff.cd == Effect.CD_UNLIMITED) ? "" : String.Format(" [{0}]", eff.cd), 
                         ColorUtility.ToHtmlStringRGBA(EffectTypes.effectTypes[eff.idType].color));
                 }
                 if (hasAnyEffects)

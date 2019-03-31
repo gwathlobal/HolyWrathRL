@@ -82,7 +82,7 @@ public class AbilityForceShot : Ability
             (Mob attacker, Mob defender) =>
             {
                 int dx, dy;
-                double a = Math.Atan2(actor.y - target.mob.y, actor.x - target.mob.x) * (180 / Math.PI);
+                double a = Math.Atan2(attacker.y - defender.y, attacker.x - defender.x) * (180 / Math.PI);
                 if (a > 22.5 && a <= 67.5)
                 {
                     dx = -1; dy = -1;
@@ -122,7 +122,7 @@ public class AbilityForceShot : Ability
                 if (level.mobs[dx, dy] == null)
                 {
                     defender.SetPosition(dx, dy);
-                    defender.mo.Move(target.mob.x, target.mob.y);
+                    defender.mo.Move(defender.x, defender.y);
                 }
             });
     }

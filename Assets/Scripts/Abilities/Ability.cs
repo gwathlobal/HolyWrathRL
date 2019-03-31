@@ -45,7 +45,7 @@ public enum AbilityTypeEnum
     abilJudgement, abilAmbush, abilSweepAttack, abilInvisibility, abilBlindness, abilBurdenOfSins, abilSyphonLight,
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
-    abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual,
+    abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual, abilSpearOfLight,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed
 }
 
@@ -366,6 +366,8 @@ public class AbilityTypes
         Add(new AbilityHolyRune());
 
         Add(new AbilityPurgeRitual());
+
+        Add(new AbilitySpearOfLight());
     }
 
     private static void Add(Ability ability)
