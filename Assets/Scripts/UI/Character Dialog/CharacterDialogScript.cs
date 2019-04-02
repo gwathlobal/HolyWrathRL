@@ -21,10 +21,15 @@ public class CharacterDialogScript : MonoBehaviour {
     public Text blockAbilShortcut;
     public Text rangedAbilShortcut;
 
+    public Image PassiveScrollPanel;
+    public GameObject passivePanelPrefab;
+    private List<GameObject> passivePanels;
+
     void Start()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         gameObject.SetActive(false);
+        passivePanels = new List<GameObject>();
     }
 
     public void InitializeUI(PlayerMob _player)
@@ -82,18 +87,6 @@ public class CharacterDialogScript : MonoBehaviour {
             rangedAbilPanel.abilType = AbilityTypeEnum.abilNone;
         }
 
-        if (player.sprintAbil != AbilityTypeEnum.abilNone)
-        {
-            sprintAbilPanel.abilType = player.sprintAbil;
-            sprintAbilPanel.ActivateText(true);
-            sprintAbilPanel.InitializeUI(AbilityTypes.abilTypes[player.sprintAbil].stdName);
-        }
-        else
-        {
-            sprintAbilPanel.ActivateText(false);
-            sprintAbilPanel.abilType = AbilityTypeEnum.abilNone;
-        }
-
         if (player.dodgeAbil != AbilityTypeEnum.abilNone)
         {
             dodgeAbilPanel.abilType = player.dodgeAbil;
@@ -116,6 +109,31 @@ public class CharacterDialogScript : MonoBehaviour {
         {
             blockAbilPanel.ActivateText(false);
             blockAbilPanel.abilType = AbilityTypeEnum.abilNone;
+        }
+
+        foreach (GameObject go in passivePanels)
+            Destroy(go);
+        passivePanels.Clear();
+
+        i = 0;
+        foreach (AbilityTypeEnum abilType in player.abilities.Keys)
+        {
+            if (AbilityTypes.abilTypes[abilType].passive && AbilityTypes.abilTypes[abilType].slot == AbilitySlotCategoty.abilNone)
+            {
+                GameObject ep = Instantiate(passivePanelPrefab);
+                ep.transform.SetParent(PassiveScrollPanel.transform, false);
+                ep.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0 + i * -30);
+
+                PassiveScrollPanel.rectTransform.sizeDelta = new Vector2(290, i * 30);
+
+                ep.GetComponent<CharAbilPanel>().InitializeUI(AbilityTypes.abilTypes[abilType].stdName);
+                ep.GetComponent<CharAbilPanel>().ActivateText(true);
+                ep.GetComponent<CharAbilPanel>().CharacterDialog = this;
+                ep.GetComponent<CharAbilPanel>().abilType = abilType;
+
+                passivePanels.Add(ep);
+                i++;
+            }
         }
     }
 

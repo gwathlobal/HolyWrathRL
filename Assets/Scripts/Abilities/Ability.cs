@@ -24,7 +24,7 @@ public enum AbilityPlayerCategory
 
 public enum AbilitySlotCategoty
 {
-    abilNormal, abilSprint, abilDodge, abilBlock, abilMelee, abilRanged, abilNone
+    abilNormal, abilDodge, abilBlock, abilMelee, abilRanged, abilNone
 }
 
 public enum AbilityCostType

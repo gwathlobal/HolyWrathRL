@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public enum AbilityAddedStatus
 {
-    selected, available, unavailable
+    selected, available, added, unavailable
 }
 
 public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
@@ -19,50 +19,43 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private Vector3 startPosition;
     private Transform startParent;
-    public  bool added;
     public AbilityAddedStatus status;
 
-    public void InitializeUI(AbilityDialogScript _abilityDialog, string name, AbilityTypeEnum _abilType, bool _added, AbilityAddedStatus _status)
+    public void InitializeUI(AbilityDialogScript _abilityDialog, string name, AbilityTypeEnum _abilType, AbilityAddedStatus _status)
     {
         AbilityDialog = _abilityDialog;
         abilName.text = name;
         abilType = _abilType;
         status = _status;
-        added = _added;
         switch (status)
         {
             case AbilityAddedStatus.selected:
-                button.gameObject.SetActive(false);
-                added = true;
+                button.gameObject.SetActive(true);
+                abilName.color = new Color32(255, 255, 255, 255);
+                buttonTxt.text = "-";
                 break;
-            case AbilityAddedStatus.unavailable:
-                added = false;
+            case AbilityAddedStatus.available:
+                button.gameObject.SetActive(true);
+                abilName.color = new Color32(150, 150, 150, 255);
+                buttonTxt.text = "+";
+                break;
+            case AbilityAddedStatus.added:
                 button.gameObject.SetActive(false);
+                abilName.color = new Color32(255, 255, 255, 255);
                 break;
             default:
-                button.gameObject.SetActive(true);
+                button.gameObject.SetActive(false);
+                abilName.color = new Color32(150, 150, 150, 255);
                 break;
         }
 
-        if (AbilityDialog.curUnspentTP == 0 && added == false && status == AbilityAddedStatus.available) button.gameObject.SetActive(false);
-
-        if (added)
-        {
-            buttonTxt.text = "-";
-            abilName.color = new Color32(255, 255, 255, 255);
-        }
-        else
-        {
-            buttonTxt.text = "+";
-            abilName.color = new Color32(150, 150, 150, 255);
-        }
+        if (AbilityDialog.curUnspentTP == 0 && status == AbilityAddedStatus.available) button.gameObject.SetActive(false);
         
-
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (status == AbilityAddedStatus.unavailable || (status == AbilityAddedStatus.available && added == false) || 
+        if (status == AbilityAddedStatus.unavailable || status == AbilityAddedStatus.available || 
             AbilityTypes.abilTypes[abilType].slot == AbilitySlotCategoty.abilNone)
         {
             eventData.pointerDrag = null;
@@ -81,8 +74,6 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             if (AbilityTypes.abilTypes[abilType].slot == curAbilPanel.abilSlot)
                 curAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         }
-        if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.sprintAbilPanel.abilSlot)
-            AbilityDialog.sprintAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.dodgeAbilPanel.abilSlot)
             AbilityDialog.dodgeAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.blockAbilPanel.abilSlot)
@@ -109,7 +100,6 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         {
             curAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         }
-        AbilityDialog.sprintAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.dodgeAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.blockAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.meleeAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
@@ -131,33 +121,30 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void ClickSelectAbility()
     {
-        added = !added;
-        if (added)
+        if (status == AbilityAddedStatus.available)
         {
+            status = AbilityAddedStatus.selected;
             AbilityDialog.addedAbils.Add(abilType);
             AbilityDialog.curUnspentTP--;
-            buttonTxt.text = "-";
-            abilName.color = new Color32(255, 255, 255, 255);
             AbilityDialog.SetUnspentTPTxt();
+
             foreach (GameObject abilPanel in AbilityDialog.availAbilPanels)
             {
                 AbilityAddedStatus status = abilPanel.GetComponent<AvailAbilPanel>().status;
-                bool added = abilPanel.GetComponent<AvailAbilPanel>().added;
                 AbilityTypeEnum abilT = abilPanel.GetComponent<AvailAbilPanel>().abilType;
-                if (AbilityTypes.abilTypes[abilT].CheckRequirements(AbilityDialog.player, AbilityDialog.addedAbils))
+                if (AbilityTypes.abilTypes[abilT].CheckRequirements(AbilityDialog.player, AbilityDialog.addedAbils) && status == AbilityAddedStatus.unavailable)
                 {
                     status = AbilityAddedStatus.available;
                 }
-                
-                abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(AbilityDialog, AbilityTypes.abilTypes[abilT].stdName, AbilityTypes.abilTypes[abilT].id, added, status);
+
+                abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(AbilityDialog, AbilityTypes.abilTypes[abilT].stdName, AbilityTypes.abilTypes[abilT].id, status);
             }
-            
         }
-        else
+        else if (status == AbilityAddedStatus.selected)
         {
+            status = AbilityAddedStatus.available;
             AbilityDialog.addedAbils.Remove(abilType);
             AbilityDialog.curUnspentTP++;
-            buttonTxt.text = "+";
             AbilityDialog.SetUnspentTPTxt();
             abilName.color = new Color32(150, 150, 150, 255);
 
@@ -168,12 +155,10 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 foreach (GameObject abilPanel in AbilityDialog.availAbilPanels)
                 {
                     AbilityAddedStatus status = abilPanel.GetComponent<AvailAbilPanel>().status;
-                    bool added = abilPanel.GetComponent<AvailAbilPanel>().added;
                     AbilityTypeEnum abilT = abilPanel.GetComponent<AvailAbilPanel>().abilType;
                     if (status != AbilityAddedStatus.unavailable && !AbilityTypes.abilTypes[abilT].CheckRequirements(AbilityDialog.player, AbilityDialog.addedAbils))
                     {
                         status = AbilityAddedStatus.unavailable;
-                        added = false;
                         wasRemoved = true;
 
                         if (AbilityDialog.addedAbils.Contains(abilT))
@@ -185,7 +170,7 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                         }
                     }
 
-                    abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(AbilityDialog, AbilityTypes.abilTypes[abilT].stdName, AbilityTypes.abilTypes[abilT].id, added, status);
+                    abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(AbilityDialog, AbilityTypes.abilTypes[abilT].stdName, AbilityTypes.abilTypes[abilT].id, status);
                 }
             } while (wasRemoved);
 
@@ -215,12 +200,6 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         {
             AbilityDialog.rangedAbilPanel.abilType = AbilityTypeEnum.abilNone;
             AbilityDialog.rangedAbilPanel.ActivateText(false);
-        }
-
-        if (AbilityDialog.player.sprintAbil == abilT)
-        {
-            AbilityDialog.sprintAbilPanel.abilType = AbilityTypeEnum.abilNone;
-            AbilityDialog.sprintAbilPanel.ActivateText(false);
         }
 
         if (AbilityDialog.player.dodgeAbil == abilT)

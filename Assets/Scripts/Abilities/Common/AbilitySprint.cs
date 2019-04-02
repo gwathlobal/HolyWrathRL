@@ -10,8 +10,8 @@ public class AbilitySprint : Ability
         id = AbilityTypeEnum.abilSprint;
         stdName = "Sprint";
         passive = false;
-        slot = AbilitySlotCategoty.abilSprint;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotCategoty.abilNormal;
+        category = AbilityPlayerCategory.abilMobs;
     }
 
     public override string Description(Mob mob)

@@ -20,7 +20,6 @@ public class AbilityDialogScript : MonoBehaviour {
 
     public List<CurAbilPanel> curAbilsPanels;
     public List<GameObject> curAbilShortcuts;
-    public CurAbilPanel sprintAbilPanel;
     public CurAbilPanel dodgeAbilPanel;
     public CurAbilPanel blockAbilPanel;
     public CurAbilPanel meleeAbilPanel;
@@ -106,18 +105,6 @@ public class AbilityDialogScript : MonoBehaviour {
             rangedAbilPanel.abilType = AbilityTypeEnum.abilNone;
         }
 
-        if (player.sprintAbil != AbilityTypeEnum.abilNone)
-        {
-            sprintAbilPanel.abilType = player.sprintAbil;
-            sprintAbilPanel.ActivateText(true);
-            sprintAbilPanel.InitializeUI(AbilityTypes.abilTypes[player.sprintAbil].stdName);
-        }
-        else
-        {
-            sprintAbilPanel.ActivateText(false);
-            sprintAbilPanel.abilType = AbilityTypeEnum.abilNone;
-        }
-
         if (player.dodgeAbil != AbilityTypeEnum.abilNone)
         {
             dodgeAbilPanel.abilType = player.dodgeAbil;
@@ -186,22 +173,22 @@ public class AbilityDialogScript : MonoBehaviour {
                 abilPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(-1, 0 + i * -30);
 
                 AbilityAddedStatus status;
-                bool added = false;
                 if (player.abilities.ContainsKey(abil))
                 {
-                    status = AbilityAddedStatus.selected;
-                    added = true;
+                    status = AbilityAddedStatus.added;
                 }
-                else if (AbilityTypes.abilTypes[abil].CheckRequirements(player, addedAbils)) {
+                else if (addedAbils.Contains(abil))
+                {
+                    status = AbilityAddedStatus.selected;
+                }
+                else if (AbilityTypes.abilTypes[abil].CheckRequirements(player, addedAbils))
+                {
                     status = AbilityAddedStatus.available;
                 }
-                else status = AbilityAddedStatus.unavailable;
-                if (addedAbils.Contains(abil))
-                {
-                    added = true;
-                }
+                else
+                    status = AbilityAddedStatus.unavailable;
 
-                abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(this, AbilityTypes.abilTypes[abil].stdName, AbilityTypes.abilTypes[abil].id, added, status);
+                abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(this, AbilityTypes.abilTypes[abil].stdName, AbilityTypes.abilTypes[abil].id, status);
                 i++;
                 availAbilPanels.Add(abilPanel);
             }

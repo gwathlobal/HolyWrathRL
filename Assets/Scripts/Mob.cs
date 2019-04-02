@@ -76,7 +76,6 @@ public class Mob
     public List<AbilityTypeEnum> curAbils;
     public AbilityTypeEnum meleeAbil;
     public AbilityTypeEnum rangedAbil;
-    public AbilityTypeEnum sprintAbil;
     public AbilityTypeEnum dodgeAbil;
     public AbilityTypeEnum blockAbil;
 
@@ -128,13 +127,11 @@ public class Mob
 
         meleeAbil = MobTypes.mobTypes[idType].meleeAbil;
         rangedAbil = MobTypes.mobTypes[idType].rangedAbil;
-        sprintAbil = MobTypes.mobTypes[idType].sprintAbil;
         dodgeAbil = MobTypes.mobTypes[idType].dodgeAbil;
         blockAbil = MobTypes.mobTypes[idType].blockAbil;
 
         if (meleeAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(meleeAbil)) abilities.Add(meleeAbil, true);
         if (rangedAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(rangedAbil)) abilities.Add(rangedAbil, true);
-        if (sprintAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(sprintAbil)) abilities.Add(sprintAbil, true);
         if (dodgeAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(dodgeAbil)) abilities.Add(dodgeAbil, true);
         if (blockAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(blockAbil)) abilities.Add(blockAbil, true);
 

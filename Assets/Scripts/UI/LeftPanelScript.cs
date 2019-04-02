@@ -17,10 +17,6 @@ public class LeftPanelScript : MonoBehaviour {
     public AbilityPanelScript rangedAbilPanel;
     public GameObject rangedAbilShortcut;
 
-    public GameObject sprintAbilTxt;
-    public AbilityPanelScript sprintAbilPanel;
-    public GameObject sprintAbilShortcut;
-
     public GameObject dodgeAbilTxt;
     public AbilityPanelScript dodgeAbilPanel;
     public GameObject dodgeAbilShortcut;
@@ -82,22 +78,6 @@ public class LeftPanelScript : MonoBehaviour {
             rangedAbilPanel.gameObject.SetActive(false);
             rangedAbilShortcut.SetActive(false);
             rangedAbilPanel.abilType = AbilityTypeEnum.abilNone;
-        }
-
-        if (player.sprintAbil != AbilityTypeEnum.abilNone)
-        {
-            sprintAbilPanel.gameObject.SetActive(true);
-            sprintAbilShortcut.SetActive(true);
-            sprintAbilPanel.abilType = player.sprintAbil;
-
-            text = sprintAbilTxt.GetComponent<Text>();
-            text.text = AbilityTypes.abilTypes[player.sprintAbil].Name(player);
-        }
-        else
-        {
-            sprintAbilPanel.gameObject.SetActive(false);
-            sprintAbilShortcut.SetActive(false);
-            sprintAbilPanel.abilType = AbilityTypeEnum.abilNone;
         }
 
         if (player.dodgeAbil != AbilityTypeEnum.abilNone)

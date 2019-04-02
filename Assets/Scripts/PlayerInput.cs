@@ -107,10 +107,6 @@ public class PlayerInput : MonoBehaviour {
 
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.curAbils[9]));
         }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.sprintAbil));
-        }
         else if (Input.GetKeyDown(KeyCode.D))
         {
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.dodgeAbil));

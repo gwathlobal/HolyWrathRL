@@ -52,7 +52,6 @@ public class MobType {
 
     public AbilityTypeEnum meleeAbil;
     public AbilityTypeEnum rangedAbil;
-    public AbilityTypeEnum sprintAbil;
     public AbilityTypeEnum blockAbil;
     public AbilityTypeEnum dodgeAbil;
 
@@ -126,17 +125,17 @@ public class MobTypes
         armorPR.Add(DmgTypeEnum.Fire, 80);
         armorPR.Add(DmgTypeEnum.Holy, 100);
         Add(MobTypeEnum.mobAngel, "Angel", mobAngel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
-            AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilSprint, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
+            AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance});
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Fire, 80);
         armorPR.Add(DmgTypeEnum.Holy, 100);
         Add(MobTypeEnum.mobArchangel, "Archangel", mobArchangel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
-            AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura });
@@ -148,7 +147,7 @@ public class MobTypes
         armorPR.Add(DmgTypeEnum.Fire, 100);
         armorPR.Add(DmgTypeEnum.Holy, 100);
         Add(MobTypeEnum.mobSpearOfLight, "Spear of Light", mobSpearOfLight, 50, 100, 0, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
-            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { },
             new List<AbilityTypeEnum>() { });
@@ -160,7 +159,7 @@ public class MobTypes
         armorPR.Add(DmgTypeEnum.Mind, 100);
         armorPR.Add(DmgTypeEnum.Physical, 100);
         Add(MobTypeEnum.mobSplitSoul, "Split Soul", mobSplitSoul, 10, 0, 0, 0, MobType.NORMAL_AP, FactionEnum.factionAngels,
-            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { },
             new List<AbilityTypeEnum>() { });
@@ -169,7 +168,7 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobHomunculus, "Homunculus", mobHomunculus, 30, 30, 1, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
-            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
             new List<AbilityTypeEnum>());
@@ -178,7 +177,7 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobFiend, "Fiend", mobFiend, 30, 60, 1, 7, MobType.NORMAL_AP, FactionEnum.factionBeasts,
-            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilJump, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilJump, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCharge });
@@ -186,7 +185,7 @@ public class MobTypes
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         Add(MobTypeEnum.mobCrimsonImp, "Crimson imp", mobCrimsonImp, 40, 30, 1, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
-            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>());
@@ -195,7 +194,7 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobScavenger, "Scavenger", mobScavenger, 40, 60, 5, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
-            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility, AiPackageEnum.aiFindCorpse },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize });
@@ -204,7 +203,7 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Physical, 20);
         Add(MobTypeEnum.mobCrimsonDemon, "Crimson demon", mobCrimsonDemon, 50, 60, 1, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
-            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate });
@@ -213,7 +212,7 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Physical, 20);
         Add(MobTypeEnum.mobArchdemon, "Archdemon", mobArchdemon, 70, 60, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
-            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilNamed });
@@ -221,7 +220,7 @@ public class MobTypes
 
     private static void Add(MobTypeEnum _id, string _name, GameObject _prefab, int _HP, int _FP, int _regenHP, int _regenFP, float _moveSpeed, 
         FactionEnum _faction,
-        AbilityTypeEnum _meleeAbil, AbilityTypeEnum _rangedAbil, AbilityTypeEnum _sprintAbil, AbilityTypeEnum _dodgeAbil, AbilityTypeEnum _blockAbil,
+        AbilityTypeEnum _meleeAbil, AbilityTypeEnum _rangedAbil, AbilityTypeEnum _dodgeAbil, AbilityTypeEnum _blockAbil,
         Dictionary<DmgTypeEnum, int> armorPR, Dictionary<DmgTypeEnum, int> armorDR,
         List<AiPackageEnum> _aiPackages, List<AbilityTypeEnum> _abilities)
     {
@@ -230,7 +229,6 @@ public class MobTypes
             id = _id,
             meleeAbil = _meleeAbil,
             rangedAbil = _rangedAbil,
-            sprintAbil = _sprintAbil,
             blockAbil = _blockAbil,
             dodgeAbil = _dodgeAbil,
             aiPackages = _aiPackages,
@@ -241,7 +239,6 @@ public class MobTypes
 
         if (!mt.abilities.Contains(mt.meleeAbil)) mt.abilities.Add(mt.meleeAbil);
         if (!mt.abilities.Contains(mt.rangedAbil)) mt.abilities.Add(mt.rangedAbil);
-        if (!mt.abilities.Contains(mt.sprintAbil)) mt.abilities.Add(mt.sprintAbil);
         if (!mt.abilities.Contains(mt.blockAbil)) mt.abilities.Add(mt.blockAbil);
         if (!mt.abilities.Contains(mt.dodgeAbil)) mt.abilities.Add(mt.dodgeAbil);
 

@@ -36,13 +36,14 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
 
         if (objectDragged.GetComponent<AvailAbilPanel>())
         {
-            objectDragged.GetComponent<AvailAbilPanel>().OnEndDrag(eventData);
+
             abilityType = objectDragged.GetComponent<AvailAbilPanel>().abilType;
+            objectDragged.GetComponent<AvailAbilPanel>().OnEndDrag(eventData);
         }
         else if (objectDragged.GetComponent<CurAbilPanel>())
         {
-            objectDragged.GetComponent<CurAbilPanel>().OnEndDrag(eventData);
             abilityType = objectDragged.GetComponent<CurAbilPanel>().abilType;
+            objectDragged.GetComponent<CurAbilPanel>().OnEndDrag(eventData);
         }
         else return;
 
@@ -50,8 +51,6 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
 
         if (abilSlot == AbilitySlotCategoty.abilNormal)
             AbilityDialog.player.curAbils[curAbil] = abilityType;
-        else if (abilSlot == AbilitySlotCategoty.abilSprint)
-            AbilityDialog.player.sprintAbil = abilityType;
         else if (abilSlot == AbilitySlotCategoty.abilDodge)
             AbilityDialog.player.dodgeAbil = abilityType;
         else if (abilSlot == AbilitySlotCategoty.abilBlock)
@@ -81,8 +80,6 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
             if (AbilityTypes.abilTypes[abilType].slot == AbilityTypes.abilTypes[curAbilPanel.abilType].slot)
                 curAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         }
-        if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.sprintAbilPanel.abilSlot)
-            AbilityDialog.sprintAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.dodgeAbilPanel.abilSlot)
             AbilityDialog.dodgeAbilPanel.GetComponent<Image>().color = new Color32(0, 255, 0, 255);
         if (AbilityTypes.abilTypes[abilType].slot == AbilityDialog.blockAbilPanel.abilSlot)
@@ -111,8 +108,6 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
 
         if (abilSlot == AbilitySlotCategoty.abilNormal)
             AbilityDialog.player.curAbils[curAbil] = AbilityTypeEnum.abilNone;
-        else if (abilSlot == AbilitySlotCategoty.abilSprint)
-            AbilityDialog.player.sprintAbil = AbilityTypeEnum.abilNone;
         else if (abilSlot == AbilitySlotCategoty.abilDodge)
             AbilityDialog.player.dodgeAbil = AbilityTypeEnum.abilNone;
         else if (abilSlot == AbilitySlotCategoty.abilBlock)
@@ -128,7 +123,6 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
         {
             curAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         }
-        AbilityDialog.sprintAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.dodgeAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.blockAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
         AbilityDialog.meleeAbilPanel.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
