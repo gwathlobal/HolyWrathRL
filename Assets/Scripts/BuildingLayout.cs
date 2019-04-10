@@ -4,7 +4,12 @@ using UnityEngine;
 
 public enum BuildingLayoutEnum
 {
-    buildEmpty, buildYShape, buildCshape, buildRandom
+    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool
+}
+
+public enum BuildingLayoutType
+{
+    buildFree, buildEmpty, buildShape, buildTarPool
 }
 
 public struct BuildingLayoutResult
@@ -17,16 +22,14 @@ public abstract class BuildingLayout {
     public static int GRID_SIZE = 5;
 
     public BuildingLayoutEnum id;
+    public BuildingLayoutType buildType;
     public int gw;
     public int gh;
 
-    public BuildingLayout(int _gw, int _gh)
-    {
-        gw = _gw;
-        gh = _gh;
-    }
+    public int lw;
+    public int lh;
 
-    public abstract BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int gx, int gy);
+    public abstract BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y);
 
     public void TranslateCharsToLevel(Level level, LevelLayout levelLayout, string[] l, int sx, int sy)
     {
@@ -43,6 +46,9 @@ public abstract class BuildingLayout {
                     case '#':
                         level.terrain[sx + x, sy + y] = levelLayout.terrainWall;
                         break;
+                    case '~':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainWaterTar;
+                        break;
                 }
             }
         }
@@ -57,10 +63,11 @@ public static class BuildingLayouts
     {
         buildLayouts = new Dictionary<BuildingLayoutEnum, BuildingLayout>();
 
-        Add(new BuildingLayoutEmpty(1, 1));
-        Add(new BuildingLayoutYShape(1, 1));
-        Add(new BuildingLayoutСShape(1, 1));
-        Add(new BuildingLayoutRandom(1, 1));
+        Add(new BuildingLayoutEmpty());
+        Add(new BuildingLayoutYShape());
+        Add(new BuildingLayoutСShape());
+        Add(new BuildingLayoutRandom());
+        Add(new BuildingLayoutTarPool());
     }
 
     static void Add(BuildingLayout bl)
@@ -71,9 +78,14 @@ public static class BuildingLayouts
 
 public class BuildingLayoutEmpty : BuildingLayout
 {
-    public BuildingLayoutEmpty(int _gw, int _gh) : base(_gw, _gh)
+    public BuildingLayoutEmpty()
     {
+        gw = 1;
+        gh = 1;
+        lw = 5;
+        lh = 5;
         id = BuildingLayoutEnum.buildEmpty;
+        buildType = BuildingLayoutType.buildEmpty;
     }
 
     public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int gx, int gy)
@@ -84,12 +96,17 @@ public class BuildingLayoutEmpty : BuildingLayout
 
 public class BuildingLayoutYShape : BuildingLayout
 {
-    public BuildingLayoutYShape(int _gw, int _gh) : base(_gw, _gh)
+    public BuildingLayoutYShape()
     {
+        gw = 1;
+        gh = 1;
+        lw = 5;
+        lh = 5;
         id = BuildingLayoutEnum.buildYShape;
+        buildType = BuildingLayoutType.buildShape;
     }
 
-    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int gx, int gy)
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
     {
         string[] l1 = { ".....",
                         ".#.#.",
@@ -115,7 +132,7 @@ public class BuildingLayoutYShape : BuildingLayout
                 break;
         }
 
-        TranslateCharsToLevel(level, levelLayout, l, gx * GRID_SIZE, gy * GRID_SIZE);
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
 
         return new BuildingLayoutResult();
     }
@@ -123,12 +140,17 @@ public class BuildingLayoutYShape : BuildingLayout
 
 public class BuildingLayoutСShape : BuildingLayout
 {
-    public BuildingLayoutСShape(int _gw, int _gh) : base(_gw, _gh)
+    public BuildingLayoutСShape()
     {
+        gw = 1;
+        gh = 1;
+        lw = 5;
+        lh = 5;
         id = BuildingLayoutEnum.buildCshape;
+        buildType = BuildingLayoutType.buildShape;
     }
 
-    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int gx, int gy)
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
     {
         string[] l1 = { ".....",
                         "..##.",
@@ -172,7 +194,7 @@ public class BuildingLayoutСShape : BuildingLayout
                 break;
         }
 
-        TranslateCharsToLevel(level, levelLayout, l, gx * GRID_SIZE, gy * GRID_SIZE);
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
 
         return new BuildingLayoutResult();
     }
@@ -180,20 +202,76 @@ public class BuildingLayoutСShape : BuildingLayout
 
 public class BuildingLayoutRandom : BuildingLayout
 {
-    public BuildingLayoutRandom(int _gw, int _gh) : base(_gw, _gh)
+    public BuildingLayoutRandom()
     {
+        gw = 1;
+        gh = 1;
+        lw = 5;
+        lh = 5;
         id = BuildingLayoutEnum.buildRandom;
+        buildType = BuildingLayoutType.buildShape;
     }
 
-    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int gx, int gy)
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
     {
         for (int i = 0; i < 3; i++) 
         {
             int rx = Random.Range(0, 5);
             int ry = Random.Range(0, 5);
 
-            level.terrain[gx * GRID_SIZE + rx, gy * GRID_SIZE + ry] = levelLayout.terrainWall;
+            level.terrain[x + rx, y + ry] = levelLayout.terrainWall;
         }
+
+        return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutTarPool : BuildingLayout
+{
+    public BuildingLayoutTarPool()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 8;
+        lh = 8;
+        id = BuildingLayoutEnum.buildTarPool;
+        buildType = BuildingLayoutType.buildTarPool;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l1 = { "........",
+                        "..~~~~..",
+                        ".~~~~~~.",
+                        "..~~~~~.",
+                        ".~~~~~..",
+                        "..~~~~..",
+                        ".~~~~...",
+                        "........" };
+                        
+
+        string[] l2 = { "........",
+                        "..~~~~..",
+                        ".~~~~~~.",
+                        ".~~~~~~.",
+                        ".~~~~~..",
+                        "..~~~~~.",
+                        "..~~~~~.",
+                        "........" };
+
+        string[] l;
+        int r = Random.Range(0, 2);
+        switch (r)
+        {
+            case 1:
+                l = l2;
+                break;
+            default:
+                l = l1;
+                break;
+        }
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
 
         return new BuildingLayoutResult();
     }

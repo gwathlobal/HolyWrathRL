@@ -17,7 +17,8 @@ public class TerrainType {
 
 public enum TerrainTypeEnum
 {
-    terrainFogOfWar, terrainFloor, terrainWall, terrainWindow, terrainStoneFloor, terrainStoneFloorBright, terrainStoneFloorBorder, terrainStoneWall
+    terrainFogOfWar, terrainFloor, terrainWall, terrainWindow, terrainStoneFloor, terrainStoneFloorBright, terrainStoneFloorBorder, terrainStoneWall,
+    terrainWaterTar
 };
 
 public class TerrainTypes
@@ -26,6 +27,7 @@ public class TerrainTypes
     public static GameObject terrainFloor;
     public static GameObject terrainWall;
     public static GameObject terrainWindow;
+    public static GameObject terrainWaterTar;
     public static Dictionary<TerrainTypeEnum, TerrainType> terrainTypes;
 
     public static void InitializeTerrainTypes()
@@ -34,6 +36,7 @@ public class TerrainTypes
         terrainFloor = Resources.Load("Prefabs/Terrains/Floor") as GameObject;
         terrainWall = Resources.Load("Prefabs/Terrains/Wall") as GameObject;
         terrainWindow = Resources.Load("Prefabs/Terrains/Window") as GameObject;
+        terrainWaterTar = Resources.Load("Prefabs/Terrains/Tar") as GameObject;
 
         terrainTypes = new Dictionary<TerrainTypeEnum, TerrainType>();
 
@@ -45,6 +48,8 @@ public class TerrainTypes
         Add(TerrainTypeEnum.terrainStoneFloorBright, "Stone floor", terrainFloor, false, false, false, new Color32(121, 88, 88, 255), 0);
         Add(TerrainTypeEnum.terrainStoneFloorBorder, "Stone floor", terrainFloor, true, true, true, new Color32(106, 53, 53, 255), 0);
         Add(TerrainTypeEnum.terrainStoneWall, "Stone wall", terrainWall, true, true, true, new Color32(106, 53, 53, 255), 0);
+        Add(TerrainTypeEnum.terrainWaterTar, "Tar", terrainWaterTar, false, false, false, new Color32(132, 132, 132, 255), 10);
+
 
     }
 

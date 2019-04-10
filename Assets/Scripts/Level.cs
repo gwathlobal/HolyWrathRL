@@ -296,14 +296,7 @@ public class Level {
             }
         }
 
-        for (int gy = 1; gy < (maxY / BuildingLayout.GRID_SIZE) - 1; gy++)
-        {
-            for (int gx = 1; gx < (maxX / BuildingLayout.GRID_SIZE) - 1; gx++)
-            {
-                BuildingLayoutEnum buildLayout = (BuildingLayoutEnum)Random.Range(0, levelLayout.buildingLayouts.Count);
-                BuildingLayouts.buildLayouts[buildLayout].PlaceBuilding(this, levelLayout, gx, gy);
-            }
-        }
+        LevelGenerator.GenerateLevel(this, levelLayout);
 
         monsterLayout.PlaceMobs(this);
     }
