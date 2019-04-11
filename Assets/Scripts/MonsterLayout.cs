@@ -12,7 +12,7 @@ public abstract class MonsterLayout {
     public MonsterLayoutEnum layoutId;
     public string name;
 
-    public abstract void PlaceMobs(Level level);
+    public abstract void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult);
 
     protected void PlacePlayer(Level level)
     {
@@ -57,6 +57,15 @@ public abstract class MonsterLayout {
 
         level.AddMobToLevel(player, player.x, player.y);
     }
+
+    protected void PlaceLevelLayoutMobs(Level level, LevelGeneratorResult levelGeneratorResult)
+    {
+        foreach (BuildingLayoutResult br in levelGeneratorResult.buildingLayoutResults)
+        {
+            if (br.buildingPlaceMobs != null)
+                br.buildingPlaceMobs(level, br.sx, br.sy);
+        }
+    }
 }
 
 public static class MonsterLayouts
@@ -87,7 +96,7 @@ public class MonsterLayoutBeastsOnly : MonsterLayout
         name = "Mindless beasts";
     }
 
-    public override void PlaceMobs(Level level)
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
     {
         int numHomunculus = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numFiend = 4 + Random.Range(0, GameManager.instance.levelNum);
@@ -116,6 +125,8 @@ public class MonsterLayoutBeastsOnly : MonsterLayout
                 }
             }
         }
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult);
     }
 }
 
@@ -126,7 +137,7 @@ public class MonsterLayoutDemonsOnly : MonsterLayout
         name = "Demons";
     }
 
-    public override void PlaceMobs(Level level)
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
     {
         int numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
@@ -152,6 +163,8 @@ public class MonsterLayoutDemonsOnly : MonsterLayout
                 }
             }
         }
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult);
     }
 }
 
@@ -162,7 +175,7 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
         name = "Demons & beasts";
     }
 
-    public override void PlaceMobs(Level level)
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
     {
         int numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
@@ -194,6 +207,8 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
                 }
             }
         }
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult);
     }
 }
 
@@ -204,14 +219,14 @@ public class MonsterLayoutTest : MonsterLayout
         name = "Test";
     }
 
-    public override void PlaceMobs(Level level)
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
     {
 
         PlacePlayer(level);
 
         Mob mob;
 
-        mob = new Mob(MobTypeEnum.mobCrimsonImp, 14, 1);
+        mob = new Mob(MobTypeEnum.mobTarDemon, 14, 1);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);

@@ -35,7 +35,7 @@ public enum AbilityCostType
 public enum AbilityTypeEnum
 {
     abilNone,
-    abilVorpaniteClaws, abilHolySword, abilClaws,
+    abilVorpaniteClaws, abilHolySword, abilClaws, abilTarTentacles,
     abilShootSpikes, abilLightBolt,
     abilSprint,
     abilBlock,
@@ -220,6 +220,8 @@ public class AbilityTypes
         Add(new AbilityHolySword());
 
         Add(new AbilityVorpaniteClaws());
+
+        Add(new AbilityTarTentacles());
 
         //============================
         //

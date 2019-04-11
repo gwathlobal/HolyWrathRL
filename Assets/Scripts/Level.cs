@@ -296,9 +296,9 @@ public class Level {
             }
         }
 
-        LevelGenerator.GenerateLevel(this, levelLayout);
+        LevelGeneratorResult levelGeneratorResult = LevelGenerator.GenerateLevel(this, levelLayout);
 
-        monsterLayout.PlaceMobs(this);
+        monsterLayout.PlaceMobs(this, levelGeneratorResult);
     }
 
     public bool FindFreeSpotInside(out Vector2Int loc)

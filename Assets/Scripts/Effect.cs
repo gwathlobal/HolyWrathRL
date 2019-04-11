@@ -12,7 +12,7 @@ public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
     effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
-    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime, effectAuraMinorProtection, effectMinorProtection
+    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime, effectAuraMinorProtection, effectMinorProtection, effectCoveredInTar
 }
 
 public class EffectType {
@@ -381,6 +381,19 @@ public class EffectTypes
                        }
                    });
            });
+
+        Add(EffectTypeEnum.effectCoveredInTar, "Covered in Tar", new Color32(132, 132, 132, 255),
+            null,
+            (Effect effect, Mob actor) =>
+            {
+                actor.CalculateArmor();
+            },
+            (Effect effect, Mob actor) =>
+            {
+                actor.effects.Remove(effect.idType);
+                actor.CalculateArmor();
+            },
+            null, 0, false, true);
     }
 
     private static void Add(EffectTypeEnum _id, string _name, Color32 _color,

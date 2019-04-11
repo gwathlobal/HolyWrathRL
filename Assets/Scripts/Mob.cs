@@ -373,6 +373,12 @@ public class Mob
         x = nx;
         y = ny;
         level.mobs[x, y] = this;
+
+        // check if there is an onstep function
+        if (TerrainTypes.terrainTypes[level.terrain[x,y]].TerrainOnStep != null)
+        {
+            TerrainTypes.terrainTypes[level.terrain[x, y]].TerrainOnStep(level, this);
+        }
         return true;
     }
 
@@ -730,7 +736,7 @@ public class Mob
 
     public void CalculateMoveSpeed()
     {
-        float ms = MobTypes.mobTypes[idType].moveSpeed;
+        float init_ms = MobTypes.mobTypes[idType].moveSpeed;
         float bonus = 1;
 
         foreach (EffectTypeEnum effectType in effects.Keys)
@@ -740,8 +746,8 @@ public class Mob
                 bonus += EffectTypes.effectTypes[effectType].OnEffectMoveSpeed(effects[effectType]);
             } 
         }
-        ms = ms * bonus;
-        curMoveSpeed = (MobType.NORMAL_AP / ms) * MobType.NORMAL_AP;
+        float ms = init_ms * bonus;
+        curMoveSpeed = (init_ms / ms) * init_ms;
 
     }
 
@@ -822,6 +828,12 @@ public class Mob
             {
                 armorDR[dmgType] += 2;
             }
+        }
+
+        // Covered in Tar
+        if (GetEffect(EffectTypeEnum.effectCoveredInTar) != null)
+        {
+            armorPR[DmgTypeEnum.Fire] -= 50;
         }
     }
 

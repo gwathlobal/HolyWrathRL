@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct LevelGeneratorResult
+{
+    public List<BuildingLayoutResult> buildingLayoutResults;
+}
+
 public static class LevelGenerator {
 
     private struct BuildingPlacement
@@ -11,8 +16,13 @@ public static class LevelGenerator {
         public int y;
     }
 
-	public static void GenerateLevel(Level level, LevelLayout levelLayout)
+	public static LevelGeneratorResult GenerateLevel(Level level, LevelLayout levelLayout)
     {
+        LevelGeneratorResult generatorResult = new LevelGeneratorResult()
+        {
+            buildingLayoutResults = new List<BuildingLayoutResult>()
+        };
+
         List<BuildingPlacement> buildingsOnLevel = new List<BuildingPlacement>();
 
         int maxXres = (int)(level.maxX / BuildingLayout.GRID_SIZE);
@@ -116,7 +126,15 @@ public static class LevelGenerator {
             int fx = bp.x * BuildingLayout.GRID_SIZE + UnityEngine.Random.Range(0, gw * BuildingLayout.GRID_SIZE - lw + 1);
             int fy = bp.y * BuildingLayout.GRID_SIZE + UnityEngine.Random.Range(0, gh * BuildingLayout.GRID_SIZE - lh + 1);
 
-            bl.PlaceBuilding(level, levelLayout, fx, fy);
+            BuildingLayoutResult buildResult = bl.PlaceBuilding(level, levelLayout, fx, fy);
+            buildResult.sx = fx;
+            buildResult.sy = fy;
+
+            generatorResult.buildingLayoutResults.Add(buildResult);
+
         }
+
+        return generatorResult;
     }
+
 }

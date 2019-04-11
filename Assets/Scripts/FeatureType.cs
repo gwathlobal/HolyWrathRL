@@ -142,6 +142,25 @@ public class FeatureTypes
                     }
                 }
 
+                // change terrain tile
+                if (TerrainTypes.terrainTypes[level.terrain[feature.x, feature.y]].catchesFire > 0)
+                {
+                    level.terrain[feature.x, feature.y] = TerrainTypes.terrainTypes[level.terrain[feature.x, feature.y]].burnsToTerrain;
+                }
+
+                // spread to neighbouring tiles
+                level.CheckSurroundings(feature.x, feature.y, false,
+                    (int x, int y) =>
+                    {
+                        if (UnityEngine.Random.Range(0,100) <= 20 && TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire > 0)
+                        {
+                            Feature fire = new Feature(FeatureTypeEnum.featFire, x, y);
+                            fire.counter = TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire;
+                            level.terrain[x, y] = TerrainTypes.terrainTypes[level.terrain[x, y]].burnsToTerrain;
+                            BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
+                        }
+                    });
+
                 feature.counter--;
                 if (feature.counter <= 0)
                 {

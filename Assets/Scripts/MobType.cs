@@ -78,7 +78,7 @@ public class MobType {
 public enum MobTypeEnum
 {
     mobAngel, mobHomunculus, mobCrimsonImp, mobShadowImp, mobFiend, mobCrimsonDemon, mobShadowDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
-    mobSpearOfLight
+    mobSpearOfLight, mobTarDemon
 };
 
 public class MobTypes
@@ -96,6 +96,7 @@ public class MobTypes
     public static GameObject mobSplitSoul;
     public static GameObject mobArchangel;
     public static GameObject mobSpearOfLight;
+    public static GameObject mobTarDemon;
 
     public static Dictionary<MobTypeEnum, MobType> mobTypes;
 
@@ -114,6 +115,7 @@ public class MobTypes
         mobSplitSoul = Resources.Load("Prefabs/Mobs/Split Soul") as GameObject;
         mobArchangel = Resources.Load("Prefabs/Mobs/Archangel") as GameObject;
         mobSpearOfLight = Resources.Load("Prefabs/Mobs/Spear of Light") as GameObject;
+        mobTarDemon = Resources.Load("Prefabs/Mobs/Tar Demon") as GameObject;
 
         mobTypes = new Dictionary<MobTypeEnum, MobType>();
 
@@ -184,7 +186,7 @@ public class MobTypes
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
-        Add(MobTypeEnum.mobCrimsonImp, "Crimson imp", mobCrimsonImp, 40, 30, 1, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
+        Add(MobTypeEnum.mobCrimsonImp, "Crimson imp", mobCrimsonImp, 40, 30, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
@@ -193,11 +195,20 @@ public class MobTypes
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Mind, 50);
-        Add(MobTypeEnum.mobScavenger, "Scavenger", mobScavenger, 40, 60, 5, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
+        Add(MobTypeEnum.mobScavenger, "Scavenger", mobScavenger, 40, 60, 2, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility, AiPackageEnum.aiFindCorpse },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize });
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        armorPR.Add(DmgTypeEnum.Mind, 50);
+        Add(MobTypeEnum.mobTarDemon, "Tar demon", mobTarDemon, 60, 60, 1, 5, MobType.NORMAL_AP * 2, FactionEnum.factionBeasts,
+            AbilityTypeEnum.abilTarTentacles, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
+            new List<AbilityTypeEnum>() {  });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
