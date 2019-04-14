@@ -59,7 +59,7 @@ public static class LevelGenerator {
             {
                 // make a list of buildings 
                 List<BuildingLayoutEnum> availBuildings = new List<BuildingLayoutEnum>();
-                foreach (BuildingLayoutType bt in System.Enum.GetValues(typeof(BuildingLayoutType)))
+                foreach (BuildingLayoutType bt in levelLayout.buildingLayouts)
                 {
                     foreach (BuildingLayout bl in BuildingLayouts.buildLayouts.Values)
                     {

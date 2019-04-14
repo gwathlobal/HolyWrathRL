@@ -12,13 +12,20 @@ public enum BuildingLayoutType
     buildFree, buildEmpty, buildShape, buildTarPool
 }
 
-public delegate void BuildingPlaceMobs(Level level, int sx, int sy);
+public delegate void BuildingPlaceMobs(Level level, MobTypeEnum mobType, int sx, int sy);
 
 public struct BuildingLayoutResult
 {
     public int sx;
     public int sy;
-    public BuildingPlaceMobs buildingPlaceMobs;
+
+    public struct MobPlacement
+    {
+        public BuildingPlaceMobs buildingPlaceMob;
+        public MobTypeEnum mobType;
+    }
+
+    public List<MobPlacement> mobPlacements;
 }
 
 public abstract class BuildingLayout {
@@ -277,15 +284,22 @@ public class BuildingLayoutTarPool : BuildingLayout
 
         TranslateCharsToLevel(level, levelLayout, l, x, y);
 
-        return new BuildingLayoutResult()
+        BuildingLayoutResult br = new BuildingLayoutResult()
         {
-            buildingPlaceMobs = (Level lvl, int sx, int sy) =>
+            mobPlacements = new List<BuildingLayoutResult.MobPlacement>()
+        };
+
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobTarDemon,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
             {
-                Mob tarDemon = new Mob(MobTypeEnum.mobTarDemon, sx + 5, sy + 5);
+                Mob tarDemon = new Mob(mobType, sx + 5, sy + 5);
                 tarDemon.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
                 BoardManager.instance.mobs.Add(tarDemon.id, tarDemon);
                 lvl.AddMobToLevel(tarDemon, tarDemon.x, tarDemon.y);
             }
-        };
+        });
+        return br;
     }
 }

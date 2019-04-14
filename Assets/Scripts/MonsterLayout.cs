@@ -58,12 +58,22 @@ public abstract class MonsterLayout {
         level.AddMobToLevel(player, player.x, player.y);
     }
 
-    protected void PlaceLevelLayoutMobs(Level level, LevelGeneratorResult levelGeneratorResult)
+    protected void PlaceLevelLayoutMobs(Level level, LevelGeneratorResult levelGeneratorResult, Dictionary<MobTypeEnum, int> mobsToSpawn)
     {
         foreach (BuildingLayoutResult br in levelGeneratorResult.buildingLayoutResults)
         {
-            if (br.buildingPlaceMobs != null)
-                br.buildingPlaceMobs(level, br.sx, br.sy);
+            if (br.mobPlacements != null)
+            {
+                foreach (BuildingLayoutResult.MobPlacement mobPlacement in br.mobPlacements)
+                {
+                    if (mobsToSpawn.ContainsKey(mobPlacement.mobType) && mobsToSpawn[mobPlacement.mobType] > 0)
+                    {
+                        if (mobPlacement.buildingPlaceMob != null)
+                            mobPlacement.buildingPlaceMob(level, mobPlacement.mobType, br.sx, br.sy);
+                        mobsToSpawn[mobPlacement.mobType]--;
+                    }
+                }
+            }
         }
     }
 }
@@ -101,12 +111,12 @@ public class MonsterLayoutBeastsOnly : MonsterLayout
         int numHomunculus = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numFiend = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numScavenger = 4 + Random.Range(0, GameManager.instance.levelNum);
+        int numTarDemon = 1 + Random.Range(0, GameManager.instance.levelNum);
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobHomunculus, numHomunculus);
         mobsToSpawn.Add(MobTypeEnum.mobFiend, numFiend);
         mobsToSpawn.Add(MobTypeEnum.mobScavenger, numScavenger);
-        
 
         PlacePlayer(level);
 
@@ -126,7 +136,10 @@ public class MonsterLayoutBeastsOnly : MonsterLayout
             }
         }
 
-        PlaceLevelLayoutMobs(level, levelGeneratorResult);
+        Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        addMobsToSpawn.Add(MobTypeEnum.mobTarDemon, numTarDemon);
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
     }
 }
 
@@ -141,6 +154,7 @@ public class MonsterLayoutDemonsOnly : MonsterLayout
     {
         int numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+        int numTarDemon = -1 + Random.Range(0, GameManager.instance.levelNum);
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
@@ -164,7 +178,10 @@ public class MonsterLayoutDemonsOnly : MonsterLayout
             }
         }
 
-        PlaceLevelLayoutMobs(level, levelGeneratorResult);
+        Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        addMobsToSpawn.Add(MobTypeEnum.mobTarDemon, numTarDemon);
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
     }
 }
 
@@ -182,13 +199,14 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
         int numHomunculus = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numFiend = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numScavenger = 4 + Random.Range(0, GameManager.instance.levelNum);
+        int numTarDemon = -1 + Random.Range(0, GameManager.instance.levelNum);
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
         mobsToSpawn.Add(MobTypeEnum.mobHomunculus, numHomunculus);
         mobsToSpawn.Add(MobTypeEnum.mobFiend, numFiend);
-        mobsToSpawn.Add(MobTypeEnum.mobScavenger, numScavenger);
+        mobsToSpawn.Add(MobTypeEnum.mobScavenger, numScavenger);     
 
         PlacePlayer(level);
 
@@ -208,7 +226,10 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
             }
         }
 
-        PlaceLevelLayoutMobs(level, levelGeneratorResult);
+        Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        addMobsToSpawn.Add(MobTypeEnum.mobTarDemon, numTarDemon);
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
     }
 }
 

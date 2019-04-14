@@ -19,7 +19,7 @@ public class LevelLayout {
     public TerrainTypeEnum terrainFloorAlt;
     public TerrainTypeEnum terrainWall;
 
-    public List<BuildingLayoutEnum> buildingLayouts;
+    public List<BuildingLayoutType> buildingLayouts;
 }
 
 public static class LevelLayouts
@@ -32,15 +32,15 @@ public static class LevelLayouts
 
         Add(LevelLayoutEnum.levelTest, "Test location",
             TerrainTypeEnum.terrainWall, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
-            new List<BuildingLayoutEnum> { BuildingLayoutEnum.buildEmpty });
+            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty });
 
         Add(LevelLayoutEnum.levelNormal, "Ordinary location",
             TerrainTypeEnum.terrainStoneFloorBorder, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
-            new List<BuildingLayoutEnum> { BuildingLayoutEnum.buildEmpty, BuildingLayoutEnum.buildCshape, BuildingLayoutEnum.buildYShape, BuildingLayoutEnum.buildRandom });
+            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildTarPool });
     }
 
     static void Add(LevelLayoutEnum _id, string _name, TerrainTypeEnum _border, TerrainTypeEnum _floorPrim, TerrainTypeEnum _floorAlt, TerrainTypeEnum _wall, 
-        List<BuildingLayoutEnum> _buildingLayouts)
+        List<BuildingLayoutType> _buildingLayouts)
     {
         LevelLayout ll = new LevelLayout()
         {
