@@ -51,7 +51,7 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            UIManager.instance.SetScreenStatusToLook(player.x, player.y, "", "[Esc] Cancel");
+            UIManager.instance.SetScreenStatusToLook(player.x, player.y, "", "[x] Examine [Esc] Cancel");
             UIManager.instance.MoveSelector(0, 0);
 
         }
@@ -61,7 +61,7 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
-            UIManager.instance.ShowCharacterWindow();
+            UIManager.instance.ShowCharacterWindow(player);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -85,17 +85,14 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.curAbils[5]));
         }
         else if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.curAbils[6]));
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.curAbils[7]));
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
@@ -104,7 +101,6 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.curAbils[9]));
         }
         else if (Input.GetKeyDown(KeyCode.D))
@@ -118,6 +114,15 @@ public class PlayerInput : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.F))
         {
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.rangedAbil));
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Level level = BoardManager.instance.level;
+            Vector2Int pos = UIManager.instance.selectorPos;
+            if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
+            {
+                UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
+            }
         }
 
         if (turnEnded)
@@ -168,6 +173,15 @@ public class PlayerInput : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Keypad9) || Input.GetKeyDown(KeyCode.PageUp))
         {
             UIManager.instance.MoveSelector(1, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            Level level = BoardManager.instance.level;
+            Vector2Int pos = UIManager.instance.selectorPos;
+            if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
+            {
+                UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
+            }
         }
     }
 

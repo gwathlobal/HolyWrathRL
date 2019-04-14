@@ -390,7 +390,76 @@ public class Mob
         else return false;
     }
 
+    public virtual string Description()
+    {
+        string str = "";
+        bool noAbilities;
+        str += String.Format("{0}\n", name);
+        str += String.Format("HP: {0}/{1}\n", curHP, maxHP);
+        str += String.Format("FP: {0}/{1}\n", curFP, maxFP);
+        if (GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
+            str += String.Format("WP: {0}\n", curWP);
 
+        str += "\n";
+        str += "-----------------------------------\n";
+        str += "ACTIVE ABILITIES\n";
+        str += "-----------------------------------\n";
+        str += "\n";
+        noAbilities = true;
+        foreach (AbilityTypeEnum abilityType in abilities.Keys)
+        {
+            Ability ability = GetAbility(abilityType);
+            if (ability.id != AbilityTypeEnum.abilNone &&
+                (!ability.passive ||
+                 (ability.passive && ability.slot == AbilitySlotCategoty.abilMelee)))
+            {
+                str += ability.GetFullDescription(this);
+                str += "\n\n";
+                noAbilities = false;
+            }
+        }
+
+        if (noAbilities) str += "No abilities.\n\n";
+
+        str += "\n";
+        str += "-----------------------------------\n";
+        str += "PASSIVE ABILITIES\n";
+        str += "-----------------------------------\n";
+        str += "\n";
+        noAbilities = true;
+        foreach (AbilityTypeEnum abilityType in abilities.Keys)
+        {
+            Ability ability = GetAbility(abilityType);
+            if (ability.passive && ability.slot != AbilitySlotCategoty.abilMelee)
+            {
+                str += GetAbility(abilityType).GetFullDescription(this);
+                str += "\n\n";
+                noAbilities = false;
+            }
+        }
+
+        if (noAbilities) str += "No abilities.\n\n";
+
+        str += "\n";
+        str += "-----------------------------------\n";
+        str += "EFFECTS\n";
+        str += "-----------------------------------\n";
+        str += "\n";
+        noAbilities = true;
+        foreach (Effect eff in effects.Values)
+        {
+            
+            str += String.Format("<color=#{2}>{0}{1}</color>", EffectTypes.effectTypes[eff.idType].name,
+                        (eff.cd == Effect.CD_UNLIMITED) ? "" : String.Format(" ({0} {1} left)", eff.cd, (eff.cd > 1) ? "turns" : "turn"),
+                        ColorUtility.ToHtmlStringRGBA(EffectTypes.effectTypes[eff.idType].color));
+            str += "\n\n";
+            noAbilities = false;
+        }
+
+        if (noAbilities) str += "No active effects.\n\n";
+
+        return str;
+    }
 
     public static int InflictDamage(Mob attacker, Mob target, int initDmg, DmgTypeEnum dmgType, dmg_string dmg_string)
     {

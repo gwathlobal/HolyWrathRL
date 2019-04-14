@@ -29,6 +29,17 @@ public class LookAtScript : MonoBehaviour {
             UIManager.instance.SetSelectorPos(pos.x, pos.y);
             UIManager.instance.MoveSelector(0, 0);
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log("Right mouse clicked");
+            Level level = BoardManager.instance.level;
+
+            if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
+            {
+                UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
+            }
+        }
     }
 
     void OnMouseExit()

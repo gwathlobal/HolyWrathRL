@@ -25,10 +25,11 @@ public class UIManager : MonoBehaviour {
     public RightPanelScript RightPanel;
 
     public MsgDialogScript MsgDialog;
-    public CharacterDialogScript CharacterDialog;
+    public CharacterDialogScript OldCharacterDialog;
     public MenuScript MainMenuDialog;
     public YouDiedScript YouDiedDialog;
     public MissionWonScript MissionWonDialog;
+    public NewCharacterDialogScript CharacterDialog;
 
     public MainScreenStatus screenStatus;
     public GameObject selectorPrefab;
@@ -115,9 +116,10 @@ public class UIManager : MonoBehaviour {
         MsgDialog.gameObject.SetActive(false);
     }
 
-    public void ShowCharacterWindow()
+    public void ShowCharacterWindow(Mob mob)
     {
         screenStatus = MainScreenStatus.statusCharacterWindow;
+        CharacterDialog.InitializeUI(mob);
         CharacterDialog.gameObject.SetActive(true);
     }
 
@@ -125,6 +127,7 @@ public class UIManager : MonoBehaviour {
     {
         screenStatus = MainScreenStatus.statusNormal;
         CharacterDialog.gameObject.SetActive(false);
+        SetScreenStatusToNormal();
     }
 
     public void ShowMainMenuWindow()
@@ -209,7 +212,7 @@ public class UIManager : MonoBehaviour {
         else
         {
 
-            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [Esc] Cancel");
+            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [x] Examine [Esc] Cancel");
             MoveSelector(0, 0);
             execFunc = () =>
             {
