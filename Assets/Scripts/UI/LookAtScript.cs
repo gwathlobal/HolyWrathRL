@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class LookAtScript : MonoBehaviour {
 
+    private bool isMouseOver;
+
     void OnMouseOver()
     {
+        isMouseOver = true;
+
         if ((int)transform.position.x == UIManager.instance.selectorPos.x &&
             (int)transform.position.y == UIManager.instance.selectorPos.y)
             return;
@@ -29,21 +33,26 @@ public class LookAtScript : MonoBehaviour {
             UIManager.instance.SetSelectorPos(pos.x, pos.y);
             UIManager.instance.MoveSelector(0, 0);
         }
+    }
 
+    private void Update()
+    {
+        if (!isMouseOver) return;
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("Right mouse clicked");
-            Level level = BoardManager.instance.level;
-
-            if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
-            {
-                UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
-            }
+            MouseLeftClick();
+        }
+        else if (Input.GetMouseButtonDown(1))
+        {
+            MouseRightClick();
         }
     }
 
+
     void OnMouseExit()
     {
+        isMouseOver = false;
+
         if (UIManager.instance.screenStatus == MainScreenStatus.statusNormal)
         {
             UIManager.instance.BottomPanel.status = BottomStatusEnum.statusLog;
@@ -54,8 +63,8 @@ public class LookAtScript : MonoBehaviour {
 
         }
     }
-
-    private void OnMouseDown()
+        
+    private void MouseLeftClick()
     {
         if (UIManager.instance.screenStatus == MainScreenStatus.statusNormal)
         {
@@ -92,6 +101,18 @@ public class LookAtScript : MonoBehaviour {
         else
         {
             UIManager.instance.InvokeExecFunc();
+        }
+    }
+    
+    private void MouseRightClick()
+    {
+        Vector2Int pos = UIManager.instance.selectorPos;
+
+        Level level = BoardManager.instance.level;
+
+        if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
+        {
+            UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
         }
     }
 }

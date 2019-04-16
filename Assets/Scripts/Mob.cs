@@ -463,6 +463,8 @@ public class Mob
 
     public static int InflictDamage(Mob attacker, Mob target, int initDmg, DmgTypeEnum dmgType, dmg_string dmg_string)
     {
+        // TODO: make the function take a list of dmg types & dmg values instead of invoking the function for each dmg type separately
+
         string str = "";
         int dmg = initDmg;
 
@@ -553,6 +555,12 @@ public class Mob
         {
             attacker.curHP += dmg / 2;
             if (target.curHP > target.maxHP) attacker.curHP = attacker.maxHP;
+        }
+
+        // invoke Teleport on hit
+        if (attacker != null && target.GetAbility(AbilityTypeEnum.abilTeleportOnHit) != null)
+        {
+            target.InvokeAbility(target.GetAbility(AbilityTypeEnum.abilTeleportOnHit), new TargetStruct(new Vector2Int(0, 0), null));
         }
 
         return dmg;

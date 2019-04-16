@@ -51,7 +51,7 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            UIManager.instance.SetScreenStatusToLook(player.x, player.y, "", "[x] Examine [Esc] Cancel");
+            UIManager.instance.SetScreenStatusToLook(player.x, player.y, "", "[x] Examine character [Esc] Cancel");
             UIManager.instance.MoveSelector(0, 0);
 
         }

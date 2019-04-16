@@ -212,7 +212,7 @@ public class UIManager : MonoBehaviour {
         else
         {
 
-            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [x] Examine [Esc] Cancel");
+            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [x] Examine character [Esc] Cancel");
             MoveSelector(0, 0);
             execFunc = () =>
             {

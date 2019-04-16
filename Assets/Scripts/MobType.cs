@@ -77,7 +77,7 @@ public class MobType {
 
 public enum MobTypeEnum
 {
-    mobAngel, mobHomunculus, mobCrimsonImp, mobShadowImp, mobFiend, mobCrimsonDemon, mobShadowDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
+    mobAngel, mobHomunculus, mobCrimsonImp, mobMachineImp, mobFiend, mobCrimsonDemon, mobMachineDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
     mobSpearOfLight, mobTarDemon
 };
 
@@ -86,10 +86,10 @@ public class MobTypes
     public static GameObject mobAngel;
     public static GameObject mobHomunculus;
     public static GameObject mobCrimsonImp;
-    public static GameObject mobShadowImp;
+    public static GameObject mobMachineImp;
     public static GameObject mobFiend;
     public static GameObject mobCrimsonDemon;
-    public static GameObject mobShadowDemon;
+    public static GameObject mobMachineDemon;
     public static GameObject mobArchdemon;
     public static GameObject mobArchdevil;
     public static GameObject mobScavenger;
@@ -105,10 +105,10 @@ public class MobTypes
         mobAngel = Resources.Load("Prefabs/Mobs/Angel") as GameObject;
         mobHomunculus = Resources.Load("Prefabs/Mobs/Homunculus") as GameObject;
         mobCrimsonImp = Resources.Load("Prefabs/Mobs/Crimson Imp") as GameObject;
-        mobShadowImp = Resources.Load("Prefabs/Mobs/Shadow Imp") as GameObject;
+        mobMachineImp = Resources.Load("Prefabs/Mobs/Machine Imp") as GameObject;
         mobFiend = Resources.Load("Prefabs/Mobs/Fiend") as GameObject;
         mobCrimsonDemon = Resources.Load("Prefabs/Mobs/Crimson Demon") as GameObject;
-        mobShadowDemon = Resources.Load("Prefabs/Mobs/Shadow Demon") as GameObject;
+        mobMachineDemon = Resources.Load("Prefabs/Mobs/Machine Demon") as GameObject;
         mobArchdemon = Resources.Load("Prefabs/Mobs/Archdemon") as GameObject;
         mobArchdevil = Resources.Load("Prefabs/Mobs/Archdevil") as GameObject;
         mobScavenger = Resources.Load("Prefabs/Mobs/Scavenger") as GameObject;
@@ -187,7 +187,7 @@ public class MobTypes
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         Add(MobTypeEnum.mobCrimsonImp, "Crimson imp", mobCrimsonImp, 40, 30, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
-            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>());
@@ -227,6 +227,14 @@ public class MobTypes
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilNamed });
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        Add(MobTypeEnum.mobMachineImp, "Machine imp", mobMachineImp, 25, 30, 1, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
+            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit });
     }
 
     private static void Add(MobTypeEnum _id, string _name, GameObject _prefab, int _HP, int _FP, int _regenHP, int _regenFP, float _moveSpeed, 
