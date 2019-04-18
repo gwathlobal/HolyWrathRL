@@ -9,7 +9,7 @@ public delegate void FeatOnTick(Level level, Feature feature);
 
 public enum FeatureTypeEnum
 {
-    featBloodDrop, featBloodPool, featFire, featHolyRune
+    featBloodDrop, featBloodPool, featFire, featHolyRune, featAcidCloud
 };
 
 public class FeatureType {
@@ -39,6 +39,7 @@ public class FeatureTypes
     public static GameObject featBloodPool;
     public static GameObject featFire;
     public static GameObject featHolyRune;
+    public static GameObject featAcidCloud;
     public static Dictionary<FeatureTypeEnum, FeatureType> featureTypes;
 
     public static void InitializeFeatureTypes()
@@ -46,6 +47,7 @@ public class FeatureTypes
         featBloodPool = Resources.Load("Prefabs/Features/BloodPool") as GameObject;
         featFire = Resources.Load("Prefabs/Features/Fire") as GameObject;
         featHolyRune = Resources.Load("Prefabs/Features/Holy Rune") as GameObject;
+        featAcidCloud = Resources.Load("Prefabs/Features/Acid Cloud") as GameObject;
 
         featureTypes = new Dictionary<FeatureTypeEnum, FeatureType>();
 
@@ -233,6 +235,70 @@ public class FeatureTypes
                 }
 
                 feature.counter--;
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    //level.featureList.Remove(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                    //BoardManager.instance.RemoveFeatureFromWorld(feature);
+                }
+            });
+
+        Add(FeatureTypeEnum.featAcidCloud, "Acid cloud", featAcidCloud, featAcidCloud.GetComponent<SpriteRenderer>().color,
+            (Level level, Feature newFeature) =>
+            {
+                foreach (Feature feature in level.features[newFeature.x, newFeature.y])
+                {
+                    if (feature.idType == FeatureTypeEnum.featAcidCloud)
+                        return feature;
+                }
+                return null;
+            },
+            (Level level, Feature newFeature, Feature oldFeature) =>
+            {
+                oldFeature.counter += newFeature.counter;
+                level.featureList.Remove(newFeature);
+                BoardManager.instance.RemoveFeatureFromWorld(newFeature);
+
+            },
+            (Level level, Feature feature) =>
+            {
+                if (level.mobs[feature.x, feature.y] != null)
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+                    int dmg = 0;
+                    dmg += Mob.InflictDamage(null, mob, 10, DmgTypeEnum.Acid,
+                        (int dmg1) =>
+                        {
+                            string str;
+                            if (dmg1 <= 0)
+                            {
+                                str = String.Format("{0} takes no acid dmg. ",
+                                    mob.name);
+                            }
+                            else
+                            {
+                                str = String.Format("{0} takes {1} acid dmg. ",
+                                    mob.name,
+                                    dmg1);
+                            }
+                            return str;
+                        });
+                    
+                    if (BoardManager.instance.level.visible[mob.x, mob.y])
+                    {
+                        Vector3 pos = new Vector3(mob.x, mob.y, 0);
+                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", pos);
+                    }
+                    BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
+                    if (mob.CheckDead())
+                    {
+                        mob.MakeDead(null, true, true, false);
+                    }
+                }
+
+                feature.counter--;
+                if (UnityEngine.Random.Range(0, 100) < 25) feature.counter--;
                 if (feature.counter <= 0)
                 {
                     level.RemoveFeatureFromLevel(feature);

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum DmgTypeEnum
 {
-    Physical, Fire, Holy, Vorpanite, Mind, Shadow 
+    Physical, Fire, Holy, Vorpanite, Mind, Shadow, Acid 
 }
 
 public struct DmgType
@@ -33,6 +33,7 @@ public static class DmgTypes
         dmgTypes.Add(DmgTypeEnum.Vorpanite, new DmgType(DmgTypeEnum.Vorpanite, "vorpanite"));
         dmgTypes.Add(DmgTypeEnum.Mind, new DmgType(DmgTypeEnum.Mind, "mind"));
         dmgTypes.Add(DmgTypeEnum.Shadow, new DmgType(DmgTypeEnum.Shadow, "shadow"));
+        dmgTypes.Add(DmgTypeEnum.Acid, new DmgType(DmgTypeEnum.Acid, "acid"));
     }
 }
 
@@ -222,11 +223,11 @@ public class MobTypes
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Physical, 20);
-        Add(MobTypeEnum.mobArchdemon, "Archdemon", mobArchdemon, 70, 60, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
+        Add(MobTypeEnum.mobArchdemon, "Archdemon", mobArchdemon, 70, 70, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilNamed });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilCorpseExplosion });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

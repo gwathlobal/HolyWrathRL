@@ -7,9 +7,15 @@ using UnityEngine.UI;
 
 public class PlayerMob : Mob {
 
+    public Dictionary<AbilityPlayerCategory, int> categoryBonus;
+
     public PlayerMob(MobTypeEnum _idType, int _x, int _y) : base(_idType, _x, _y)
     {
-        
+        categoryBonus = new Dictionary<AbilityPlayerCategory, int>();
+        foreach (AbilityPlayerCategory abilityCategory in System.Enum.GetValues(typeof(AbilityPlayerCategory)))
+        {
+            categoryBonus[abilityCategory] = 0;
+        }
     }
 
     public override void AiFunction()
