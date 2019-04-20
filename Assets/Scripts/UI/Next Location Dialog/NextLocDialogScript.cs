@@ -45,7 +45,7 @@ public class NextLocDialogScript : MonoBehaviour
 
         if (GameManager.instance.levelNum == 0)
         {
-            LevelLayoutEnum levelLayout = LevelLayoutEnum.levelNormal;
+            LevelLayoutEnum levelLayout = LevelLayoutEnum.levelDesolatePlanes;
             MonsterLayoutEnum monsterLayout = MonsterLayoutEnum.levelBeastsOnly;
             ObjectiveLayoutEnum objectiveLayout = ObjectiveLayoutEnum.levelKillAllEnemies;
 

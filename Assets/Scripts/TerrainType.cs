@@ -21,7 +21,8 @@ public class TerrainType {
 
 public enum TerrainTypeEnum
 {
-    terrainFogOfWar, terrainFloor, terrainWall, terrainWindow, terrainStoneFloor, terrainStoneFloorBright, terrainStoneFloorBorder, terrainStoneWall,
+    terrainFogOfWar, terrainFloor, terrainWall, terrainWindow, terrainStoneFloor, terrainStoneFloorBright, terrainStoneFloorBorder, terrainWaterTarBorder,
+    terrainStoneWall,
     terrainWaterTar, terrainAshes
 };
 
@@ -58,6 +59,8 @@ public class TerrainTypes
         Add(TerrainTypeEnum.terrainStoneFloorBorder, "Stone floor", terrainFloor, true, true, true, new Color32(106, 53, 53, 255), 0, TerrainTypeEnum.terrainStoneFloorBorder, 
             null);
         Add(TerrainTypeEnum.terrainStoneWall, "Stone wall", terrainWall, true, true, true, new Color32(106, 53, 53, 255), 0, TerrainTypeEnum.terrainStoneWall, 
+            null);
+        Add(TerrainTypeEnum.terrainWaterTarBorder, "Tar", terrainWaterTar, true, true, true, new Color32(132, 132, 132, 255), 0, TerrainTypeEnum.terrainWaterTarBorder,
             null);
         Add(TerrainTypeEnum.terrainWaterTar, "Tar", terrainWaterTar, false, false, false, new Color32(132, 132, 132, 255), 10, TerrainTypeEnum.terrainAshes,
             (Level level, Mob mob) =>

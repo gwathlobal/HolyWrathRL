@@ -274,22 +274,9 @@ public class Level {
         LevelLayout levelLayout = LevelLayouts.levelLayouts[levelLayoutType];
         MonsterLayout monsterLayout = MonsterLayouts.monsterLayouts[monsterLayoutType];
         
-
-        for (int x = 0; x < maxX; x++)
-        {
-            terrain[x, 0] = levelLayout.terrainBorder;
-            terrain[x, maxY - 1] = levelLayout.terrainBorder;
-        }
-
         for (int y = 0; y < maxY; y++)
         {
-            terrain[0, y] = levelLayout.terrainBorder;
-            terrain[maxX - 1, y] = levelLayout.terrainBorder;
-        }
-
-        for (int y = 1; y < maxY - 1; y++)
-        {
-            for (int x = 1; x < maxX - 1; x++)
+            for (int x = 0; x < maxX; x++)
             {
                 terrain[x, y] = levelLayout.terrainFloorPrimary;
                 if (Random.Range(0, 100) <= 25) terrain[x, y] = levelLayout.terrainFloorAlt;

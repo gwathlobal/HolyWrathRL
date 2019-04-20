@@ -9,7 +9,7 @@ public struct LevelGeneratorResult
 
 public static class LevelGenerator {
 
-    private struct BuildingPlacement
+    public struct BuildingPlacement
     {
         public BuildingLayoutEnum buildType;
         public int x;
@@ -51,7 +51,10 @@ public static class LevelGenerator {
             reservedBuildings[maxXres - 1, gy] = BuildingLayoutType.buildEmpty;
         }
 
-        
+        // place buildings from pre-processed function
+        if (levelLayout.PreProcessFunc != null)
+            buildingsOnLevel.AddRange(levelLayout.PreProcessFunc(levelLayout, level, reservedBuildings));
+
         // make reservations for random buildings
         for (int gy = 0; gy < maxYres; gy++)
         {
@@ -132,6 +135,33 @@ public static class LevelGenerator {
 
             generatorResult.buildingLayoutResults.Add(buildResult);
 
+        }
+
+        // placing borders
+        for (int x = 0; x < level.maxX; x++)
+        {
+            if (level.terrain[x, 0] == TerrainTypeEnum.terrainWaterTar)
+                level.terrain[x, 0] = TerrainTypeEnum.terrainWaterTarBorder;
+            else 
+                level.terrain[x, 0] = levelLayout.terrainBorder;
+
+            if (level.terrain[x, level.maxY - 1] == TerrainTypeEnum.terrainWaterTar)
+                level.terrain[x, level.maxY - 1] = TerrainTypeEnum.terrainWaterTarBorder;
+            else
+                level.terrain[x, level.maxY - 1] = levelLayout.terrainBorder;
+        }
+
+        for (int y = 0; y < level.maxY; y++)
+        {
+            if (level.terrain[0, y] == TerrainTypeEnum.terrainWaterTar)
+                level.terrain[0, y] = TerrainTypeEnum.terrainWaterTarBorder;
+            else
+                level.terrain[0, y] = levelLayout.terrainBorder;
+
+            if (level.terrain[level.maxX - 1, y] == TerrainTypeEnum.terrainWaterTar)
+                level.terrain[level.maxX - 1, y] = TerrainTypeEnum.terrainWaterTarBorder;
+            else
+                level.terrain[level.maxX - 1, y] = levelLayout.terrainBorder;
         }
 
         return generatorResult;

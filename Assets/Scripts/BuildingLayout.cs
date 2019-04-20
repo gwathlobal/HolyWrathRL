@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum BuildingLayoutEnum
 {
-    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool
+    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool, buildTarRiverV, buildTarRiverH
 }
 
 public enum BuildingLayoutType
 {
-    buildFree, buildEmpty, buildShape, buildTarPool
+    buildFree, buildNone, buildEmpty, buildShape, buildTarPool
 }
 
 public delegate void BuildingPlaceMobs(Level level, MobTypeEnum mobType, int sx, int sy);
@@ -79,6 +79,8 @@ public static class BuildingLayouts
         Add(new BuildingLayoutСShape());
         Add(new BuildingLayoutRandom());
         Add(new BuildingLayoutTarPool());
+        Add(new BuildingLayoutTarRiverV());
+        Add(new BuildingLayoutTarRiverH());
     }
 
     static void Add(BuildingLayout bl)
@@ -301,5 +303,87 @@ public class BuildingLayoutTarPool : BuildingLayout
             }
         });
         return br;
+    }
+}
+
+public class BuildingLayoutTarRiverV : BuildingLayout
+{
+    public BuildingLayoutTarRiverV()
+    {
+        gw = 2;
+        gh = 6;
+        lw = 10;
+        lh = 30;
+        id = BuildingLayoutEnum.buildTarRiverV;
+        buildType = BuildingLayoutType.buildNone;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l =  { ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~~.",
+                        ".~~~~~~~~.",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~~."};
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutTarRiverH : BuildingLayout
+{
+    public BuildingLayoutTarRiverH()
+    {
+        gw = 6;
+        gh = 2;
+        lw = 30;
+        lh = 10;
+        id = BuildingLayoutEnum.buildTarRiverH;
+        buildType = BuildingLayoutType.buildNone;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l =  { "..............................",
+                        "~~..~~~~~~....~~~~~~~....~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~...~~~~~~~....~~~~~~~...~~",
+                        ".............................." };
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        return new BuildingLayoutResult();
     }
 }
