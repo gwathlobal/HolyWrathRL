@@ -54,7 +54,13 @@ public class AbilityTrapMind : Ability
         string str = String.Format("{0} immobilizes {1}. ", actor.name, target.mob.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 3);
+        if (actor.GetEffect(EffectTypeEnum.effectImmobilizeImmunity) == null)
+            target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 3);
+        else
+        {
+            str = String.Format("{0} is unaffected. ", target.mob.name);
+            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

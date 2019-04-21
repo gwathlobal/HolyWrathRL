@@ -16,7 +16,7 @@ public class AbilityDodge : Ability
 
     public override string Description(Mob mob)
     {
-        return "Instantly move 3 tiles away.";
+        return "Instantly move 3 tiles away. If you are immobilized, remove immobilization and make you immune to immobilization for 5 turns.";
     }
 
     public override string Name(Mob mob)
@@ -68,6 +68,12 @@ public class AbilityDodge : Ability
     {
         string str = String.Format("{0} makes a roll. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+
+        if (actor.GetEffect(EffectTypeEnum.effectImmobilize) != null)
+        {
+            actor.RemoveEffect(EffectTypeEnum.effectImmobilize);
+            actor.AddEffect(EffectTypeEnum.effectImmobilizeImmunity, actor, 5);
+        }
 
         int dx = target.loc.x - actor.x;
         int dy = target.loc.y - actor.y;

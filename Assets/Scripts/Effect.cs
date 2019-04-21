@@ -12,7 +12,8 @@ public enum EffectTypeEnum
 {
     effectSprint, effectBlock, effectRegenerate, effectBlindness, effectDivineVengeance, effectInvisibility, effectBurdenOfSins, effectSyphonLight, effectBurning,
     effectFireAura, effectMinorRegeneration, effectFear, effectMeditate, effectImmobilize, effectDominateMind, effectSplitSoulTarget, effectSplitSoulSource,
-    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime, effectAuraMinorProtection, effectMinorProtection, effectCoveredInTar
+    effectSilence, effectAbsorbingShield, effectReflectiveBlocking, effectRemoveAfterTime, effectAuraMinorProtection, effectMinorProtection, effectCoveredInTar,
+    effectImmobilizeImmunity
 }
 
 public class EffectType {
@@ -393,6 +394,12 @@ public class EffectTypes
                 actor.effects.Remove(effect.idType);
                 actor.CalculateArmor();
             },
+            null, 0, false, true);
+
+        Add(EffectTypeEnum.effectImmobilizeImmunity, "Immobilize Immunity", new Color32(255, 0, 255, 255),
+            null,
+            null,
+            null,
             null, 0, false, true);
     }
 
