@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public enum MainScreenStatus
 {
-    statusMainMenu, statusNormal, statusLookAt, statusMsgWindow, statusCharacterWindow, statusPlayerDied, statusMissionWon, statusGameWon
+    statusMainMenu, statusNormal, statusLookAt, statusMsgWindow, statusCharacterWindow, statusPlayerDied, statusMissionWon, statusGameWon, statusHelpWindow
 }
 
 public delegate bool ExecFunc();
@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour {
     public YouDiedScript YouDiedDialog;
     public MissionWonScript MissionWonDialog;
     public NewCharacterDialogScript CharacterDialog;
+    public HelpDialogScript HelpDialog;
 
     public MainScreenStatus screenStatus;
     public GameObject selectorPrefab;
@@ -164,6 +165,18 @@ public class UIManager : MonoBehaviour {
     {
         screenStatus = MainScreenStatus.statusNormal;
         MissionWonDialog.gameObject.SetActive(false);
+    }
+
+    public void ShowHelpDialogWindow()
+    {
+        screenStatus = MainScreenStatus.statusHelpWindow;
+        HelpDialog.gameObject.SetActive(true);
+    }
+
+    public void HideHelpDialogWindow()
+    {
+        screenStatus = MainScreenStatus.statusNormal;
+        HelpDialog.gameObject.SetActive(false);
     }
 
     public void MoveSelector(int dx, int dy)

@@ -59,6 +59,10 @@ public class PlayerInput : MonoBehaviour {
         {
             UIManager.instance.ShowMsgWindow();
         }
+        else if (Input.GetKeyDown(KeyCode.Slash) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
+        {
+            UIManager.instance.ShowHelpDialogWindow();
+        }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
             UIManager.instance.ShowCharacterWindow(player);
@@ -115,15 +119,7 @@ public class PlayerInput : MonoBehaviour {
         {
             turnEnded = UIManager.instance.InvokeAbility(player.GetAbility(player.rangedAbil));
         }
-        else if (Input.GetKeyDown(KeyCode.X))
-        {
-            Level level = BoardManager.instance.level;
-            Vector2Int pos = UIManager.instance.selectorPos;
-            if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
-            {
-                UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
-            }
-        }
+        
 
         if (turnEnded)
         {
@@ -225,6 +221,14 @@ public class PlayerInput : MonoBehaviour {
         }
     }
 
+    void GetInputHelpDialog()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager.instance.HideHelpDialogWindow();
+        }
+    }
+
     void GetPlayerInput()
     {
         if (!BoardManager.instance.playersTurn) return;
@@ -251,6 +255,9 @@ public class PlayerInput : MonoBehaviour {
                 break;
             case MainScreenStatus.statusMissionWon:
                 GetInputMissionWon();
+                break;
+            case MainScreenStatus.statusHelpWindow:
+                GetInputHelpDialog();
                 break;
         }
 
