@@ -46,7 +46,7 @@ public enum AbilityTypeEnum
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
     abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual, abilSpearOfLight,
-    abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize
+    abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize, abilDemonicPortal, abilSummonImp
 }
 
 
@@ -259,8 +259,6 @@ public class AbilityTypes
 
         Add(new AbilitySprint());
 
-
-
         //============================
         //
         // MOB ABILITIES
@@ -280,6 +278,10 @@ public class AbilityTypes
         Add(new AbilityCorpseExplosion());
 
         Add(new AbilityPowerWordImmobilize());
+
+        Add(new AbilityDemonicPortal());
+
+        Add(new AbilitySummonImp());
 
         //============================
         //

@@ -30,6 +30,8 @@ public class BoardManager : MonoBehaviour {
 
     public int levelNum = 0;
 
+    private List<Mob> mobList;
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -113,6 +115,8 @@ public class BoardManager : MonoBehaviour {
         playersTurn = false;
 
         UIManager.instance.InitializeUI(player);
+
+        mobList = new List<Mob>();
     }
 
     // Update is called once per frame
@@ -122,24 +126,22 @@ public class BoardManager : MonoBehaviour {
             //If any of these are true, return and do not start MoveEnemies.
             return;
 
-        foreach (int mobId in mobs.Keys)
-        {
-            if (mobs.ContainsKey(mobId))
-            {
-                Mob mob = mobs[mobId];
-                if (mob.curAP > 0 && !mob.CheckDead())
-                {
-                    msgLog.SetHasMessageThisTurn(false);
-                    mob.AiFunction();
-                    mobActed = true;
-                    if (playersTurn)
-                    {
-                        msgLog.SetPlayerStartedTurn(true);
-                        return;
-                    }
+        mobList = mobs.Values.ToList();
 
-                    msgLog.FinalizeMsg();
+        foreach (Mob mob in mobList)
+        {
+            if (mob.curAP > 0 && !mob.CheckDead())
+            {
+                msgLog.SetHasMessageThisTurn(false);
+                mob.AiFunction();
+                mobActed = true;
+                if (playersTurn)
+                {
+                    msgLog.SetPlayerStartedTurn(true);
+                    return;
                 }
+
+                msgLog.FinalizeMsg();
             }
         }
 

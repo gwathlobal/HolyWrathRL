@@ -199,11 +199,13 @@ public class MonsterLayoutMachineDemons : MonsterLayout
     {
         int numMachineImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numMachineDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+        int numArchdevil = -4 + Random.Range(0, GameManager.instance.levelNum);
         int numTarDemon = -1 + Random.Range(0, GameManager.instance.levelNum);
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
 
         PlacePlayer(level);
 
@@ -244,6 +246,7 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
         int numArchdemon = 0;
         int numMachineImp = 0;
         int numMachineDemon = 0;
+        int numArchdevil = 0;
         int numHomunculus = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numFiend = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numScavenger = 4 + Random.Range(0, GameManager.instance.levelNum);
@@ -270,6 +273,7 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
                 numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 break;
         }
 
@@ -279,6 +283,7 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
         mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
         mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
         mobsToSpawn.Add(MobTypeEnum.mobHomunculus, numHomunculus);
         mobsToSpawn.Add(MobTypeEnum.mobFiend, numFiend);
         mobsToSpawn.Add(MobTypeEnum.mobScavenger, numScavenger);
@@ -328,7 +333,7 @@ public class MonsterLayoutTest : MonsterLayout
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
         */
-        mob = new Mob(MobTypeEnum.mobMachineDemon, 14, 5);
+        mob = new Mob(MobTypeEnum.mobArchdevil, 14, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);

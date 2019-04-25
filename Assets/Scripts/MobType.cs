@@ -79,7 +79,7 @@ public class MobType {
 public enum MobTypeEnum
 {
     mobAngel, mobHomunculus, mobCrimsonImp, mobMachineImp, mobFiend, mobCrimsonDemon, mobMachineDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
-    mobSpearOfLight, mobTarDemon
+    mobSpearOfLight, mobTarDemon, mobDemonicPortal
 };
 
 public class MobTypes
@@ -98,6 +98,7 @@ public class MobTypes
     public static GameObject mobArchangel;
     public static GameObject mobSpearOfLight;
     public static GameObject mobTarDemon;
+    public static GameObject mobDemonicPortal;
 
     public static Dictionary<MobTypeEnum, MobType> mobTypes;
 
@@ -117,6 +118,7 @@ public class MobTypes
         mobArchangel = Resources.Load("Prefabs/Mobs/Archangel") as GameObject;
         mobSpearOfLight = Resources.Load("Prefabs/Mobs/Spear of Light") as GameObject;
         mobTarDemon = Resources.Load("Prefabs/Mobs/Tar Demon") as GameObject;
+        mobDemonicPortal = Resources.Load("Prefabs/Mobs/Demonic Portal") as GameObject;
 
         mobTypes = new Dictionary<MobTypeEnum, MobType>();
 
@@ -179,7 +181,7 @@ public class MobTypes
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Mind, 50);
-        Add(MobTypeEnum.mobFiend, "Fiend", mobFiend, 30, 60, 1, 7, MobType.NORMAL_AP, FactionEnum.factionBeasts,
+        Add(MobTypeEnum.mobFiend, "Fiend", mobFiend, 25, 60, 1, 7, MobType.NORMAL_AP, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilJump, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
@@ -245,6 +247,27 @@ public class MobTypes
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize });
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        armorPR.Add(DmgTypeEnum.Physical, 20);
+        Add(MobTypeEnum.mobArchdevil, "Archdevil", mobArchdevil, 60, 70, 2, 5, MobType.NORMAL_AP, FactionEnum.factionDemons,
+            AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize, AbilityTypeEnum.abilDemonicPortal });
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        armorPR.Add(DmgTypeEnum.Physical, 70);
+        armorPR.Add(DmgTypeEnum.Mind, 100);
+        armorPR.Add(DmgTypeEnum.Fire, 70);
+        Add(MobTypeEnum.mobDemonicPortal, "Demonic Portal", mobDemonicPortal, 20, 10, 0, 1, MobType.NORMAL_AP, FactionEnum.factionDemons,
+            AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilSummonImp });
+
     }
 
     private static void Add(MobTypeEnum _id, string _name, GameObject _prefab, int _HP, int _FP, int _regenHP, int _regenFP, float _moveSpeed, 

@@ -16,7 +16,7 @@ public class AbilityAmbush : Ability
 
     public override string Description(Mob mob)
     {
-        return "Charge to the enemy up to 4 tiles away, dealing 30 physical dmg. You cannot charge to enemies next to you.";
+        return "Charge to the enemy up to 4 tiles away, dealing 25 physical dmg. You cannot charge to enemies next to you.";
     }
 
     public override string Name(Mob mob)
@@ -84,7 +84,7 @@ public class AbilityAmbush : Ability
 
         if (!(fx == actor.x && fy == actor.y))
         {
-            int dmg = 30;
+            int dmg = 25;
             
             actor.SetPosition(fx, fy);
             actor.mo.Move(actor.x, actor.y);

@@ -960,6 +960,7 @@ public class Mob
     public bool MoveAlongPath()
     {
         bool result = false;
+        
         if (path.Count > 0)
         {
             result = Move(path[0].x - this.x, path[0].y - this.y);

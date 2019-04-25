@@ -36,6 +36,7 @@ public static class AIs
                 int rx;
                 int ry;
                 bool result = false;
+                bool calcPath = false;
                 Level level = BoardManager.instance.level;
 
                 if (actor.pathDst.x == actor.x && actor.pathDst.y == actor.y)
@@ -57,8 +58,7 @@ public static class AIs
                     return;
                 }
 
-                if (actor.path.Count == 0)
-                    actor.PlotPathToDst(actor.pathDst);
+                actor.PlotPathToDst(actor.pathDst);
 
                 result = actor.MoveAlongPath();
                 if (!result)
