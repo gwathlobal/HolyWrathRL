@@ -4,11 +4,11 @@ using UnityEngine;
 
 public enum LevelLayoutEnum
 {
-    levelTest, levelDesolatePlanes, levelTarRiver
+    levelTest, levelDesolatePlains, levelTarRiver, levelSlimeForest
 }
 
 public delegate List<LevelGenerator.BuildingPlacement> LevelPreProcessFunc(LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings);
-public delegate List<LevelGenerator.BuildingPlacement> LevelPostProcessFunc(LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings);
+public delegate void LevelPostProcessFunc(LevelLayout ll, Level level);
 
 public class LevelLayout {
 
@@ -41,15 +41,15 @@ public static class LevelLayouts
             null,
             null);
 
-        Add(LevelLayoutEnum.levelDesolatePlanes, "Desolate plains",
+        Add(LevelLayoutEnum.levelDesolatePlains, "Desolate plains",
             TerrainTypeEnum.terrainStoneFloorBorder, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
-            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildTarPool },
+            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildTarPool, BuildingLayoutType.buildSingleTree },
             null,
             null);
 
         Add(LevelLayoutEnum.levelTarRiver, "Tar river",
             TerrainTypeEnum.terrainStoneFloorBorder, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
-            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape },
+            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildSingleTree },
             (LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings) =>
             {
                 int maxXres = (int)(level.maxX / BuildingLayout.GRID_SIZE);
@@ -90,6 +90,37 @@ public static class LevelLayouts
                 return buildingsOnLevel;
             },
             null);
+
+        Add(LevelLayoutEnum.levelSlimeForest, "Slime Forest",
+            TerrainTypeEnum.terrainSlimeFloorBorder, TerrainTypeEnum.terrainSlimeFloor, TerrainTypeEnum.terrainSlimeFloorBright, TerrainTypeEnum.terrainStoneWall,
+            new List<BuildingLayoutType> { BuildingLayoutType.buildSingleTree, BuildingLayoutType.buildCorruptedForest },
+            null,
+            (LevelLayout ll, Level level) =>
+            {
+                for (int i = 0; i < 30; i++)
+                {
+                    if (UnityEngine.Random.Range(0,100) > 25)
+                    {
+                        int rx = UnityEngine.Random.Range(1, level.maxX);
+                        int ry = UnityEngine.Random.Range(1, level.maxY);
+
+                        if (level.terrain[rx, ry] == TerrainTypeEnum.terrainSlimeFloor)
+                            level.terrain[rx, ry] = TerrainTypeEnum.terrainRazorthorns;
+                    }
+                }
+
+                for (int i = 0; i < 30; i++)
+                {
+                    if (UnityEngine.Random.Range(0, 100) > 25)
+                    {
+                        int rx = UnityEngine.Random.Range(1, level.maxX);
+                        int ry = UnityEngine.Random.Range(1, level.maxY);
+
+                        if (level.terrain[rx, ry] == TerrainTypeEnum.terrainSlimeFloor)
+                            level.terrain[rx, ry] = TerrainTypeEnum.terrainSludgeshrooms;
+                    }
+                }
+            });
     }
 
     static void Add(LevelLayoutEnum _id, string _name, TerrainTypeEnum _border, TerrainTypeEnum _floorPrim, TerrainTypeEnum _floorAlt, TerrainTypeEnum _wall, 

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum BuildingLayoutEnum
 {
-    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool, buildTarRiverV, buildTarRiverH
+    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool, buildTarRiverV, buildTarRiverH, buildSingleTree, buildCorruptedForest
 }
 
 public enum BuildingLayoutType
 {
-    buildFree, buildNone, buildEmpty, buildShape, buildTarPool
+    buildFree, buildNone, buildEmpty, buildShape, buildTarPool, buildSingleTree, buildCorruptedForest
 }
 
 public delegate void BuildingPlaceMobs(Level level, MobTypeEnum mobType, int sx, int sy);
@@ -54,11 +54,18 @@ public abstract class BuildingLayout {
                         level.terrain[sx + x, sy + y] = levelLayout.terrainFloorPrimary;
                         if (Random.Range(0, 100) <= 25) level.terrain[sx + x, sy + y] = levelLayout.terrainFloorAlt;
                         break;
+                    case ',':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainSlimeFloor;
+                        if (Random.Range(0, 100) <= 25) level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainSlimeFloorBright;
+                        break;
                     case '#':
                         level.terrain[sx + x, sy + y] = levelLayout.terrainWall;
                         break;
                     case '~':
                         level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainWaterTar;
+                        break;
+                    case 'Y':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainTreeWall;
                         break;
                 }
             }
@@ -81,6 +88,8 @@ public static class BuildingLayouts
         Add(new BuildingLayoutTarPool());
         Add(new BuildingLayoutTarRiverV());
         Add(new BuildingLayoutTarRiverH());
+        Add(new BuildingLayoutSingleTree());
+        Add(new BuildingLayoutCorruptedForest());
     }
 
     static void Add(BuildingLayout bl)
@@ -381,6 +390,106 @@ public class BuildingLayoutTarRiverH : BuildingLayout
                         "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
                         "~~~~...~~~~~~~....~~~~~~~...~~",
                         ".............................." };
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        return new BuildingLayoutResult();
+    } 
+}
+
+public class BuildingLayoutSingleTree : BuildingLayout
+{
+    public BuildingLayoutSingleTree()
+    {
+        gw = 1;
+        gh = 1;
+        lw = 5;
+        lh = 5;
+        id = BuildingLayoutEnum.buildSingleTree;
+        buildType = BuildingLayoutType.buildSingleTree;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        int rx;
+        int ry;
+        for (int i = 0; i < 6; i++)
+        {
+            rx = Random.Range(0, lw);
+            ry = Random.Range(0, lh);
+
+            level.terrain[x + rx, y + ry] = TerrainTypeEnum.terrainSlimeFloor;
+        }
+
+        string[] l = { ",,,",
+                       ",Y,",
+                       ",,," };
+
+        rx = Random.Range(0, lw - 3);
+        ry = Random.Range(0, lh - 3);
+
+        TranslateCharsToLevel(level, levelLayout, l, x + rx, y + ry);
+
+        return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutCorruptedForest : BuildingLayout
+{
+    public BuildingLayoutCorruptedForest()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 8;
+        lh = 8;
+        id = BuildingLayoutEnum.buildCorruptedForest;
+        buildType = BuildingLayoutType.buildCorruptedForest;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l1 = { "........",
+                        ".Y...Y..",
+                        "........",
+                        "....Y...",
+                        "........",
+                        "...Y....",
+                        ".Y....Y.",
+                        "........" };
+
+
+        string[] l2 = { "........",
+                        ".....Y..",
+                        ".Y......",
+                        "....Y.Y.",
+                        "...Y....",
+                        ".Y......",
+                        "....Y...",
+                        "........" };
+
+        string[] l3 = { "........",
+                        "...Y....",
+                        ".Y...Y..",
+                        "........",
+                        "..Y...Y.",
+                        ".Y......",
+                        "...Y.Y..",
+                        "........" };
+
+        string[] l;
+        int r = Random.Range(0, 3);
+        switch (r)
+        {
+            case 1:
+                l = l2;
+                break;
+            case 2:
+                l = l3;
+                break;
+            default:
+                l = l1;
+                break;
+        }
 
         TranslateCharsToLevel(level, levelLayout, l, x, y);
 

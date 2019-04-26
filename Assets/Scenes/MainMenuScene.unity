@@ -439,7 +439,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[b] Quit Game'
+  m_Text: Quit Game
 --- !u!222 &736804321
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -514,7 +514,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '[a] Start Game'
+  m_Text: Start Game
 --- !u!222 &817071791
 CanvasRenderer:
   m_ObjectHideFlags: 0

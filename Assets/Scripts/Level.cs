@@ -286,6 +286,10 @@ public class Level {
         LevelGeneratorResult levelGeneratorResult = LevelGenerator.GenerateLevel(this, levelLayout);
 
         monsterLayout.PlaceMobs(this, levelGeneratorResult);
+
+        // place buildings from pre-processed function
+        if (levelLayout.PostProcessFunc != null)
+            levelLayout.PostProcessFunc(levelLayout, this);
     }
 
     public bool FindFreeSpotInside(out Vector2Int loc)
