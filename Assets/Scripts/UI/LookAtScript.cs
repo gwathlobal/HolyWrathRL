@@ -72,6 +72,8 @@ public class LookAtScript : MonoBehaviour {
             Level level = BoardManager.instance.level;
             PlayerMob player = BoardManager.instance.player;
 
+            if (!BoardManager.instance.playersTurn) return; 
+
             if (level.visible[pos.x, pos.y] && level.AreCellsConnected(player.x, player.y, pos.x, pos.y))
             {
                 player.path = Astar.FindPath(player.x, player.y, pos.x, pos.y,

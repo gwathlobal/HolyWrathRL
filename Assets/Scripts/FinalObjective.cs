@@ -36,7 +36,7 @@ public class FinalObjective10Wins : FinalObjective
 {
     public override bool CheckObjective()
     {
-        if (GameManager.instance.levelNum > 9) return true;
+        if (GameManager.instance.levelNum >= 9) return true;
         else return false;
     }
 }

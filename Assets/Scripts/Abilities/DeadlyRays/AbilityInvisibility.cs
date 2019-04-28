@@ -17,7 +17,7 @@ public class AbilityInvisibility : Ability
 
     public override string Description(Mob mob)
     {
-        return "Render yourself invisible to enemies for 4 turns.";
+        return "Render yourself invisible to enemies for 4 turns. Attacking an enemy does not remove the invisibility.";
     }
 
     public override string Name(Mob mob)

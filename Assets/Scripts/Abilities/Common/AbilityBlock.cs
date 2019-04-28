@@ -34,7 +34,8 @@ public class AbilityBlock : Ability
 
     public override int Cost(Mob mob)
     {
-        return 10;
+        if (mob.GetEffect(EffectTypeEnum.effectBlock) == null) return 10;
+        else return 0;
     }
 
     public override bool DoesMapCheck(Mob mob)

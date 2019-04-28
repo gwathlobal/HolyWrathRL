@@ -40,7 +40,7 @@ public class AbilityFireFists : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return true;
+        return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)

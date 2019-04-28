@@ -78,7 +78,7 @@ public class MobType {
 
 public enum MobTypeEnum
 {
-    mobAngel, mobHomunculus, mobCrimsonImp, mobMachineImp, mobFiend, mobCrimsonDemon, mobMachineDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
+    mobPCAngel, mobAngel, mobHomunculus, mobCrimsonImp, mobMachineImp, mobFiend, mobCrimsonDemon, mobMachineDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
     mobSpearOfLight, mobTarDemon, mobDemonicPortal
 };
 
@@ -129,11 +129,21 @@ public class MobTypes
         armorPR = new Dictionary<DmgTypeEnum, int>();
         armorPR.Add(DmgTypeEnum.Fire, 80);
         armorPR.Add(DmgTypeEnum.Holy, 100);
-        Add(MobTypeEnum.mobAngel, "Angel", mobAngel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
+        Add(MobTypeEnum.mobPCAngel, "Angel", mobAngel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
             AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance });
+
+        armorDR = new Dictionary<DmgTypeEnum, int>();
+        armorPR = new Dictionary<DmgTypeEnum, int>();
+        armorPR.Add(DmgTypeEnum.Fire, 80);
+        armorPR.Add(DmgTypeEnum.Holy, 100);
+        Add(MobTypeEnum.mobAngel, "Angel", mobAngel, 100, 100, 1, 5, MobType.NORMAL_AP, FactionEnum.factionAngels,
+            AbilityTypeEnum.abilFireFists, AbilityTypeEnum.abilFlamingArrow, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
+            armorPR, armorDR,
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

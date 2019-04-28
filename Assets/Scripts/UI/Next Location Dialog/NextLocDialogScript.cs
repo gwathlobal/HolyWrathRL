@@ -11,6 +11,7 @@ public class NextLocDialogScript : MonoBehaviour
     public Image NextLocScrollPanel;
     public Text locationTxt;
     public Text descrTxt;
+    public Text missionCompletedTxt;
 
     public List<GameObject> nextLocPanels;
 
@@ -21,6 +22,8 @@ public class NextLocDialogScript : MonoBehaviour
         GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         gameObject.SetActive(false);
         nextLocPanels = new List<GameObject>();
+
+        missionCompletedTxt.text = "Missions Completed: " + GameManager.instance.levelNum;
 
         SetUpScrollablePanels();
 

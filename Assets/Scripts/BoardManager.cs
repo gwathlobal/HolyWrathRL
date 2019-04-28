@@ -23,7 +23,6 @@ public class BoardManager : MonoBehaviour {
 
     public MessageLog msgLog;
 
-    private int curMobId = 0;
     private bool mobActed = false;
 
     public bool playersTurn = false;

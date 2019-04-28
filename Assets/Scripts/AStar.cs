@@ -112,7 +112,7 @@ public static class Astar
             {
                 result.Add(new Vector2Int(curNode.x, curNode.y));
                 curNode = curNode.p;
-            } while (!LocationEqual(curNode, startNode));
+            } while (curNode != null && !LocationEqual(curNode, startNode));
 
             result.Reverse();
 

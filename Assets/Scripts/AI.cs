@@ -36,7 +36,6 @@ public static class AIs
                 int rx;
                 int ry;
                 bool result = false;
-                bool calcPath = false;
                 Level level = BoardManager.instance.level;
 
                 if (actor.pathDst.x == actor.x && actor.pathDst.y == actor.y)
@@ -114,16 +113,18 @@ public static class AIs
             },
             (Mob actor, Mob nearestEnemy, Mob nearestAlly, List<Mob> enemies, List<Mob> allies) =>
             {
+                //Debug.Log("AI Use Ability");
                 List<Ability> abilities = new List<Ability>();
                 Ability ability;
                 foreach (AbilityTypeEnum abilityType in actor.abilities.Keys)
                 {
                     ability = actor.GetAbility(abilityType);
-                    if (ability.AbilityCheckAI(ability, actor, nearestEnemy, nearestAlly))
+                    if (!ability.passive && ability.AbilityCheckAI(ability, actor, nearestEnemy, nearestAlly))
                         abilities.Add(ability);
                 }
 
                 int r = Random.Range(0, abilities.Count - 1);
+                //Debug.Log(abilities[r].stdName);
                 abilities[r].AbilityInvokeAI(abilities[r], actor, nearestEnemy, nearestAlly);
             });
 

@@ -16,7 +16,7 @@ public class AbilityTrapMind : Ability
 
     public override string Description(Mob mob)
     {
-        return "Trap the mind of an enemy to immobilize it. Immobilization lasts for 3 turns.";
+        return "Trap the mind of an enemy to immobilize it. Immobilization lasts for 5 turns.";
     }
 
     public override string Name(Mob mob)
@@ -31,7 +31,7 @@ public class AbilityTrapMind : Ability
 
     public override int Cost(Mob mob)
     {
-        return 30;
+        return 25;
     }
 
     public override bool DoesMapCheck(Mob mob)
@@ -55,7 +55,7 @@ public class AbilityTrapMind : Ability
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
         if (actor.GetEffect(EffectTypeEnum.effectImmobilizeImmunity) == null)
-            target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 3);
+            target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 5);
         else
         {
             str = String.Format("{0} is unaffected. ", target.mob.name);

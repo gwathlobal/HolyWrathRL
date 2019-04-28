@@ -9,6 +9,14 @@ public class PlayerInput : MonoBehaviour {
         PlayerMob player = BoardManager.instance.player;
         bool turnEnded = false;
 
+        /*
+        int[] values = (int[])System.Enum.GetValues(typeof(KeyCode));
+        for (int i = 0; i < values.Length; i++)
+        {
+            if (Input.GetKey((KeyCode)values[i]))
+                Debug.Log("Key Pressed = " + ((KeyCode)values[i]).ToString());
+        }
+        */
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             UIManager.instance.ShowMainMenuWindow();

@@ -240,14 +240,17 @@ public class Mob
         {
             if (sortedAiPackages.TryGetValue(priority, out value))
             {
+                
                 for (int i = sortedAiPackages[priority].Count - 1; i >= 0; i--)
                 {
+                    //Debug.Log(sortedAiPackages[priority][i].ToString());
                     if (!AIs.aiPackages[sortedAiPackages[priority][i]].OnCheckAI(this, nearestEnemy, nearestAlly, enemies, allies))
                         sortedAiPackages[priority].RemoveAt(i);
                 }
                 if (sortedAiPackages[priority].Count > 0)
                 {
                     int r = UnityEngine.Random.Range(0, sortedAiPackages[priority].Count - 1);
+                    
                     AIs.aiPackages[sortedAiPackages[priority][r]].OnInvokeAI(this, nearestEnemy, nearestAlly, enemies, allies);
                     return;
                 }
@@ -327,6 +330,9 @@ public class Mob
 
         AttemptMoveResult attemptMoveResult = CanMoveToPos(x + xDir, y + yDir);
         bool result = false;
+
+        //if (GameManager.instance.player == this)
+        //    Debug.Log("attemptMoveResult = " + attemptMoveResult.result.ToString());
 
         switch (attemptMoveResult.result)
         {
@@ -750,7 +756,6 @@ public class Mob
 
     public void InvokeAbility(Ability ability, TargetStruct target)
     {
-        ability.AbilityInvoke(this, target);
         switch (ability.costType)
         {
             case AbilityCostType.wp:
@@ -760,6 +765,8 @@ public class Mob
                 curFP -= ability.Cost(this);
                 break;
         }
+
+        ability.AbilityInvoke(this, target);
         
         MakeAct(ability.Spd(this));
 
@@ -947,6 +954,7 @@ public class Mob
 
     public void MakeRandomMove()
     {
+        //Debug.Log("Make Random Move");
         List<Vector2Int> availCells = new List<Vector2Int>();
         BoardManager.instance.level.CheckSurroundings(this.x, this.y, true,
             (int dx, int dy) =>

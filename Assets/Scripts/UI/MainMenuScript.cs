@@ -40,7 +40,7 @@ public class MainMenuScript : MonoBehaviour {
         GameManager.instance.SetUpNemeses();
 
         GameManager.instance.levelNum = 0;
-        GameManager.instance.player = new PlayerMob(MobTypeEnum.mobAngel, 1, 1);
+        GameManager.instance.player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
         SceneManager.LoadScene("IntermissionScene");
     }
 
