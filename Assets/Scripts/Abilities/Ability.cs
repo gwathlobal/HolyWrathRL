@@ -187,7 +187,7 @@ public abstract class Ability {
 
             if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
             {
-                target.curFP -= 30;
+                target.curFP -= 15;
                 if (target.curFP <= 0)
                 {
                     target.curFP = 0;

@@ -116,6 +116,12 @@ public class BoardManager : MonoBehaviour {
         UIManager.instance.InitializeUI(player);
 
         mobList = new List<Mob>();
+
+        if (GameManager.instance.levelNum == 0)
+        {
+            msgLog.AddMsg("Welcome to Holy Wrath RL. To view help, press '?'.");
+            msgLog.FinalizeMsg();
+        }
     }
 
     // Update is called once per frame

@@ -101,7 +101,15 @@ public class AbilityJump : Ability
         i--;
         if (i >= 0)
         {
-            actor.SetPosition(path[i].x, path[i].y);
+            int n = 0;
+            for (n = i; n >= 0; n--)
+            {
+                AttemptMoveResult moveResult = actor.CanMoveToPos(path[n].x, path[n].y);
+                if (moveResult.result == AttemptMoveResultEnum.moveClear)
+                    break;
+            }
+
+            actor.SetPosition(path[n].x, path[n].y);
             actor.mo.Move(actor.x, actor.y);
         }
     }

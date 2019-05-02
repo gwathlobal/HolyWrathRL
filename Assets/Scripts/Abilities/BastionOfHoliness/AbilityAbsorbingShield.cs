@@ -16,7 +16,7 @@ public class AbilityAbsorbingShield : Ability
 
     public override string Description(Mob mob)
     {
-        return "Create a shield on you that absorbs 10 dmg for 8 turns.";
+        return "Create a shield on you that absorbs 30 dmg for 8 turns.";
     }
 
     public override string Name(Mob mob)
@@ -31,7 +31,7 @@ public class AbilityAbsorbingShield : Ability
 
     public override int Cost(Mob mob)
     {
-        return 30;
+        return 40;
     }
 
     public override bool DoesMapCheck(Mob mob)

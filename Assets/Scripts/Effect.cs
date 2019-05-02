@@ -300,10 +300,11 @@ public class EffectTypes
             },
             (Effect effect, Mob actor) =>
             {
+                actor.effects.Remove(effect.idType);
                 actor.CalculateShieldValue();
             },
             null,
-            10);
+            30);
 
         Add(EffectTypeEnum.effectReflectiveBlocking, "Reflective Blocking", new Color32(255, 255, 0, 255),
            null,
