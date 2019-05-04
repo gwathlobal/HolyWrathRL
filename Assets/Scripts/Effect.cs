@@ -187,7 +187,7 @@ public class EffectTypes
                 foreach (Mob mob in mobs)
                 {
                     int dmg = 0;
-                    dmg += Mob.InflictDamage(actor, mob, 10, DmgTypeEnum.Fire,
+                    dmg += Mob.InflictDamage(actor, mob, 5, DmgTypeEnum.Fire,
                         (int dmg1) =>
                         {
                             string str;

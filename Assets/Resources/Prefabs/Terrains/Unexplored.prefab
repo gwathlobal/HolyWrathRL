@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212367420012455914}
   - component: {fileID: 61475463737545250}
   m_Layer: 0
-  m_Name: Fog of war
+  m_Name: Unexplored
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,7 +102,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 2eef4598a8ae90a45b125f49912db3a7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.60784316}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -79,8 +79,8 @@ public class Level {
         mob.y = y;
         mobList.Add(mob);
         mobs[x, y] = mob;
-        //mob.go.SetActive(true);
-        mob.go.GetComponent<SpriteRenderer>().color = MobTypes.mobTypes[mob.idType].prefab.GetComponent<SpriteRenderer>().color;
+        mob.go.SetActive(true);
+        //mob.go.GetComponent<SpriteRenderer>().color = MobTypes.mobTypes[mob.idType].prefab.GetComponent<SpriteRenderer>().color;
         mob.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(x, y));
         return true;
     }
@@ -92,12 +92,12 @@ public class Level {
 
         mobs[mob.x, mob.y] = null;
         mobList.Remove(mob);
-        mob.go.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
-        //BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() => {
-        //    //Debug.Log("Removing mob " + mob.name + " from level");
-        //    mob.go.SetActive(false);
-        //    BoardAnimationController.instance.RemoveProcessedAnimation();
-        //}));
+        //mob.go.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
+        BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(mob.go, () => {
+            //Debug.Log("Removing mob " + mob.name + " from level");
+            mob.go.SetActive(false);
+            BoardAnimationController.instance.RemoveProcessedAnimation();
+        }));
         
         return true;
     }

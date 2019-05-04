@@ -21,7 +21,7 @@ public class TerrainType {
 
 public enum TerrainTypeEnum
 {
-    terrainFogOfWar, terrainFloor, terrainWall, terrainWindow,
+    terrainFloor, terrainWall, terrainWindow,
     terrainStoneFloorBorder, terrainWaterTarBorder, terrainSlimeFloorBorder,
     terrainStoneFloor, terrainStoneFloorBright, terrainAshes, terrainSlimeFloor, terrainSlimeFloorBright,
     terrainStoneWall, terrainTreeWall,
@@ -30,7 +30,6 @@ public enum TerrainTypeEnum
 
 public class TerrainTypes
 {
-    public static GameObject terrainFogOfWar;
     public static GameObject terrainFloor;
     public static GameObject terrainWall;
     public static GameObject terrainWindow;
@@ -42,7 +41,6 @@ public class TerrainTypes
 
     public static void InitializeTerrainTypes()
     {
-        terrainFogOfWar = Resources.Load("Prefabs/Terrains/Fog of war") as GameObject;
         terrainFloor = Resources.Load("Prefabs/Terrains/Floor") as GameObject;
         terrainWall = Resources.Load("Prefabs/Terrains/Wall") as GameObject;
         terrainWindow = Resources.Load("Prefabs/Terrains/Window") as GameObject;

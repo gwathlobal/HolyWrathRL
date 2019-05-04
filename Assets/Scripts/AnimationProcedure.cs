@@ -7,15 +7,20 @@ public delegate void action();
 public class AnimationProcedure {
 
     private action action;
+    private GameObject mo;
 
-    public AnimationProcedure(action _action)
+    public AnimationProcedure(GameObject _mo, action _action)
     {
         action = _action;
+        mo = _mo;
     }
 
     public void CallAction()
     {
         //Debug.Log("Call Action: About to call action on animation");
-        action();
+        if (mo.activeSelf)
+            action();
+        else
+            BoardAnimationController.instance.RemoveProcessedAnimation();
     }
 }

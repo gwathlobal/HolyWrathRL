@@ -32,7 +32,7 @@ public class AbilitySyphonLight : Ability
 
     public override int Cost(Mob mob)
     {
-        return 10;
+        return 100;
     }
 
     public override bool DoesMapCheck(Mob mob)

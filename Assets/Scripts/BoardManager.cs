@@ -8,6 +8,7 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject[,] tiles;
     public GameObject[,] fog;
+    public GameObject[,] unexplored;
     
     public static BoardManager instance = null;
     
@@ -30,6 +31,8 @@ public class BoardManager : MonoBehaviour {
     public int levelNum = 0;
 
     private List<Mob> mobList;
+
+    public GameObject unexploredPrefab;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -95,6 +98,7 @@ public class BoardManager : MonoBehaviour {
 
         tiles = new GameObject[level.maxX, level.maxY];
         fog = new GameObject[level.maxX, level.maxY];
+        unexplored = new GameObject[level.maxX, level.maxY];
         for (int y=0;y<level.maxY; y++)
         {
             for(int x=0;x<level.maxX; x++)
@@ -106,6 +110,9 @@ public class BoardManager : MonoBehaviour {
                 fog[x, y].GetComponent<SpriteRenderer>().color = new Color32(100, 100, 100, 255);
                 fog[x, y].GetComponent<SpriteRenderer>().sortingOrder = 10;
                 fog[x, y].transform.SetParent(GameObject.Find("FogParent").transform);
+                unexplored[x, y] = Instantiate(unexploredPrefab, new Vector3(x, y, 0), Quaternion.identity) as GameObject;
+                unexplored[x, y].GetComponent<SpriteRenderer>().sortingOrder = 15;
+                unexplored[x, y].transform.SetParent(GameObject.Find("UnexploredParent").transform);
             }
         }
 

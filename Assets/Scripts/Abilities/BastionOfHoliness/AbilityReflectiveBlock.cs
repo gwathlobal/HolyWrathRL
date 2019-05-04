@@ -16,7 +16,7 @@ public class AbilityReflectiveBlock : Ability
 
     public override string Description(Mob mob)
     {
-        string str = "Blocking increases the %DR by 50. While blocking FP regeneration is set to zero. Reflective blocking returns all projectiles to the originator. Each projectile reduces your current FP by 15.";
+        string str = "Blocking increases the %DR by 50. While blocking FP regeneration is set to zero. Reflective blocking returns all projectiles to the originator. Each projectile reduces your current FP by 10.";
         if (mob.GetEffect(EffectTypeEnum.effectReflectiveBlocking) == null) return "Start blocking. " + str;
         else return "Stop blocking. " + str;
     }

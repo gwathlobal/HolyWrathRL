@@ -46,7 +46,11 @@ public class MainMenuScript : MonoBehaviour {
 
     public void QuitGame()
     {
-        UIManager.instance.QuitToDesktop();
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+		Application.Quit();
+#endif
     }
 
     public void TestGame()

@@ -34,7 +34,7 @@ public class MovingObject : MonoBehaviour
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
                 //Debug.Log("Call Action - Move: About to start Smooth Movement");
                 StartCoroutine(SmoothMovement(end));
@@ -56,7 +56,7 @@ public class MovingObject : MonoBehaviour
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
                 //Debug.Log("Call Action - Move: About to start Melee Attack");
                 StartCoroutine(SmoothMelee(end, str, middleFunc));
@@ -80,9 +80,10 @@ public class MovingObject : MonoBehaviour
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
-                StartCoroutine(SmoothMovementProjectile(end, str, middleFunc));
+                if (this.gameObject.activeSelf)
+                    StartCoroutine(SmoothMovementProjectile(end, str, middleFunc));
             }));
         }
         else
@@ -95,7 +96,7 @@ public class MovingObject : MonoBehaviour
     {
         if (BoardManager.instance.level.visible[tx, ty])
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
                 StartCoroutine(SmoothDisappear());
             }));
@@ -127,7 +128,7 @@ public class MovingObject : MonoBehaviour
         }
         if (explosions.Count > 0)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
                 StartCoroutine(SmoothExplosionCone(sx, sy, explosions, mobStr));
             }));
@@ -146,7 +147,7 @@ public class MovingObject : MonoBehaviour
             });
         if (result)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(() =>
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
             {
                 StartCoroutine(SmoothExplosion3x3(sx, sy));
             }));

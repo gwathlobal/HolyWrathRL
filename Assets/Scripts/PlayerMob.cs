@@ -66,6 +66,7 @@ public class PlayerMob : Mob {
                 level.visible[dx, dy] = true;
                 //BoardManager.instance.tiles[dx, dy].GetComponent<SpriteRenderer>().color = TerrainTypes.terrainTypes[level.terrain[dx, dy]].color;
                 BoardManager.instance.fog[dx, dy].SetActive(false);
+                BoardManager.instance.unexplored[dx, dy].SetActive(false);
 
                 if (level.mobs[dx, dy] != null && !visibleMobs.Contains(level.mobs[dx, dy]))
                 {
@@ -125,6 +126,19 @@ public class PlayerMob : Mob {
         str += String.Format("HP: {0}/{1}\n", curHP, maxHP);
         str += String.Format("FP: {0}/{1}\n", curFP, maxFP);
         str += String.Format("WP: {0}\n", curWP);
+
+        bool hasArmor = false;
+        str += "\nDamage Reduction (DR):\n";
+        foreach (DmgType dmgType in DmgTypes.dmgTypes.Values)
+        {
+            if (armorDR[dmgType.dmgType] > 0 || armorPR[dmgType.dmgType] > 0)
+            {
+                hasArmor = true;
+                str += String.Format("   {0}: {1} pts/{2}%\n", dmgType.name.Substring(0, 1).ToUpper() + dmgType.name.Substring(1), armorDR[dmgType.dmgType], armorPR[dmgType.dmgType]);
+            }
+        }
+        if (!hasArmor)
+            str += "   None.\n";
 
         str += "\n";
         str += "-----------------------------------\n";
