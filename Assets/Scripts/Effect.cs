@@ -154,7 +154,12 @@ public class EffectTypes
             (Effect effect, Mob actor) =>
             {
                 int dmg = 0;
-                dmg += Mob.InflictDamage(null, actor, 3, DmgTypeEnum.Fire, null);
+                dmg += Mob.InflictDamage(null, actor, 
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Fire, 3 }
+                    },
+                    null);
                 if (BoardManager.instance.level.visible[actor.x, actor.y])
                 {
                     Vector3 pos = new Vector3(actor.x, actor.y, 0);
@@ -187,7 +192,11 @@ public class EffectTypes
                 foreach (Mob mob in mobs)
                 {
                     int dmg = 0;
-                    dmg += Mob.InflictDamage(actor, mob, 5, DmgTypeEnum.Fire,
+                    dmg += Mob.InflictDamage(actor, mob, 
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Fire, 5 }
+                        },
                         (int dmg1) =>
                         {
                             string str;

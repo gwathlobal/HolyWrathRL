@@ -55,22 +55,27 @@ public class AbilityMindBurn : Ability
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 20, DmgTypeEnum.Mind, (int dmg1) =>
-        {
-            string str1;
-            if (dmg1 <= 0)
+        dmg += Mob.InflictDamage(actor, target.mob,
+            new Dictionary<DmgTypeEnum, int>()
             {
-                str1 = String.Format("{0} takes no mind dmg. ",
-                    target.mob.name);
-            }
-            else
+                { DmgTypeEnum.Mind, 20 }
+            }, 
+            (int dmg1) =>
             {
-                str1 = String.Format("{0} takes {1} mind dmg. ",
-                    target.mob.name,
-                    dmg1);
-            }
-            return str1;
-        });
+                string str1;
+                if (dmg1 <= 0)
+                {
+                   str1 = String.Format("{0} takes no mind dmg. ",
+                       target.mob.name);
+                }
+                else
+                {
+                    str1 = String.Format("{0} takes {1} mind dmg. ",
+                        target.mob.name,
+                        dmg1);
+                }
+                return str1;
+            });
 
         if (BoardManager.instance.level.visible[target.mob.x, target.mob.y])
             UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(target.mob.x, target.mob.y, 0));

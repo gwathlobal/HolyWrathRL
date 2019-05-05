@@ -114,7 +114,11 @@ public class FeatureTypes
                 {
                     Mob mob = level.mobs[feature.x, feature.y];
                     int dmg = 0;
-                    dmg += Mob.InflictDamage(null, mob, 5, DmgTypeEnum.Fire,
+                    dmg += Mob.InflictDamage(null, mob,
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Fire, 5 }
+                        }, 
                         (int dmg1) =>
                         {
                             string str;
@@ -207,7 +211,11 @@ public class FeatureTypes
                 {
                     Mob mob = level.mobs[feature.x, feature.y];
                     int dmg = 0;
-                    dmg += Mob.InflictDamage(null, mob, 3, DmgTypeEnum.Holy,
+                    dmg += Mob.InflictDamage(null, mob,
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Holy, 3 }
+                        },
                         (int dmg1) =>
                         {
                             string str;
@@ -267,7 +275,11 @@ public class FeatureTypes
                 {
                     Mob mob = level.mobs[feature.x, feature.y];
                     int dmg = 0;
-                    dmg += Mob.InflictDamage(null, mob, 10, DmgTypeEnum.Acid,
+                    dmg += Mob.InflictDamage(null, mob,
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Acid, 10 }
+                        },
                         (int dmg1) =>
                         {
                             string str;

@@ -89,7 +89,13 @@ public class AbilityAmbush : Ability
             actor.SetPosition(fx, fy);
             actor.mo.Move(actor.x, actor.y);
 
-            dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical, null);
+            dmg = Mob.InflictDamage(actor, target.mob,
+                new Dictionary<DmgTypeEnum, int>()
+                {
+                    { DmgTypeEnum.Physical, dmg }
+                },
+                null);
+
             actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

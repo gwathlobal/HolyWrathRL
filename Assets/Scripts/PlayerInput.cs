@@ -241,6 +241,8 @@ public class PlayerInput : MonoBehaviour {
     {
         if (!BoardManager.instance.playersTurn) return;
 
+        UIManager.instance.anyBtnClicked = false;
+
         switch (UIManager.instance.screenStatus)
         {
             case MainScreenStatus.statusNormal:
@@ -270,9 +272,7 @@ public class PlayerInput : MonoBehaviour {
         }
 
         if (UIManager.instance.anyBtnClicked)
-        {
-            UIManager.instance.LeftPanel.RecreateInterface();
-        }
+            UIManager.instance.LeftPanel.UpdateLeftPanel();
     }
 
     // Update is called once per frame

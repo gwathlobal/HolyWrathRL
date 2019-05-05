@@ -150,6 +150,7 @@ public class BoardManager : MonoBehaviour {
                 if (playersTurn)
                 {
                     msgLog.SetPlayerStartedTurn(true);
+                    UIManager.instance.LeftPanel.UpdateLeftPanel();
                     return;
                 }
 

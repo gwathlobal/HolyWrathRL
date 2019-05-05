@@ -113,4 +113,106 @@ public class LeftPanelScript : MonoBehaviour {
         }
     }
 
+    public void UpdateLeftPanel()
+    {
+        PlayerMob player = BoardManager.instance.player;
+
+        if (player == null) return;
+
+        for (int i = 0; i < player.curAbils.Count; i++)
+        {
+            if (AbilityTypes.abilTypes[player.curAbils[i]].id != AbilityTypeEnum.abilNone)
+            {
+                Ability ability = player.GetAbility(player.curAbils[i]);
+
+                if (UIManager.instance.CheckApplicAbility(ability))
+                {
+                    abilNameTxts[i].GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                    abilShortcutTxts[i].GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                    abilPanels[i].blocked = false;
+                }
+                else
+                {
+                    abilNameTxts[i].GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                    abilShortcutTxts[i].GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                    abilPanels[i].blocked = true;
+                }
+                abilNameTxts[i].GetComponent<Text>().text = ability.Name(player);
+            }
+        }
+
+        if (player.meleeAbil != AbilityTypeEnum.abilNone)
+        {
+            Ability ability = player.GetAbility(player.meleeAbil);
+
+            if (UIManager.instance.CheckApplicAbility(ability))
+            {
+                meleeAbilTxt.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                meleeAbilPanel.blocked = false;
+            }
+            else
+            {
+                meleeAbilTxt.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                meleeAbilPanel.blocked = true;
+            }
+            meleeAbilTxt.GetComponent<Text>().text = ability.Name(player);
+        }
+
+        if (player.rangedAbil != AbilityTypeEnum.abilNone)
+        {
+            Ability ability = player.GetAbility(player.rangedAbil);
+
+            if (UIManager.instance.CheckApplicAbility(ability))
+            {
+                rangedAbilTxt.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                rangedAbilShortcut.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                rangedAbilPanel.blocked = false;
+            }
+            else
+            {
+                rangedAbilTxt.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                rangedAbilShortcut.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                rangedAbilPanel.blocked = true;
+            }
+            rangedAbilTxt.GetComponent<Text>().text = ability.Name(player);
+        }
+
+        if (player.dodgeAbil != AbilityTypeEnum.abilNone)
+        {
+            Ability ability = player.GetAbility(player.dodgeAbil);
+
+            if (UIManager.instance.CheckApplicAbility(ability))
+            {
+                dodgeAbilTxt.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                dodgeAbilShortcut.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                dodgeAbilPanel.blocked = false;
+            }
+            else
+            {
+                dodgeAbilTxt.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                dodgeAbilShortcut.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                dodgeAbilPanel.blocked = true;
+            }
+            dodgeAbilTxt.GetComponent<Text>().text = ability.Name(player);
+        }
+
+        if (player.blockAbil != AbilityTypeEnum.abilNone)
+        {
+            Ability ability = player.GetAbility(player.blockAbil);
+
+            if (UIManager.instance.CheckApplicAbility(ability))
+            {
+                blockAbilTxt.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                blockAbilShortcut.GetComponent<Text>().color = new Color32(255, 255, 255, 255);
+                blockAbilPanel.blocked = false;
+            }
+            else
+            {
+                blockAbilTxt.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                blockAbilShortcut.GetComponent<Text>().color = new Color32(100, 100, 100, 255);
+                blockAbilPanel.blocked = true;
+            }
+            blockAbilTxt.GetComponent<Text>().text = ability.Name(player);
+        }
+    }
 }

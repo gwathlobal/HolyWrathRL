@@ -51,7 +51,13 @@ public class AbilityClaws : Ability {
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 6, DmgTypeEnum.Physical, null);
+        dmg += Mob.InflictDamage(actor, target.mob,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, 6 }
+            },
+            null);
+
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>
             {

@@ -480,83 +480,89 @@ public class Mob
         return str;
     }
 
-    public static int InflictDamage(Mob attacker, Mob target, int initDmg, DmgTypeEnum dmgType, dmg_string dmg_string)
+    public static int InflictDamage(Mob attacker, Mob target, Dictionary<DmgTypeEnum, int> dmgDict, dmg_string dmg_string)
     {
         // TODO: make the function take a list of dmg types & dmg values instead of invoking the function for each dmg type separately
 
         string str = "";
-        int dmg = initDmg;
+        int finaldmg = 0;
+        foreach (DmgTypeEnum dmgType in dmgDict.Keys)
+        {
+            int dmg = dmgDict[dmgType];
 
-        dmg = (int)(dmg * (100f - target.armorPR[dmgType]) / 100);
-        dmg -= target.armorDR[dmgType];
-        dmg = (dmg < 0) ? 0 : dmg;
+            dmg = (int)(dmg * (100f - target.armorPR[dmgType]) / 100);
+            dmg -= target.armorDR[dmgType];
+            dmg = (dmg < 0) ? 0 : dmg;
 
-        if (attacker != null && dmg > 0 && dmg_string == null)
-        {
-            str = String.Format("{0} hits {1} for {2} {3} dmg. ",
-                attacker.name,
-                target.name,
-                dmg,
-                DmgTypes.dmgTypes[dmgType].name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
-        }
-        else if (attacker != null && dmg == 0 && dmg_string == null)
-        {
-            str = String.Format("{0} hits {1}, but {1} takes no {2} damage. ",
-                attacker.name,
-                target.name,
-                DmgTypes.dmgTypes[dmgType].name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
-        }
-        else if (attacker == null && dmg > 0 && dmg_string == null)
-        {
-            str = String.Format("{0} takes {1} {2} dmg. ",
-                target.name,
-                dmg,
-                DmgTypes.dmgTypes[dmgType].name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
-        }
-        else if (attacker == null && dmg == 0 && dmg_string == null)
-        {
-            str = String.Format("{0} takes no {1} dmg. ",
-                target.name,
-                DmgTypes.dmgTypes[dmgType].name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
-        }
-        else if (dmg_string != null)
-        {
-            str = dmg_string(dmg);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
-        }
-
-        int curDmg = dmg;
-        List<Effect> shieldsToRemove = new List<Effect>();
-        foreach (Effect effect in target.effects.Values)
-        {
-            int SV = effect.SV;
-            if (SV > 0)
+            if (attacker != null && dmg > 0 && dmg_string == null)
             {
-                if (curDmg >= SV)
+                str = String.Format("{0} hits {1} for {2} {3} dmg. ",
+                    attacker.name,
+                    target.name,
+                    dmg,
+                    DmgTypes.dmgTypes[dmgType].name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
+            }
+            else if (attacker != null && dmg == 0 && dmg_string == null)
+            {
+                str = String.Format("{0} hits {1}, but {1} takes no {2} damage. ",
+                    attacker.name,
+                    target.name,
+                    DmgTypes.dmgTypes[dmgType].name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(attacker.x, attacker.y, str);
+            }
+            else if (attacker == null && dmg > 0 && dmg_string == null)
+            {
+                str = String.Format("{0} takes {1} {2} dmg. ",
+                    target.name,
+                    dmg,
+                    DmgTypes.dmgTypes[dmgType].name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
+            }
+            else if (attacker == null && dmg == 0 && dmg_string == null)
+            {
+                str = String.Format("{0} takes no {1} dmg. ",
+                    target.name,
+                    DmgTypes.dmgTypes[dmgType].name);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
+            }
+            else if (dmg_string != null)
+            {
+                str = dmg_string(dmg);
+                BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
+            }
+
+            int curDmg = dmg;
+            finaldmg += dmg;
+            List<Effect> shieldsToRemove = new List<Effect>();
+            foreach (Effect effect in target.effects.Values)
+            {
+                int SV = effect.SV;
+                if (SV > 0)
                 {
-                    curDmg -= SV;
-                    effect.SV = 0;
-                    shieldsToRemove.Add(effect);
-                }
-                else
-                {
-                    effect.SV -= curDmg;
-                    curDmg = 0;
+                    if (curDmg >= SV)
+                    {
+                        curDmg -= SV;
+                        effect.SV = 0;
+                        shieldsToRemove.Add(effect);
+                    }
+                    else
+                    {
+                        effect.SV -= curDmg;
+                        curDmg = 0;
+                    }
                 }
             }
-        }
-        for (int i = shieldsToRemove.Count - 1; i >= 0; i--)
-        {
-            target.effects.Remove(shieldsToRemove[i].idType);
-        }
-        shieldsToRemove.Clear();
-        target.CalculateShieldValue();
+            for (int i = shieldsToRemove.Count - 1; i >= 0; i--)
+            {
+                target.effects.Remove(shieldsToRemove[i].idType);
+            }
+            shieldsToRemove.Clear();
+            target.CalculateShieldValue();
 
-        target.curHP -= curDmg;
+            target.curHP -= curDmg;
+
+        }
 
         // increase WP with Divine Vengeance
         if (attacker != null && attacker.GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
@@ -565,14 +571,14 @@ public class Mob
             target.GetAbility(AbilityTypeEnum.abilDivineVengeance).AbilityInvoke(target, new TargetStruct(new Vector2Int(target.x, target.y), target));
 
         // remove Blindness
-        if (dmg > 0 && target.GetEffect(EffectTypeEnum.effectBlindness) != null)
+        if (finaldmg > 0 && target.GetEffect(EffectTypeEnum.effectBlindness) != null)
             target.RemoveEffect(EffectTypeEnum.effectBlindness);
 
         // transfer health from Syphon Light
-        if (dmg > 0 && target.GetEffect(EffectTypeEnum.effectSyphonLight) != null &&
+        if (finaldmg > 0 && target.GetEffect(EffectTypeEnum.effectSyphonLight) != null &&
             attacker != null && target.GetEffect(EffectTypeEnum.effectSyphonLight).actor == attacker)
         {
-            attacker.curHP += dmg / 2;
+            attacker.curHP += finaldmg / 2;
             if (target.curHP > target.maxHP) attacker.curHP = attacker.maxHP;
         }
 
@@ -582,7 +588,7 @@ public class Mob
             target.InvokeAbility(target.GetAbility(AbilityTypeEnum.abilTeleportOnHit), new TargetStruct(new Vector2Int(0, 0), null));
         }
 
-        return dmg;
+        return finaldmg;
     }
 
     public bool CheckDead()

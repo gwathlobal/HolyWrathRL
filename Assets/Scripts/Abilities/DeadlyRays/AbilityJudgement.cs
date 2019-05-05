@@ -64,7 +64,12 @@ public class AbilityJudgement : Ability
         else if ((float)target.mob.curHP / target.mob.maxHP > 0.25) dmg = 20;
         else dmg = 30;
 
-        dmg = Mob.InflictDamage(actor, target.mob, dmg, DmgTypeEnum.Physical, null);
+        dmg = Mob.InflictDamage(actor, target.mob,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, dmg }
+            }, 
+            null);
 
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>

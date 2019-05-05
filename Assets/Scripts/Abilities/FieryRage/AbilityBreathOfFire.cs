@@ -158,22 +158,27 @@ public class AbilityBreathOfFire : Ability
         foreach (Mob mob in affectedMobs)
         {
             int dmg = 0;
-            dmg += Mob.InflictDamage(actor, mob, 25, DmgTypeEnum.Fire, (int dmg1) =>
-            {
-                string str1;
-                if (dmg1 <= 0)
+            dmg += Mob.InflictDamage(actor, mob,
+                new Dictionary<DmgTypeEnum, int>()
                 {
-                    str1 = String.Format("{0} takes no fire dmg. ",
-                        mob.name);
-                }
-                else
+                    { DmgTypeEnum.Fire, 25 }
+                }, 
+                (int dmg1) =>
                 {
-                    str1 = String.Format("{0} takes {1} fire dmg. ",
-                        mob.name,
-                        dmg1);
-                }
-                return str1;
-            });
+                    string str1;
+                    if (dmg1 <= 0)
+                    {
+                        str1 = String.Format("{0} takes no fire dmg. ",
+                            mob.name);
+                    }
+                    else
+                    {
+                        str1 = String.Format("{0} takes {1} fire dmg. ",
+                            mob.name,
+                            dmg1);
+                    }
+                    return str1;
+                });
             mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
             
             if (BoardManager.instance.level.visible[mob.x, mob.y])

@@ -26,6 +26,10 @@ public abstract class MonsterLayout {
         if (createPlayer)
         {
             player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
+            GameObject selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
+            // NOTE: for unknown reason it gets shift -1,-1 so I cant put it to 0, 0
+            selector.transform.position = new Vector3(1, 1, 0);
+            selector.GetComponent<SpriteRenderer>().color = new Color32(0, 100, 0, 255);
             
             //player.curAbils[0] = AbilityTypeEnum.abilHealSelf;
             //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
@@ -41,6 +45,11 @@ public abstract class MonsterLayout {
             player = GameManager.instance.player;
             player.go = GameObject.Instantiate(MobTypes.mobTypes[player.idType].prefab, new Vector3(player.x, player.y, 0f), Quaternion.identity);
             player.mo = player.go.GetComponent<MovingObject>();
+
+            GameObject selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
+            // NOTE: for unknown reason it gets shift -1,-1 so I cant put it to 0, 0
+            selector.transform.position = new Vector3(1, 1, 0);
+            selector.GetComponent<SpriteRenderer>().color = new Color32(0, 100, 0, 255);
 
             player.curHP = player.maxHP;
             player.curFP = player.maxFP;

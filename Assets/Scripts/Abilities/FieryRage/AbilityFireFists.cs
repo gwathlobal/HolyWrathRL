@@ -51,8 +51,14 @@ public class AbilityFireFists : Ability
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Physical, null);
-        dmg += Mob.InflictDamage(actor, target.mob, 5, DmgTypeEnum.Fire,  null);
+        dmg += Mob.InflictDamage(actor, target.mob,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, 5 },
+                { DmgTypeEnum.Fire, 5 }
+            }, 
+            null);
+
         target.mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
         actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
             () =>

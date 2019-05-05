@@ -73,7 +73,11 @@ public class AbilityShootSpikes : Ability
             {
                 string result_str;
                 int dmg = 0;
-                dmg += Mob.InflictDamage(attacker, defender, 5, DmgTypeEnum.Physical, 
+                dmg += Mob.InflictDamage(attacker, defender,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Physical, 5 }
+                    }, 
                     (int dmg1) =>
                     {
                         string str1;

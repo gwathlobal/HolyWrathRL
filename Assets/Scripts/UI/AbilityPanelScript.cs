@@ -13,8 +13,8 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public Text abilText;
     public Text shortcutText;
+    public bool blocked;
 
-    private bool pointerInside;
     private GameObject panel;
     private Text txt;
 
@@ -53,8 +53,6 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
         panel.SetActive(false);
 
-        pointerInside = false;
-
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -67,7 +65,11 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
                         
             panel.SetActive(true);
 
-            pointerInside = true;
+            if (!blocked)
+            {
+                abilText.color = new Color32(255, 222, 0, 255);
+                shortcutText.color = new Color32(255, 222, 0, 255);
+            }
         }
     }
 
@@ -88,34 +90,11 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
     public void OnPointerExit(PointerEventData eventData)
     {
         panel.SetActive(false);
-        pointerInside = false;
-    }
-
-    void Update()
-    {
-        PlayerMob player = BoardManager.instance.player;
-
-        if (player == null) return;
-
-        Ability ability = player.GetAbility(abilType);
-
-        if (UIManager.instance.CheckApplicAbility(ability))
+        if (!blocked)
         {
-            if (pointerInside)
-            {
-                abilText.color = new Color32(255, 222, 0, 255);
-                shortcutText.color = new Color32(255, 222, 0, 255);
-            }
-            else
-            {
-                abilText.color = new Color32(255, 255, 255, 255);
-                shortcutText.color = new Color32(255, 255, 255, 255);
-            }
-        }
-        else
-        {
-            abilText.color = new Color32(100, 100, 100, 255);
-            shortcutText.color = new Color32(100, 100, 100, 255);
+            abilText.color = new Color32(255, 255, 255, 255);
+            shortcutText.color = new Color32(255, 255, 255, 255);
         }
     }
+
 }

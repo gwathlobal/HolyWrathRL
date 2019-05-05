@@ -73,7 +73,11 @@ public class AbilityLightBolt : Ability
             {
                 string result_str;
                 int dmg = 0;
-                dmg += Mob.InflictDamage(attacker, defender, 5, DmgTypeEnum.Holy,
+                dmg += Mob.InflictDamage(attacker, defender,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Holy, 5 }
+                    },
                     (int dmg1) =>
                     {
                         string str1;

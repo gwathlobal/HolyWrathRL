@@ -109,7 +109,12 @@ public class TerrainTypes
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
                 int dmg = 0;
-                dmg += Mob.InflictDamage(null, actor, 5, DmgTypeEnum.Physical, null);
+                dmg += Mob.InflictDamage(null, actor,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Physical, 5 }
+                    }, 
+                    null);
                 if (BoardManager.instance.level.visible[actor.x, actor.y])
                 {
                     Vector3 pos = new Vector3(actor.x, actor.y, 0);
