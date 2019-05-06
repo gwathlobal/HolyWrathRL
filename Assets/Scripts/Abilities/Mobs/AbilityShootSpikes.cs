@@ -8,7 +8,7 @@ public class AbilityShootSpikes : Ability
     public AbilityShootSpikes()
     {
         id = AbilityTypeEnum.abilShootSpikes;
-        stdName = "Shoot spikes";
+        stdName = "Shoot Spikes";
         passive = false;
         slot = AbilitySlotCategoty.abilRanged;
         category = AbilityPlayerCategory.abilMobs;
@@ -21,7 +21,7 @@ public class AbilityShootSpikes : Ability
 
     public override string Name(Mob mob)
     {
-        return "Shoot spikes";
+        return "Shoot Spikes";
     }
 
     public override float Spd(Mob mob)

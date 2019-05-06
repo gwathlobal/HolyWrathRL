@@ -9,7 +9,7 @@ public delegate void FeatOnTick(Level level, Feature feature);
 
 public enum FeatureTypeEnum
 {
-    featBloodDrop, featBloodPool, featFire, featHolyRune, featAcidCloud
+    featBloodDrop, featBloodPool, featFire, featHolyRune, featAcidCloud, featArtilleryTarget
 };
 
 public class FeatureType {
@@ -40,6 +40,7 @@ public class FeatureTypes
     public static GameObject featFire;
     public static GameObject featHolyRune;
     public static GameObject featAcidCloud;
+    public static GameObject featArtilleryTarget;
     public static Dictionary<FeatureTypeEnum, FeatureType> featureTypes;
 
     public static void InitializeFeatureTypes()
@@ -48,6 +49,7 @@ public class FeatureTypes
         featFire = Resources.Load("Prefabs/Features/Fire") as GameObject;
         featHolyRune = Resources.Load("Prefabs/Features/Holy Rune") as GameObject;
         featAcidCloud = Resources.Load("Prefabs/Features/Acid Cloud") as GameObject;
+        featArtilleryTarget = Resources.Load("Prefabs/Features/Target Dot") as GameObject;
 
         featureTypes = new Dictionary<FeatureTypeEnum, FeatureType>();
 
@@ -311,6 +313,81 @@ public class FeatureTypes
 
                 feature.counter--;
                 if (UnityEngine.Random.Range(0, 100) < 25) feature.counter--;
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    //level.featureList.Remove(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                    //BoardManager.instance.RemoveFeatureFromWorld(feature);
+                }
+            });
+
+        Add(FeatureTypeEnum.featArtilleryTarget, "Signal flare", featArtilleryTarget, featArtilleryTarget.GetComponent<SpriteRenderer>().color,
+            null,
+            null,
+            (Level level, Feature feature) =>
+            {
+                feature.counter--;
+                if (feature.counter > 0) return;
+
+                string str = String.Format("The artillery bombardment lands. ");
+                BoardManager.instance.msgLog.PlayerVisibleMsg(feature.x, feature.y, str);
+
+                List<Mob> affectedMobs = new List<Mob>();
+                List<Vector2Int> caughtFire = new List<Vector2Int>();
+
+                LOS_FOV.DrawFOV(feature.x, feature.y, 2,
+                    (int dx, int dy, int pdx, int pdy) =>
+                    {
+                        if (level.mobs[dx, dy] != null && !affectedMobs.Contains(level.mobs[dx, dy]))
+                            affectedMobs.Add(level.mobs[dx, dy]);
+
+                        if (TerrainTypes.terrainTypes[level.terrain[dx, dy]].blocksMovement) return false;
+
+                        if (UnityEngine.Random.Range(0, 4) == 0)
+                        {
+                            if (!caughtFire.Contains(new Vector2Int(dx, dy)))
+                                caughtFire.Add(new Vector2Int(dx, dy));
+                        }
+
+                        return true;
+                    });
+
+                GameObject go = new GameObject("tmp");
+                go.transform.SetParent(feature.go.transform.parent);
+                go.transform.position = feature.go.transform.position;
+                go.AddComponent<MovingObject>();
+                go.GetComponent<MovingObject>().Explosion5x5(feature.x, feature.y);
+
+                foreach (Vector2Int fireLoc in caughtFire)
+                {
+                    Feature fire = new Feature(FeatureTypeEnum.featFire, fireLoc.x, fireLoc.y);
+                    fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[fireLoc.x, fireLoc.y]].catchesFire;
+                    BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
+                }
+
+                foreach (Mob mob in affectedMobs)
+                {
+                    int dmg = 0;
+                    dmg += Mob.InflictDamage(null, mob,
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Physical, 10 },
+                            { DmgTypeEnum.Fire, 10 }
+                        },
+                        null);
+                    
+                    if (BoardManager.instance.level.visible[mob.x, mob.y])
+                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+
+                    if (mob.CheckDead())
+                    {
+                        mob.MakeDead(null, true, true, false);
+                    }
+
+                }
+
+                
                 if (feature.counter <= 0)
                 {
                     level.RemoveFeatureFromLevel(feature);

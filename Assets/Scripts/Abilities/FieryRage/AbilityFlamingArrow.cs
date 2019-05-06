@@ -16,7 +16,7 @@ public class AbilityFlamingArrow : Ability
 
     public override string Description(Mob mob)
     {
-        return "Attack the enemy from range for 5 Fire dmg. Places a Burning effect on the target that deals 3 Fire dmg for 5 turns.";
+        return "Attack the enemy from range for 5 fire dmg. Places a Burning effect on the target that deals 3 fire dmg for 5 turns.";
     }
 
     public override string Name(Mob mob)

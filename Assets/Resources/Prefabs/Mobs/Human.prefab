@@ -74,6 +74,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveTime: 0.03
+  inverseMoveTime: 0
+  rb2D: {fileID: 0}
 --- !u!212 &212250958528976178
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -110,7 +112,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300064, guid: 2eef4598a8ae90a45b125f49912db3a7, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9150943, g: 0.9106812, b: 0.22877358, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

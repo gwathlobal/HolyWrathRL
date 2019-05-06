@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum FactionEnum
 {
-    factionAngels, factionDemons, factionHumans, factionBeasts
+    factionAngels, factionDemons, factionHumans, factionBeasts, factionSoldiers
 }
 
 public class Faction {
@@ -30,8 +30,9 @@ public static class Factions
         relations = new Dictionary<FactionEnum, bool>();
         relations.Add(FactionEnum.factionAngels, true);
         relations.Add(FactionEnum.factionDemons, false);
-        relations.Add(FactionEnum.factionHumans, false);
+        relations.Add(FactionEnum.factionHumans, true);
         relations.Add(FactionEnum.factionBeasts, false);
+        relations.Add(FactionEnum.factionSoldiers, false);
         Add(FactionEnum.factionAngels, relations);
 
         relations = new Dictionary<FactionEnum, bool>();
@@ -39,13 +40,15 @@ public static class Factions
         relations.Add(FactionEnum.factionDemons, true);
         relations.Add(FactionEnum.factionHumans, false);
         relations.Add(FactionEnum.factionBeasts, false);
+        relations.Add(FactionEnum.factionSoldiers, false);
         Add(FactionEnum.factionDemons, relations);
 
         relations = new Dictionary<FactionEnum, bool>();
-        relations.Add(FactionEnum.factionAngels, false);
+        relations.Add(FactionEnum.factionAngels, true);
         relations.Add(FactionEnum.factionDemons, false);
         relations.Add(FactionEnum.factionHumans, true);
         relations.Add(FactionEnum.factionBeasts, false);
+        relations.Add(FactionEnum.factionSoldiers, true);
         Add(FactionEnum.factionHumans, relations);
 
         relations = new Dictionary<FactionEnum, bool>();
@@ -53,7 +56,16 @@ public static class Factions
         relations.Add(FactionEnum.factionDemons, false);
         relations.Add(FactionEnum.factionHumans, false);
         relations.Add(FactionEnum.factionBeasts, true);
+        relations.Add(FactionEnum.factionSoldiers, false);
         Add(FactionEnum.factionBeasts, relations);
+
+        relations = new Dictionary<FactionEnum, bool>();
+        relations.Add(FactionEnum.factionAngels, false);
+        relations.Add(FactionEnum.factionDemons, false);
+        relations.Add(FactionEnum.factionHumans, true);
+        relations.Add(FactionEnum.factionBeasts, false);
+        relations.Add(FactionEnum.factionSoldiers, true);
+        Add(FactionEnum.factionSoldiers, relations);
     }
 
     public static void Add(FactionEnum _faction, Dictionary<FactionEnum, bool> _relations)

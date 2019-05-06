@@ -15,7 +15,7 @@ public class AbilityTarTentacles : Ability {
 
     public override string Description(Mob mob)
     {
-        return "Attack the enemy in melee for 15 Physical dmg.";
+        return "Attack the enemy in melee for 15 physical dmg.";
     }
 
     public override string Name(Mob mob)

@@ -79,7 +79,7 @@ public class MobType {
 public enum MobTypeEnum
 {
     mobPCAngel, mobAngel, mobHomunculus, mobCrimsonImp, mobMachineImp, mobFiend, mobCrimsonDemon, mobMachineDemon, mobArchdemon, mobArchdevil, mobScavenger, mobSplitSoul, mobArchangel,
-    mobSpearOfLight, mobTarDemon, mobDemonicPortal
+    mobSpearOfLight, mobTarDemon, mobDemonicPortal, mobSoldier, mobMachinegunman, mobScout, mobHuman
 };
 
 public class MobTypes
@@ -99,6 +99,10 @@ public class MobTypes
     public static GameObject mobSpearOfLight;
     public static GameObject mobTarDemon;
     public static GameObject mobDemonicPortal;
+    public static GameObject mobSoldier;
+    public static GameObject mobHuman;
+    public static GameObject mobMachinegunman;
+    public static GameObject mobScout;
 
     public static Dictionary<MobTypeEnum, MobType> mobTypes;
 
@@ -119,6 +123,10 @@ public class MobTypes
         mobSpearOfLight = Resources.Load("Prefabs/Mobs/Spear of Light") as GameObject;
         mobTarDemon = Resources.Load("Prefabs/Mobs/Tar Demon") as GameObject;
         mobDemonicPortal = Resources.Load("Prefabs/Mobs/Demonic Portal") as GameObject;
+        mobSoldier = Resources.Load("Prefabs/Mobs/Soldier") as GameObject;
+        mobHuman = Resources.Load("Prefabs/Mobs/Human") as GameObject;
+        mobMachinegunman = Resources.Load("Prefabs/Mobs/Machinegunman") as GameObject;
+        mobScout = Resources.Load("Prefabs/Mobs/Scout") as GameObject;
 
         mobTypes = new Dictionary<MobTypeEnum, MobType>();
 
@@ -278,6 +286,54 @@ public class MobTypes
             new List<AiPackageEnum>() { AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilSummonImp });
 
+        Add(MobTypeEnum.mobSoldier, "Soldier", mobSoldier, 25, 30, 0, 5, MobType.NORMAL_AP, FactionEnum.factionSoldiers,
+            AbilityTypeEnum.abilKnife, AbilityTypeEnum.abilShootRifle, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Holy, 100 }
+            }, 
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, 1 }
+            },
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMedkit });
+
+        Add(MobTypeEnum.mobMachinegunman, "Machinegunman", mobMachinegunman, 25, 30, 0, 5, MobType.NORMAL_AP, FactionEnum.factionSoldiers,
+            AbilityTypeEnum.abilKnife, AbilityTypeEnum.abilShootMachinegun, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Holy, 100 }
+            },
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, 1 }
+            },
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMedkit });
+
+        Add(MobTypeEnum.mobScout, "Scout", mobScout, 25, 40, 0, 5, MobType.NORMAL_AP * 0.75f, FactionEnum.factionSoldiers,
+            AbilityTypeEnum.abilKnife, AbilityTypeEnum.abilShootSniperRifle, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Holy, 100 }
+            },
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Physical, 1 }
+            },
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMedkit, AbilityTypeEnum.abilCallArtillery });
+
+        Add(MobTypeEnum.mobHuman, "Human", mobHuman, 25, 25, 0, 5, MobType.NORMAL_AP, FactionEnum.factionHumans,
+            AbilityTypeEnum.abilFists, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
+            new Dictionary<DmgTypeEnum, int>()
+            {
+                { DmgTypeEnum.Holy, 100 }
+            },
+            new Dictionary<DmgTypeEnum, int>(),
+            new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiFleeEnemy },
+            new List<AbilityTypeEnum>());
     }
 
     private static void Add(MobTypeEnum _id, string _name, GameObject _prefab, int _HP, int _FP, int _regenHP, int _regenFP, float _moveSpeed, 

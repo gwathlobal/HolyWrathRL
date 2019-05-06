@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum AiPackageEnum
 {
-    aiFindRandomLocation, aiMeleeEnemy, aiUseAbility, aiFindCorpse
+    aiFindRandomLocation, aiMeleeEnemy, aiUseAbility, aiFindCorpse, aiFleeEnemy
 }
 
 public delegate bool OnCheckAI(Mob actor, Mob nearestEnemy, Mob nearestAlly, List<Mob> enemies, List<Mob> allies);
@@ -172,6 +172,42 @@ public static class AIs
                 {
                     actor.MakeRandomMove();
                     actor.pathDst = new Vector2Int(actor.x, actor.y);
+                }
+            });
+
+        Add(AiPackageEnum.aiFleeEnemy, 9,
+            (Mob actor, Mob nearestEnemy, Mob nearestAlly, List<Mob> enemies, List<Mob> allies) =>
+            {
+                Level level = BoardManager.instance.level;
+                if (nearestEnemy != null)
+                    return true;
+                else return false;
+            },
+            (Mob actor, Mob nearestEnemy, Mob nearestAlly, List<Mob> enemies, List<Mob> allies) =>
+            {
+                int dx = actor.x - nearestEnemy.x, dy = actor.y - nearestEnemy.y;
+
+                if (dx > 0) dx = 1;
+                else if (dx < 0) dx = -1;
+
+                if (dy > 0) dy = 1;
+                else if (dy < 0) dy = -1;
+
+                if (actor.CanMoveToPos(actor.x + dx, actor.y + dy).result == AttemptMoveResultEnum.moveClear)
+                {
+                    actor.Move(dx, dy);
+                    actor.pathDst.x = actor.x;
+                    actor.pathDst.y = actor.y;
+                    actor.path.Clear();
+                    return;
+                }
+                else
+                {
+                    actor.MakeRandomMove();
+                    actor.pathDst.x = actor.x;
+                    actor.pathDst.y = actor.y;
+                    actor.path.Clear();
+                    return;
                 }
             });
     }

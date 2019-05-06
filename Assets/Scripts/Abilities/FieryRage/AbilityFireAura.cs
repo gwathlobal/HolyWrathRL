@@ -16,7 +16,7 @@ public class AbilityFireAura : Ability
 
     public override string Description(Mob mob)
     {
-        return "Create a fire aura that damages all enemies around your for 5 Fire dmg and applies the Burning effect to them. Burning deals 3 Fire dmg for 5 turns. The fire aura lasts for 5 turns.";
+        return "Create a fire aura that damages all enemies around your for 5 fire dmg and applies the Burning effect to them. Burning deals 3 fire dmg for 5 turns. The fire aura lasts for 5 turns.";
     }
 
     public override string Name(Mob mob)

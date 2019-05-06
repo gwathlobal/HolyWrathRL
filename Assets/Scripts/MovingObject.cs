@@ -154,6 +154,37 @@ public class MovingObject : MonoBehaviour
         }
     }
 
+    public void Explosion5x5(int sx, int sy)
+    {
+        bool result = false;
+        Level level = BoardManager.instance.level;
+
+        LOS_FOV.DrawFOV(sx, sy, 2,
+            (int dx, int dy, int pdx, int pdy) =>
+            {
+                if (level.visible[dx, dy])
+                {
+                    result = true;
+                }
+
+                if (TerrainTypes.terrainTypes[level.terrain[dx, dy]].blocksMovement) return false;
+
+                return true;
+            });
+
+        if (result)
+        {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
+            {
+                StartCoroutine(SmoothExplosion5x5(sx, sy));
+            }));
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     protected IEnumerator SmoothMovement(Vector3 end)
     {
         //Debug.Log("Smooth Movement");
@@ -355,4 +386,75 @@ public class MovingObject : MonoBehaviour
         BoardAnimationController.instance.RemoveProcessedAnimation();
     }
 
+    protected IEnumerator SmoothExplosion5x5(int sx, int sy)
+    {
+        List<GameObject> explosions = new List<GameObject>();
+        float waitTime = 0.1f;
+        Level level = BoardManager.instance.level;
+        Color32 color1 = new Color32(255, 168, 0, 255);
+        Color32 color2 = new Color32(255, 0, 0, 255);
+
+        List<Vector2Int> ring1 = new List<Vector2Int>();
+        List<Vector2Int> ring2 = new List<Vector2Int>();
+
+        LOS_FOV.DrawFOV(sx, sy, 2,
+            (int dx, int dy, int pdx, int pdy) =>
+            {
+                if (Level.GetDistance(sx, sy, dx, dy) > 0 && Level.GetDistance(sx, sy, dx, dy) <= 2 && !ring1.Contains(new Vector2Int(dx, dy)))
+                    ring1.Add(new Vector2Int(dx, dy));
+
+                if (Level.GetDistance(sx, sy, dx, dy) > 2 && Level.GetDistance(sx, sy, dx, dy) <= 3 && !ring2.Contains(new Vector2Int(dx, dy)))
+                    ring2.Add(new Vector2Int(dx, dy));
+
+                if (TerrainTypes.terrainTypes[level.terrain[dx, dy]].blocksMovement) return false;
+
+                return true;
+            });
+
+        if (level.visible[sx, sy])
+        {
+            GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(sx, sy, 0), Quaternion.identity);
+            if (Random.Range(0, 5) == 0)
+                explosion.GetComponent<SpriteRenderer>().color = color1;
+            else
+                explosion.GetComponent<SpriteRenderer>().color = color2;
+            explosions.Add(explosion);
+        }
+        yield return new WaitForSeconds(waitTime);
+
+        foreach (Vector2Int loc in ring1)
+        {
+            if (level.visible[loc.x, loc.y])
+            {
+                GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(loc.x, loc.y, 0), Quaternion.identity);
+                if (Random.Range(0, 5) == 0)
+                    explosion.GetComponent<SpriteRenderer>().color = color1;
+                else
+                    explosion.GetComponent<SpriteRenderer>().color = color2;
+                explosions.Add(explosion);
+            }
+        }
+        yield return new WaitForSeconds(waitTime);
+
+        foreach (Vector2Int loc in ring2)
+        {
+            if (level.visible[loc.x, loc.y])
+            {
+                GameObject explosion = GameObject.Instantiate(UIManager.instance.explosionPrefab, new Vector3(loc.x, loc.y, 0), Quaternion.identity);
+                if (Random.Range(0, 5) == 0)
+                    explosion.GetComponent<SpriteRenderer>().color = color1;
+                else
+                    explosion.GetComponent<SpriteRenderer>().color = color2;
+                explosions.Add(explosion);
+            }
+        }
+        yield return new WaitForSeconds(waitTime);
+
+        for (int i = explosions.Count - 1; i >= 0; i--)
+        {
+            Destroy(explosions[i]);
+        }
+        Destroy(this.gameObject);
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+    }
 }

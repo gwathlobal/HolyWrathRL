@@ -15,7 +15,7 @@ public class AbilityHolySword : Ability
 
     public override string Description(Mob mob)
     {
-        return "Attack the enemy in melee for 5 Physical dmg and 5 Holy dmg. Can sever limbs on target dearh.";
+        return "Attack the enemy in melee for 5 physical dmg and 5 holy dmg. Can sever limbs on target dearh.";
     }
 
     public override string Name(Mob mob)

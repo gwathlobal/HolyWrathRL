@@ -35,8 +35,8 @@ public enum AbilityCostType
 public enum AbilityTypeEnum
 {
     abilNone,
-    abilVorpaniteClaws, abilHolySword, abilClaws, abilTarTentacles,
-    abilShootSpikes, abilLightBolt,
+    abilVorpaniteClaws, abilHolySword, abilClaws, abilTarTentacles, abilFists, abilKnife,
+    abilShootSpikes, abilLightBolt, abilShootRifle, abilShootSniperRifle, abilShootMachinegun,
     abilSprint,
     abilBlock,
     abilDodge, abilJump,
@@ -46,7 +46,8 @@ public enum AbilityTypeEnum
     abilFireFists, abilFlamingArrow, abilFireAura, abilBreathOfFire, abilIncineration, abilWarmingLight, abilLeapOfStrength,
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
     abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual, abilSpearOfLight,
-    abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize, abilDemonicPortal, abilSummonImp
+    abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize, abilDemonicPortal, abilSummonImp,
+    abilMedkit, abilCallArtillery
 }
 
 
@@ -82,6 +83,26 @@ public abstract class Ability {
 
         string _ultimate = (costType == AbilityCostType.wp) ? "Wrath Ability. " : "";
 
+        string _slot;
+        switch (slot)
+        {
+            case AbilitySlotCategoty.abilBlock:
+                _slot = "Block Ability. ";
+                break;
+            case AbilitySlotCategoty.abilDodge:
+                _slot = "Dodge Ability. ";
+                break;
+            case AbilitySlotCategoty.abilMelee:
+                _slot = "Melee Ability. ";
+                break;
+            case AbilitySlotCategoty.abilRanged:
+                _slot = "Ranged Ability. ";
+                break;
+            default:
+                _slot = "";
+                break;
+        }
+
         string _costType;
         switch (costType)
         {
@@ -97,8 +118,9 @@ public abstract class Ability {
 
         string _passive = (passive == true) ? "Passive. " : ""; 
 
-        result = String.Format("{0}\n{1}{2}{3}{4}\n{5}",
+        result = String.Format("{0}\n{1}{2}{3}{4}{5}\n{6}",
             stdName,
+            _slot,
             _ultimate,
             _cost,
             turnStr,
@@ -223,6 +245,10 @@ public class AbilityTypes
 
         Add(new AbilityTarTentacles());
 
+        Add(new AbilityFists());
+
+        Add(new AbilityKnife());
+
         //============================
         //
         // RANGED ABILITIES
@@ -232,6 +258,12 @@ public class AbilityTypes
         Add(new AbilityLightBolt());
 
         Add(new AbilityShootSpikes());
+
+        Add(new AbilityShootRifle());
+
+        Add(new AbilityShootSniperRifle());
+
+        Add(new AbilityShootMachinegun());
 
         //============================
         //
@@ -282,6 +314,10 @@ public class AbilityTypes
         Add(new AbilityDemonicPortal());
 
         Add(new AbilitySummonImp());
+
+        Add(new AbilityMedkit());
+
+        Add(new AbilityCallArtillery());
 
         //============================
         //

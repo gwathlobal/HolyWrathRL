@@ -20,7 +20,7 @@ public class AbilityClaws : Ability {
 
     public override string Name(Mob mob)
     {
-        return "Claws";
+        return stdName;
     }
 
     public override float Spd(Mob mob)

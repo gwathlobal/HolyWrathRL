@@ -16,7 +16,7 @@ public class AbilityForceShot : Ability
 
     public override string Description(Mob mob)
     {
-        return "Shoot a force bolt to push away an enemy from you and deal 5 Physical dmg to it.";
+        return "Shoot a force bolt to push away an enemy from you and deal 5 physical dmg to it.";
     }
 
     public override string Name(Mob mob)
