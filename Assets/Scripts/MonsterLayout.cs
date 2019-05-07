@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum MonsterLayoutEnum
 {
-    levelTest, levelBeastsOnly, levelCrimsonDemons, levelMachineDemons, levelBeastsAndDemons, levelAngelsVsBeasts, levelAngelsVsDemons
+    levelTest, levelBeastsOnly, levelCrimsonDemons, levelMachineDemons, levelBeastsAndDemons, levelAngelsVsBeasts, levelAngelsVsDemons, levelHumansVsDemons,
+    levelSoldiersVsDemons
 }
 
 public abstract class MonsterLayout {
@@ -109,6 +110,8 @@ public static class MonsterLayouts
         monsterLayouts.Add(MonsterLayoutEnum.levelBeastsAndDemons, new MonsterLayoutBeastsAndDemons());
         monsterLayouts.Add(MonsterLayoutEnum.levelAngelsVsBeasts, new MonsterLayoutAngelsVsBeasts());
         monsterLayouts.Add(MonsterLayoutEnum.levelAngelsVsDemons, new MonsterLayoutAngelsVsDemons());
+        monsterLayouts.Add(MonsterLayoutEnum.levelHumansVsDemons, new MonsterLayoutHumansVsDemons());
+        monsterLayouts.Add(MonsterLayoutEnum.levelSoldiersVsDemons, new MonsterLayoutSoldiersVsDemons());
     }
 
     static void Add(MonsterLayoutEnum _id, MonsterLayout ml)
@@ -449,6 +452,162 @@ public class MonsterLayoutAngelsVsBeasts : MonsterLayout
 
         Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
         addMobsToSpawn.Add(MobTypeEnum.mobTarDemon, numTarDemon);
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
+    }
+}
+
+public class MonsterLayoutHumansVsDemons : MonsterLayout
+{
+    public MonsterLayoutHumansVsDemons()
+    {
+        name = "Demons vs Humans";
+    }
+
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
+    {
+        int numCrimsonImp = 0;
+        int numCrimsonDemon = 0;
+        int numArchdemon = 0;
+        int numMachineImp = 0;
+        int numMachineDemon = 0;
+        int numArchdevil = 0;
+        int r = Random.Range(0, 3);
+        switch (r)
+        {
+            // crimson demons
+            case 1:
+                numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
+                break;
+            // shadow demons
+            case 2:
+                numMachineImp = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numMachineDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+                break;
+            // both crimson & shadow demons
+            default:
+                numCrimsonImp = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numCrimsonDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
+                numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
+                break;
+        }
+
+        Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
+        mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
+        mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
+        mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
+
+        PlacePlayer(level);
+
+        Vector2Int loc;
+        Mob mob;
+        foreach (MobTypeEnum mobType in mobsToSpawn.Keys)
+        {
+            for (int i = 0; i < mobsToSpawn[mobType]; i++)
+            {
+                if (level.FindFreeSpotInside(out loc))
+                {
+                    mob = new Mob(mobType, loc.x, loc.y);
+                    mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                    BoardManager.instance.mobs.Add(mob.id, mob);
+                    level.AddMobToLevel(mob, mob.x, mob.y);
+                }
+            }
+        }
+
+        int numHumans = 100;
+
+        Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        addMobsToSpawn.Add(MobTypeEnum.mobHuman, numHumans);
+
+        PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
+    }
+}
+
+public class MonsterLayoutSoldiersVsDemons : MonsterLayout
+{
+    public MonsterLayoutSoldiersVsDemons()
+    {
+        name = "Demons vs Soldiers";
+    }
+
+    public override void PlaceMobs(Level level, LevelGeneratorResult levelGeneratorResult)
+    {
+        int numCrimsonImp = 0;
+        int numCrimsonDemon = 0;
+        int numArchdemon = 0;
+        int numMachineImp = 0;
+        int numMachineDemon = 0;
+        int numArchdevil = 0;
+        int r = Random.Range(0, 3);
+        switch (r)
+        {
+            // crimson demons
+            case 1:
+                numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
+                break;
+            // shadow demons
+            case 2:
+                numMachineImp = 4 + Random.Range(0, GameManager.instance.levelNum);
+                numMachineDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
+                break;
+            // both crimson & shadow demons
+            default:
+                numCrimsonImp = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numCrimsonDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
+                numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
+                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
+                break;
+        }
+
+        Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
+        mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
+        mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
+        mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
+        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
+
+        PlacePlayer(level);
+
+        Vector2Int loc;
+        Mob mob;
+        foreach (MobTypeEnum mobType in mobsToSpawn.Keys)
+        {
+            for (int i = 0; i < mobsToSpawn[mobType]; i++)
+            {
+                if (level.FindFreeSpotInside(out loc))
+                {
+                    mob = new Mob(mobType, loc.x, loc.y);
+                    mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                    BoardManager.instance.mobs.Add(mob.id, mob);
+                    level.AddMobToLevel(mob, mob.x, mob.y);
+                }
+            }
+        }
+
+        int numHumans = 100;
+        int numSoldiers = 100;
+        int numMachinegunners = 100;
+        int numScouts = 100;
+
+        Dictionary<MobTypeEnum, int> addMobsToSpawn = new Dictionary<MobTypeEnum, int>();
+        addMobsToSpawn.Add(MobTypeEnum.mobHuman, numHumans);
+        addMobsToSpawn.Add(MobTypeEnum.mobSoldier, numSoldiers);
+        addMobsToSpawn.Add(MobTypeEnum.mobMachinegunman, numMachinegunners);
+        addMobsToSpawn.Add(MobTypeEnum.mobScout, numScouts);
 
         PlaceLevelLayoutMobs(level, levelGeneratorResult, addMobsToSpawn);
     }

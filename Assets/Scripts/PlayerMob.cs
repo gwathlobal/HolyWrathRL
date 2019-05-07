@@ -39,9 +39,11 @@ public class PlayerMob : Mob {
         {
             for (int x = 0; x < level.maxX; x++)
             {
-                level.visible[x, y] = false;
+                level.visible[x, y] = true;
                 BoardManager.instance.tiles[x, y].GetComponent<SpriteRenderer>().color = TerrainTypes.terrainTypes[level.terrain[x, y]].color;
                 BoardManager.instance.fog[x, y].SetActive(true);
+                BoardManager.instance.fog[x, y].SetActive(false);
+                BoardManager.instance.unexplored[x, y].SetActive(false);
             }
         }
         /*

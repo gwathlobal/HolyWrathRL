@@ -25,7 +25,9 @@ public enum TerrainTypeEnum
     terrainStoneFloorBorder, terrainWaterTarBorder, terrainSlimeFloorBorder,
     terrainStoneFloor, terrainStoneFloorBright, terrainAshes, terrainSlimeFloor, terrainSlimeFloorBright,
     terrainStoneWall, terrainTreeWall,
-    terrainWaterTar, terrainRazorthorns, terrainSludgeshrooms
+    terrainWaterTar, terrainRazorthorns, terrainSludgeshrooms,
+    terrainGrass, terrainDirt, terrainDirtBright, terrainDirtBorder, terrainPavement, terrainBed, terrainChair, terrainTable, terrainWater, terrainNormalTree,
+    terrainBarricade
 };
 
 public class TerrainTypes
@@ -37,6 +39,11 @@ public class TerrainTypes
     public static GameObject terrainCorruptedTree;
     public static GameObject terrainBush;
     public static GameObject terrainShroom;
+    public static GameObject terrainPavement;
+    public static GameObject terrainChair;
+    public static GameObject terrainBed;
+    public static GameObject terrainTable;
+    public static GameObject terrainNormalTree;
     public static Dictionary<TerrainTypeEnum, TerrainType> terrainTypes;
 
     public static void InitializeTerrainTypes()
@@ -48,6 +55,11 @@ public class TerrainTypes
         terrainCorruptedTree = Resources.Load("Prefabs/Terrains/Corrupted Tree") as GameObject;
         terrainBush = Resources.Load("Prefabs/Terrains/Bush") as GameObject;
         terrainShroom = Resources.Load("Prefabs/Terrains/Shroom") as GameObject;
+        terrainPavement = Resources.Load("Prefabs/Terrains/Pavement") as GameObject;
+        terrainChair = Resources.Load("Prefabs/Terrains/Chair") as GameObject;
+        terrainBed = Resources.Load("Prefabs/Terrains/Bed") as GameObject;
+        terrainTable = Resources.Load("Prefabs/Terrains/Table") as GameObject;
+        terrainNormalTree = Resources.Load("Prefabs/Terrains/Normal Tree") as GameObject;
 
         terrainTypes = new Dictionary<TerrainTypeEnum, TerrainType>();
 
@@ -55,8 +67,7 @@ public class TerrainTypes
             null);
         Add(TerrainTypeEnum.terrainWall, "Wall", terrainWall, true, true, true, new Color(255, 255, 255), 0, TerrainTypeEnum.terrainWall, 
             null);
-        Add(TerrainTypeEnum.terrainWindow, "Window", terrainWindow, true, false, true, new Color(0, 0, 255), 0, TerrainTypeEnum.terrainWindow, 
-            null);
+        
 
         // floors
 
@@ -72,6 +83,18 @@ public class TerrainTypes
         Add(TerrainTypeEnum.terrainSlimeFloorBright, "Slime floor", terrainFloor, false, false, false, new Color32(255, 0, 255, 255), 0, TerrainTypeEnum.terrainSlimeFloorBright,
             null);
 
+        Add(TerrainTypeEnum.terrainDirt, "Dirt", terrainFloor, false, false, false, new Color32(205, 103, 63, 255), 0, TerrainTypeEnum.terrainDirt,
+            null);
+
+        Add(TerrainTypeEnum.terrainDirtBright, "Dirt", terrainFloor, false, false, false, new Color32(139, 69, 19, 255), 0, TerrainTypeEnum.terrainDirtBright,
+            null);
+
+        Add(TerrainTypeEnum.terrainGrass, "Grass", terrainFloor, false, false, false, new Color32(0, 100, 0, 255), 3, TerrainTypeEnum.terrainAshes,
+            null);
+
+        Add(TerrainTypeEnum.terrainPavement, "Floor", terrainPavement, false, false, false, new Color32(200, 200, 200, 255), 0, TerrainTypeEnum.terrainPavement,
+            null);
+
         // borders
 
         Add(TerrainTypeEnum.terrainStoneFloorBorder, "Stone floor", terrainFloor, true, true, true, new Color32(106, 53, 53, 255), 0, TerrainTypeEnum.terrainStoneFloorBorder, 
@@ -83,12 +106,18 @@ public class TerrainTypes
         Add(TerrainTypeEnum.terrainSlimeFloorBorder, "Slime floor", terrainFloor, true, true, true, new Color32(110, 0, 255, 255), 0, TerrainTypeEnum.terrainSlimeFloorBorder,
             null);
 
+        Add(TerrainTypeEnum.terrainDirtBorder, "Dirt", terrainFloor, true, true, true, new Color32(205, 103, 63, 255), 0, TerrainTypeEnum.terrainDirtBorder,
+            null);
+
         // walls
 
         Add(TerrainTypeEnum.terrainStoneWall, "Stone wall", terrainWall, true, true, true, new Color32(106, 53, 53, 255), 0, TerrainTypeEnum.terrainStoneWall, 
             null);
 
         Add(TerrainTypeEnum.terrainTreeWall, "Twintube tree", terrainCorruptedTree, true, true, true, new Color32(110, 0, 255, 255), 0, TerrainTypeEnum.terrainTreeWall,
+            null);
+
+        Add(TerrainTypeEnum.terrainNormalTree, "Birch tree", terrainNormalTree, true, true, true, new Color32(79, 214, 0, 255), 0, TerrainTypeEnum.terrainNormalTree,
             null);
 
         // other
@@ -99,7 +128,25 @@ public class TerrainTypes
                 mob.AddEffect(EffectTypeEnum.effectCoveredInTar, mob, 5);
             });
 
+        Add(TerrainTypeEnum.terrainWater, "Water", terrainWaterTar, true, false, false, new Color32(0, 0, 255, 255), 0, TerrainTypeEnum.terrainWater,
+            null);
+
+        Add(TerrainTypeEnum.terrainWindow, "Window", terrainWindow, true, false, true, new Color32(0, 0, 255, 255), 0, TerrainTypeEnum.terrainWindow,
+            null);
+
+        Add(TerrainTypeEnum.terrainBed, "Bed", terrainBed, true, false, false, new Color32(139, 69, 19, 255), 0, TerrainTypeEnum.terrainBed,
+            null);
+
+        Add(TerrainTypeEnum.terrainChair, "Chair", terrainChair, true, false, false, new Color32(139, 69, 19, 255), 0, TerrainTypeEnum.terrainChair,
+            null);
+
+        Add(TerrainTypeEnum.terrainTable, "Table", terrainTable, true, false, false, new Color32(139, 69, 19, 255), 0, TerrainTypeEnum.terrainTable,
+            null);
+
         Add(TerrainTypeEnum.terrainAshes, "Ashes", terrainWaterTar, false, false, false, new Color32(70, 70, 70, 255), 0, TerrainTypeEnum.terrainAshes, 
+            null);
+
+        Add(TerrainTypeEnum.terrainBarricade, "Barricade", terrainBush, true, false, false, new Color32(139, 69, 19, 255), 0, TerrainTypeEnum.terrainBarricade,
             null);
 
         Add(TerrainTypeEnum.terrainRazorthorns, "Razorthorns", terrainBush, false, false, false, new Color32(180, 54, 0, 255), 5, TerrainTypeEnum.terrainAshes,

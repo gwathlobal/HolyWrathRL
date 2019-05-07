@@ -42,7 +42,7 @@ public class NextLocDialogScript : MonoBehaviour
         List<LevelLayoutEnum> layoutList = new List<LevelLayoutEnum>();
         foreach (LevelLayoutEnum ll in System.Enum.GetValues(typeof(LevelLayoutEnum)))
         {
-            if (ll != LevelLayoutEnum.levelTest)
+            if (ll != LevelLayoutEnum.levelTest && GameManager.instance.levelNum >= LevelLayouts.levelLayouts[ll].minLvl)
                 layoutList.Add(ll);
         }
 
@@ -70,13 +70,17 @@ public class NextLocDialogScript : MonoBehaviour
         }
         else
         {
-            do
+            for (i = 0; i < 3; i++)
             {
+                if (layoutList.Count <= 0) break;
+
                 int r = Random.Range(0, layoutList.Count);
                 LevelLayoutEnum levelLayout = layoutList[r];
                 layoutList.RemoveAt(r);
-                MonsterLayoutEnum monsterLayout = (MonsterLayoutEnum)Random.Range(1, System.Enum.GetValues(typeof(MonsterLayoutEnum)).Length);
+
                 ObjectiveLayoutEnum objectiveLayout = (ObjectiveLayoutEnum)Random.Range(1, System.Enum.GetValues(typeof(ObjectiveLayoutEnum)).Length);
+
+                MonsterLayoutEnum monsterLayout = LevelLayouts.levelLayouts[levelLayout].monsterLayouts[Random.Range(0, LevelLayouts.levelLayouts[levelLayout].monsterLayouts.Count)];
 
                 GameObject nextLocPanel = GameObject.Instantiate(NextLocPanelPrefab);
                 nextLocPanel.transform.SetParent(NextLocScrollPanel.transform, false);
@@ -91,9 +95,8 @@ public class NextLocDialogScript : MonoBehaviour
                         GameManager.instance.levelLayout = levelLayout;
                         GameManager.instance.objectiveLayout = objectiveLayout;
                     });
-                i++;
                 nextLocPanels.Add(nextLocPanel);
-            } while (layoutList.Count > 0 && i < 3);
+            }
         }
         /*
         foreach (Nemesis nemesis in GameManager.instance.nemeses)

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public enum BuildingLayoutEnum
 {
-    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool, buildTarRiverV, buildTarRiverH, buildSingleTree, buildCorruptedForest
+    buildEmpty, buildYShape, buildCshape, buildRandom, buildTarPool, buildTarRiverV, buildTarRiverH, buildSingleTree, buildCorruptedForest, buildHouse1,
+    buildWaterPool, buildNormalForest, buildSoldierPost1
 }
 
 public enum BuildingLayoutType
 {
-    buildFree, buildNone, buildEmpty, buildShape, buildTarPool, buildSingleTree, buildCorruptedForest
+    buildFree, buildNone, buildEmpty, buildShape, buildTarPool, buildSingleTree, buildCorruptedForest, buildHouse, buildWaterPool, buildNormalForest, buildSoldierPost
 }
 
 public delegate void BuildingPlaceMobs(Level level, MobTypeEnum mobType, int sx, int sy);
@@ -55,17 +56,38 @@ public abstract class BuildingLayout {
                         if (Random.Range(0, 100) <= 25) level.terrain[sx + x, sy + y] = levelLayout.terrainFloorAlt;
                         break;
                     case ',':
-                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainSlimeFloor;
-                        if (Random.Range(0, 100) <= 25) level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainSlimeFloorBright;
+                        level.terrain[sx + x, sy + y] = levelLayout.terrainGrass;
+                        if (Random.Range(0, 100) <= 25) level.terrain[sx + x, sy + y] = levelLayout.terrainGrassAlt;
+                        break;
+                    case '`':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainPavement;
                         break;
                     case '#':
                         level.terrain[sx + x, sy + y] = levelLayout.terrainWall;
                         break;
                     case '~':
-                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainWaterTar;
+                        level.terrain[sx + x, sy + y] = levelLayout.terrainWater;
                         break;
                     case 'Y':
                         level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainTreeWall;
+                        break;
+                    case 'T':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainNormalTree;
+                        break;
+                    case '-':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainWindow;
+                        break;
+                    case 't':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainTable;
+                        break;
+                    case 'c':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainChair;
+                        break;
+                    case 'b':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainBed;
+                        break;
+                    case 'x':
+                        level.terrain[sx + x, sy + y] = TerrainTypeEnum.terrainBarricade;
                         break;
                 }
             }
@@ -90,6 +112,10 @@ public static class BuildingLayouts
         Add(new BuildingLayoutTarRiverH());
         Add(new BuildingLayoutSingleTree());
         Add(new BuildingLayoutCorruptedForest());
+        Add(new BuildingLayoutHouse());
+        Add(new BuildingLayoutNormalForest());
+        Add(new BuildingLayoutWaterPool());
+        Add(new BuildingLayoutSoldierPost());
     }
 
     static void Add(BuildingLayout bl)
@@ -494,5 +520,324 @@ public class BuildingLayoutCorruptedForest : BuildingLayout
         TranslateCharsToLevel(level, levelLayout, l, x, y);
 
         return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutHouse : BuildingLayout
+{
+    public BuildingLayoutHouse()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 9;
+        lh = 9;
+        id = BuildingLayoutEnum.buildHouse1;
+        buildType = BuildingLayoutType.buildHouse;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l1 = { ".........",
+                        ".###-###.",
+                        ".#```b`#.",
+                        ".#`````#.",
+                        ".#```tc#.",
+                        ".#`````#.",
+                        ".#`````#.",
+                        ".#-##`##.",
+                        "........." };
+
+
+        string[] l2 = { ".........",
+                        ".#######.",
+                        ".#``t``#.",
+                        ".#``c```.",
+                        ".-`````#.",
+                        ".#`````#.",
+                        ".#`b```-.",
+                        ".#######.",
+                        "........." };
+
+        string[] l3 = { ".........",
+                        ".##`##-#.",
+                        ".#`````#.",
+                        ".#`````#.",
+                        ".#tc```#.",
+                        ".#`````#.",
+                        ".#```b`#.",
+                        ".###-###.",
+                        "........." };
+
+        string[] l4 = { ".........",
+                        ".#######.",
+                        ".-`````#.",
+                        ".#````b#.",
+                        ".#`````-.",
+                        ".```c``#.",
+                        ".#``t``#.",
+                        ".#######.",
+                        "........." };
+
+        string[] l;
+        int r = Random.Range(0, 4);
+        switch (r)
+        {
+            case 1:
+                l = l2;
+                break;
+            case 2:
+                l = l3;
+                break;
+            case 3:
+                l = l4;
+                break;
+            default:
+                l = l1;
+                break;
+        }
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        BuildingLayoutResult br = new BuildingLayoutResult()
+        {
+            mobPlacements = new List<BuildingLayoutResult.MobPlacement>()
+        };
+
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobHuman,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 2, sy + 3);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobHuman,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 5, sy + 5);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobHuman,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 6, sy + 6);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        return br;
+    }
+}
+
+public class BuildingLayoutWaterPool : BuildingLayout
+{
+    public BuildingLayoutWaterPool()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 8;
+        lh = 8;
+        id = BuildingLayoutEnum.buildWaterPool;
+        buildType = BuildingLayoutType.buildWaterPool;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l1 = { ".,,,,,,.",
+                        ".,~~~~,,",
+                        ".,,,~~~,",
+                        ".,T,~~~,",
+                        ".,,,~~,,",
+                        ",,~~~,,,",
+                        ",~~~~,T,",
+                        ",,,,,,,," };
+
+
+        string[] l2 = { ".,,,,,,,",
+                        ",,~~~,T,",
+                        ",~~~~,,,",
+                        ",~~~~~~,",
+                        ",,,~~~,,",
+                        ",T,~~~~,",
+                        ",,,~~~~,",
+                        "..,,,,,," };
+
+        string[] l;
+        int r = Random.Range(0, 2);
+        switch (r)
+        {
+            case 1:
+                l = l2;
+                break;
+            default:
+                l = l1;
+                break;
+        }
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutNormalForest : BuildingLayout
+{
+    public BuildingLayoutNormalForest()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 8;
+        lh = 8;
+        id = BuildingLayoutEnum.buildNormalForest;
+        buildType = BuildingLayoutType.buildNormalForest;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l1 = { ",,,.,,,.",
+                        ",T,.,T,.",
+                        ",,,,,,,.",
+                        "...,T,..",
+                        "..,,,,..",
+                        ",,,T,,,,",
+                        ",T,,,,T,",
+                        ",,,..,,," };
+
+
+        string[] l2 = { "....,,,.",
+                        ",,,.,T,.",
+                        ",T,,,,,,",
+                        ",,,,T,T,",
+                        ",,,T,,,,",
+                        ",T,,,,..",
+                        ",,,,T,..",
+                        "...,,,.." };
+
+        string[] l3 = { "..,,,...",
+                        "..,T,,,.",
+                        ".T,,,T,.",
+                        ".,,,,,,,",
+                        ",,T,.,T,",
+                        ",T,,,,,,",
+                        ",,,T,T,.",
+                        "..,,,,,." };
+
+        string[] l;
+        int r = Random.Range(0, 3);
+        switch (r)
+        {
+            case 1:
+                l = l2;
+                break;
+            case 2:
+                l = l3;
+                break;
+            default:
+                l = l1;
+                break;
+        }
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        return new BuildingLayoutResult();
+    }
+}
+
+public class BuildingLayoutSoldierPost : BuildingLayout
+{
+    public BuildingLayoutSoldierPost()
+    {
+        gw = 2;
+        gh = 2;
+        lw = 7;
+        lh = 7;
+        id = BuildingLayoutEnum.buildSoldierPost1;
+        buildType = BuildingLayoutType.buildSoldierPost;
+    }
+
+    public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
+    {
+        string[] l = {  ".......",
+                        ".##.##.",
+                        ".#...#.",
+                        ".......",
+                        ".#...#.",
+                        ".##.##.",
+                        "......." };
+
+        TranslateCharsToLevel(level, levelLayout, l, x, y);
+
+        BuildingLayoutResult br = new BuildingLayoutResult()
+        {
+            mobPlacements = new List<BuildingLayoutResult.MobPlacement>()
+        };
+
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobSoldier,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 2, sy + 2);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobSoldier,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 4, sy + 2);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobSoldier,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 4, sy + 4);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobMachinegunman,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 2, sy + 4);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        br.mobPlacements.Add(new BuildingLayoutResult.MobPlacement()
+        {
+            mobType = MobTypeEnum.mobScout,
+            buildingPlaceMob = (Level lvl, MobTypeEnum mobType, int sx, int sy) =>
+            {
+                Mob human = new Mob(mobType, sx + 3, sy + 3);
+                human.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                BoardManager.instance.mobs.Add(human.id, human);
+                lvl.AddMobToLevel(human, human.x, human.y);
+            }
+        });
+        return br;
     }
 }

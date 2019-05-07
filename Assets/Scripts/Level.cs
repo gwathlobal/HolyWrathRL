@@ -17,8 +17,8 @@ public class Level {
     public bool[,] visible;
     public int[,] connected;
 
-    public int maxX = 30;
-    public int maxY = 30;
+    public int maxX = 40;
+    public int maxY = 40;
 
     public List<Mob> mobList;
     public List<Item> itemList;
