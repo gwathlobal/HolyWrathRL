@@ -10,21 +10,18 @@ public class AbilityReflectiveBlock : Ability
         id = AbilityTypeEnum.abilReflectiveBlock;
         stdName = "Reflective Block";
         passive = false;
-        slot = AbilitySlotCategoty.abilBlock;
+        slot = AbilitySlotCategoty.abilNormal;
         category = AbilityPlayerCategory.abilBastionHoly;
     }
 
     public override string Description(Mob mob)
     {
-        string str = "Blocking increases the %DR by 50. While blocking FP regeneration is set to zero. Reflective blocking returns all projectiles to the originator. Each projectile reduces your current FP by 10.";
-        if (mob.GetEffect(EffectTypeEnum.effectReflectiveBlocking) == null) return "Start blocking. " + str;
-        else return "Stop blocking. " + str;
+        return "Reflective blocking returns 4 projectiles to the originator. Reflective blocking lasts for 3 turns.";
     }
 
     public override string Name(Mob mob)
     {
-        if (mob.GetEffect(EffectTypeEnum.effectReflectiveBlocking) == null) return stdName;
-        else return "Stop block";
+        return stdName;
     }
 
     public override float Spd(Mob mob)
@@ -34,8 +31,7 @@ public class AbilityReflectiveBlock : Ability
 
     public override int Cost(Mob mob)
     {
-        if (mob.GetEffect(EffectTypeEnum.effectReflectiveBlocking) == null) return 10;
-        else return 0;
+        return 25;
     }
 
     public override bool DoesMapCheck(Mob mob)
@@ -55,17 +51,10 @@ public class AbilityReflectiveBlock : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        if (actor.GetEffect(EffectTypeEnum.effectReflectiveBlocking) == null)
-        {
-            string str = String.Format("{0} starts to block and reflect projectiles. ", actor.name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+        string str = String.Format("{0} starts to reflect projectiles. ", actor.name);
+        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-            actor.AddEffect(EffectTypeEnum.effectReflectiveBlocking, actor, Effect.CD_UNLIMITED);
-        }
-        else
-        {
-            actor.RemoveEffect(EffectTypeEnum.effectReflectiveBlocking);
-        }
+        actor.AddEffect(EffectTypeEnum.effectReflectiveBlocking, actor, 3);
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

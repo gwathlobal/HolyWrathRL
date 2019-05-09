@@ -468,9 +468,10 @@ public class Mob
         foreach (Effect eff in effects.Values)
         {
             
-            str += String.Format("<color=#{2}>{0}{1}</color>", EffectTypes.effectTypes[eff.idType].name,
+            str += String.Format("<color=#{2}>{0}{1}</color>\n", EffectTypes.effectTypes[eff.idType].name,
                         (eff.cd == Effect.CD_UNLIMITED) ? "" : String.Format(" ({0} {1} left)", eff.cd, (eff.cd > 1) ? "turns" : "turn"),
                         ColorUtility.ToHtmlStringRGBA(EffectTypes.effectTypes[eff.idType].color));
+            str += String.Format("{0}.", EffectTypes.effectTypes[eff.idType].descr);
             str += "\n\n";
             noAbilities = false;
         }
@@ -798,6 +799,7 @@ public class Mob
             effects[effectType].cd = _cd;
             effects[effectType].actor = _actor;
             effects[effectType].SV = EffectTypes.effectTypes[effectType].shieldValue;
+            effects[effectType].param1 = EffectTypes.effectTypes[effectType].param1;
         }
         else
         {
@@ -807,8 +809,9 @@ public class Mob
                 actor = _actor,
                 target = this,
                 cd = _cd,
-                SV = EffectTypes.effectTypes[effectType].shieldValue
-        };
+                SV = EffectTypes.effectTypes[effectType].shieldValue,
+                param1 = EffectTypes.effectTypes[effectType].param1
+            };
             effects.Add(effectType, effect);
             if (EffectTypes.effectTypes[effectType].OnEffectAdd != null)
                 EffectTypes.effectTypes[effectType].OnEffectAdd(effect, this);

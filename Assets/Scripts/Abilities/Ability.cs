@@ -207,15 +207,18 @@ public abstract class Ability {
                 actor.MakeDead(target, true, true, false);
             }
 
+            
             if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
             {
-                target.curFP -= 10;
-                if (target.curFP <= 0)
+                Effect eff = target.GetEffect(EffectTypeEnum.effectReflectiveBlocking);
+                eff.param1--;
+                
+                if (eff.param1 <= 0)
                 {
-                    target.curFP = 0;
                     target.RemoveEffect(EffectTypeEnum.effectReflectiveBlocking);
                 }
             }
+            
         }
     }
 }
