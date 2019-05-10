@@ -15,55 +15,21 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
     public Text shortcutText;
     public bool blocked;
 
-    private GameObject panel;
-    private Text txt;
-
     private void Start()
     {
-        panel = new GameObject("Abil Hover Panel " + curAbil);
-        panel.transform.SetParent(this.transform);
-        panel.layer = 5;
-
-        RectTransform panelRectTransform = panel.AddComponent<RectTransform>();
-        panelRectTransform.anchoredPosition = new Vector2(80, -85);
-        panelRectTransform.sizeDelta = new Vector2(230, 140);
-
-        panel.transform.SetParent(UIManager.instance.canvasTrasform, true);
-
-        Image imagePanel = panel.AddComponent<Image>();
-        imagePanel.color = new Color(0.1f, 0.1f, 0.1f);
-
-        GameObject textGO  = new GameObject("Abil Hover Txt " + curAbil);
-        textGO.transform.SetParent(panel.transform);
-        textGO.layer = 5;
-
-        RectTransform txtRectTransform = textGO.AddComponent<RectTransform>();
-        txtRectTransform.anchoredPosition = new Vector2(0, 0);
-        txtRectTransform.sizeDelta = new Vector2(220, 130);
-
-        Font font = Font.CreateDynamicFontFromOSFont("Arial", 14);
-
-        txt = textGO.AddComponent<Text>();
-        txt.font = font;
-        txt.fontStyle = FontStyle.Normal;
-        txt.supportRichText = false;
-        txt.fontSize = font.fontSize;
-        txt.color = new Color(255, 255, 255);
-        txt.alignment = TextAnchor.UpperLeft;
-
-        panel.SetActive(false);
-
+        GetComponent<HintPanelScript>().SetPanelName("Hint Panel Abil " + abilSlot.ToString());
+        GetComponent<HintPanelScript>().hintStr = AbilityTypes.abilTypes[abilType].GetFullDescription(BoardManager.instance.player);
+        if (abilType == AbilityTypeEnum.abilNone)
+        {
+            GetComponent<HintPanelScript>().isBlocked = true;
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (UIManager.instance.screenStatus != MainScreenStatus.statusNormal) return;
-
         if (abilType != AbilityTypeEnum.abilNone)
         {
-            txt.text = AbilityTypes.abilTypes[abilType].GetFullDescription(BoardManager.instance.player);
-                        
-            panel.SetActive(true);
+            GetComponent<HintPanelScript>().hintStr = AbilityTypes.abilTypes[abilType].GetFullDescription(BoardManager.instance.player);
 
             if (!blocked)
             {
@@ -89,7 +55,6 @@ public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerE
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        panel.SetActive(false);
         if (!blocked)
         {
             abilText.color = new Color32(255, 255, 255, 255);

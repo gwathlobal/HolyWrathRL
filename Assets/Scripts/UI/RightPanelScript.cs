@@ -43,6 +43,9 @@ public class RightPanelScript : MonoBehaviour {
                 ep.GetComponent<Text>().text += " (" + player.effects[effectType].cd + ")";
             ep.GetComponent<Text>().color = EffectTypes.effectTypes[effectType].color;
 
+            ep.GetComponent<HintPanelScript>().SetPanelName("Hint Panel " + EffectTypes.effectTypes[effectType].name);
+            ep.GetComponent<HintPanelScript>().hintStr = EffectTypes.effectTypes[effectType].descr +".";
+
             effectPanels.Add(ep);
             i++;
         }
