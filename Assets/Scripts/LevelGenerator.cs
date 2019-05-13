@@ -16,7 +16,7 @@ public static class LevelGenerator {
         public int y;
     }
 
-	public static LevelGeneratorResult GenerateLevel(Level level, LevelLayout levelLayout)
+	public static LevelGeneratorResult GenerateLevel(Level level, LevelLayout levelLayout, MonsterLayoutEnum monsterLayout)
     {
         LevelGeneratorResult generatorResult = new LevelGeneratorResult()
         {
@@ -53,7 +53,7 @@ public static class LevelGenerator {
 
         // place buildings from pre-processed function
         if (levelLayout.PreProcessFunc != null)
-            buildingsOnLevel.AddRange(levelLayout.PreProcessFunc(levelLayout, level, reservedBuildings));
+            buildingsOnLevel.AddRange(levelLayout.PreProcessFunc(levelLayout, level, reservedBuildings, monsterLayout));
 
         // make reservations for random buildings
         for (int gy = 0; gy < maxYres; gy++)

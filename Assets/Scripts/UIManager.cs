@@ -38,6 +38,9 @@ public class UIManager : MonoBehaviour {
     public Vector2Int selectorPos;
     public GameObject projectilePrefab;
     public GameObject explosionPrefab;
+    public GameObject highlightPrefab;
+    public GameObject highlightGO;
+    public Vector2Int highlightPos;
 
     public bool anyBtnClicked;
     public ExecFunc execFunc;
@@ -78,6 +81,10 @@ public class UIManager : MonoBehaviour {
         selectorGO.GetComponent<SpriteRenderer>().color = new Color32(255, 216, 0, 255);
         selectorGO.SetActive(false);
         selectorPos = new Vector2Int(player.x, player.y);
+
+        highlightGO = Instantiate(highlightPrefab, new Vector3(player.go.transform.position.x, player.go.transform.position.y, 0f), Quaternion.identity);
+        highlightGO.SetActive(true);
+        highlightPos = new Vector2Int(player.x, player.y);
 
         BottomPanel.UpdateInterface();
 
@@ -201,6 +208,19 @@ public class UIManager : MonoBehaviour {
         }
     }
 
+    public void MoveHighlight(int dx, int dy)
+    {
+        Level level = BoardManager.instance.level;
+        Vector2 endPos;
+
+        endPos = new Vector3(highlightPos.x + dx, highlightPos.y + dy, 0);
+        if ((endPos.x >= 0) && (endPos.y >= 0) && (endPos.x < level.maxX) && (endPos.y < level.maxY))
+        {
+            highlightGO.transform.position = endPos;
+            highlightPos = new Vector2Int((int)endPos.x, (int)endPos.y);
+        }
+    }
+
     public bool CheckApplicAbility(Ability ability)
     {
         return player.CanInvokeAbility(ability);
@@ -256,6 +276,12 @@ public class UIManager : MonoBehaviour {
     {
         selectorPos.x = x;
         selectorPos.y = y;
+    }
+
+    public void SetHighlightPos(int x, int y)
+    {
+        highlightPos.x = x;
+        highlightPos.y = y;
     }
 
     public bool MovePlayer(int dx, int dy)

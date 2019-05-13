@@ -24,7 +24,7 @@ public enum TerrainTypeEnum
     terrainFloor, terrainWall, terrainWindow,
     terrainStoneFloorBorder, terrainWaterTarBorder, terrainSlimeFloorBorder,
     terrainStoneFloor, terrainStoneFloorBright, terrainAshes, terrainSlimeFloor, terrainSlimeFloorBright,
-    terrainStoneWall, terrainTreeWall,
+    terrainStoneWall, terrainCorruptedTree,
     terrainWaterTar, terrainRazorthorns, terrainSludgeshrooms,
     terrainGrass, terrainDirt, terrainDirtBright, terrainDirtBorder, terrainPavement, terrainBed, terrainChair, terrainTable, terrainWater, terrainNormalTree,
     terrainBarricade
@@ -114,7 +114,7 @@ public class TerrainTypes
         Add(TerrainTypeEnum.terrainStoneWall, "Stone wall", terrainWall, true, true, true, new Color32(106, 53, 53, 255), 0, TerrainTypeEnum.terrainStoneWall, 
             null);
 
-        Add(TerrainTypeEnum.terrainTreeWall, "Twintube tree", terrainCorruptedTree, true, true, true, new Color32(110, 0, 255, 255), 0, TerrainTypeEnum.terrainTreeWall,
+        Add(TerrainTypeEnum.terrainCorruptedTree, "Twintube tree", terrainCorruptedTree, true, true, true, new Color32(110, 0, 255, 255), 0, TerrainTypeEnum.terrainCorruptedTree,
             null);
 
         Add(TerrainTypeEnum.terrainNormalTree, "Birch tree", terrainNormalTree, true, true, true, new Color32(79, 214, 0, 255), 0, TerrainTypeEnum.terrainNormalTree,

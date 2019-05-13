@@ -285,7 +285,7 @@ public class Level {
             }
         }
 
-        LevelGeneratorResult levelGeneratorResult = LevelGenerator.GenerateLevel(this, levelLayout);
+        LevelGeneratorResult levelGeneratorResult = LevelGenerator.GenerateLevel(this, levelLayout, monsterLayoutType);
 
         monsterLayout.PlaceMobs(this, levelGeneratorResult);
 

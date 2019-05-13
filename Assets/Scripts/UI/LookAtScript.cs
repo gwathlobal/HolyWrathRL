@@ -16,6 +16,11 @@ public class LookAtScript : MonoBehaviour {
 
         UIManager.instance.selectorPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
         Vector2Int pos = UIManager.instance.selectorPos;
+        UIManager.instance.highlightPos = new Vector2Int((int)transform.position.x, (int)transform.position.y);
+
+        UIManager.instance.SetHighlightPos(pos.x, pos.y);
+        UIManager.instance.MoveHighlight(0, 0);
+        UIManager.instance.highlightGO.SetActive(true);
 
         if (UIManager.instance.screenStatus == MainScreenStatus.statusNormal)
         {
@@ -52,6 +57,8 @@ public class LookAtScript : MonoBehaviour {
     void OnMouseExit()
     {
         isMouseOver = false;
+
+        UIManager.instance.highlightGO.SetActive(false);
 
         if (UIManager.instance.screenStatus == MainScreenStatus.statusNormal)
         {

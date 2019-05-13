@@ -39,34 +39,16 @@ public class PlayerMob : Mob {
         {
             for (int x = 0; x < level.maxX; x++)
             {
-                level.visible[x, y] = true;
+                level.visible[x, y] = false;
                 BoardManager.instance.tiles[x, y].GetComponent<SpriteRenderer>().color = TerrainTypes.terrainTypes[level.terrain[x, y]].color;
                 BoardManager.instance.fog[x, y].SetActive(true);
-                BoardManager.instance.fog[x, y].SetActive(false);
-                BoardManager.instance.unexplored[x, y].SetActive(false);
             }
         }
-        /*
-        foreach (Mob mob in BoardManager.instance.mobs.Values)
-        {
-            mob.go.GetComponent<Renderer>().enabled = false;
-        }
-        foreach (Feature feature in BoardManager.instance.features.Values)
-        {
-            if (feature.go != null)
-                feature.go.GetComponent<Renderer>().enabled = false;
-        }
-        foreach (Item item in BoardManager.instance.items.Values)
-        {
-            item.go.GetComponent<Renderer>().enabled = false;
-        }
-        */
 
         LOS_FOV.DrawFOV(x, y, visionRadius, 
             (int dx,int dy,int pdx,int pdy) => 
             {
                 level.visible[dx, dy] = true;
-                //BoardManager.instance.tiles[dx, dy].GetComponent<SpriteRenderer>().color = TerrainTypes.terrainTypes[level.terrain[dx, dy]].color;
                 BoardManager.instance.fog[dx, dy].SetActive(false);
                 BoardManager.instance.unexplored[dx, dy].SetActive(false);
 
@@ -94,16 +76,6 @@ public class PlayerMob : Mob {
                 return true;
             });
 
-        /*
-        foreach (Mob mob in visibleMobs)
-        {
-            mob.go.GetComponent<Renderer>().enabled = true;
-        }
-        foreach (Item item in visibleItems)
-        {
-            item.go.GetComponent<Renderer>().enabled = true;
-        }
-        */
         foreach (Feature feature in visibleFeatures)
         {
             if (feature.go == null)

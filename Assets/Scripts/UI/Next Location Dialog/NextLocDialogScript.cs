@@ -45,7 +45,7 @@ public class NextLocDialogScript : MonoBehaviour
             if (ll != LevelLayoutEnum.levelTest && GameManager.instance.levelNum >= LevelLayouts.levelLayouts[ll].minLvl)
                 layoutList.Add(ll);
         }
-
+        
         if (GameManager.instance.levelNum == 0)
         {
             LevelLayoutEnum levelLayout = LevelLayoutEnum.levelDesolatePlains;
