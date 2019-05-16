@@ -10,8 +10,8 @@ public class AbilityHolyRune : Ability
         id = AbilityTypeEnum.abilHolyRune;
         stdName = "Holy Runes";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBastionHoly;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBastionHoly;
     }
 
     public override string Description(Mob mob)

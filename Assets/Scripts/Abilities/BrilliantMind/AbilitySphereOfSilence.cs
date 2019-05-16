@@ -11,8 +11,8 @@ public class AbilitySphereOfSilence : Ability
         stdName = "Sphere of Silence";
         costType = AbilityCostType.wp;
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBrilliantMind;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBrilliantMind;
     }
 
     public override string Description(Mob mob)

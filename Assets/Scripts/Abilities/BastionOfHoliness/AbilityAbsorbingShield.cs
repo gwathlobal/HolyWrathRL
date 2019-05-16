@@ -10,8 +10,8 @@ public class AbilityAbsorbingShield : Ability
         id = AbilityTypeEnum.abilAbsorbingShield;
         stdName = "Absorbing Shield";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBastionHoly;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBastionHoly;
     }
 
     public override string Description(Mob mob)

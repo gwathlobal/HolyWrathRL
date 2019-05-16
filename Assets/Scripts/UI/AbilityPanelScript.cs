@@ -8,7 +8,7 @@ using System;
 public class AbilityPanelScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler {
 
     public int curAbil;
-    public AbilitySlotCategoty abilSlot;
+    public AbilitySlotEnum abilSlot;
     public AbilityTypeEnum abilType;
 
     public Text abilText;

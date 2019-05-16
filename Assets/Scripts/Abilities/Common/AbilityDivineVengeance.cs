@@ -9,8 +9,8 @@ public class AbilityDivineVengeance : Ability
         id = AbilityTypeEnum.abilDivineVengeance;
         stdName = "Divine Vengeance";
         passive = true;
-        slot = AbilitySlotCategoty.abilNone;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilNone;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Description(Mob mob)

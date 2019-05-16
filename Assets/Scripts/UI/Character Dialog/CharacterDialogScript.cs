@@ -118,7 +118,7 @@ public class CharacterDialogScript : MonoBehaviour {
         i = 0;
         foreach (AbilityTypeEnum abilType in player.abilities.Keys)
         {
-            if (AbilityTypes.abilTypes[abilType].passive && AbilityTypes.abilTypes[abilType].slot == AbilitySlotCategoty.abilNone)
+            if (AbilityTypes.abilTypes[abilType].passive && AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilNone)
             {
                 GameObject ep = Instantiate(passivePanelPrefab);
                 ep.transform.SetParent(PassiveScrollPanel.transform, false);

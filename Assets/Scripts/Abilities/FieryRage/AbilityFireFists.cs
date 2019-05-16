@@ -9,8 +9,8 @@ public class AbilityFireFists : Ability
         id = AbilityTypeEnum.abilFireFists;
         stdName = "Fire Fists";
         passive = true;
-        slot = AbilitySlotCategoty.abilMelee;
-        category = AbilityPlayerCategory.abilFieryRage;
+        slot = AbilitySlotEnum.abilMelee;
+        category = AbilityPlayerCategoryEnum.abilFieryRage;
     }
 
     public override string Description(Mob mob)

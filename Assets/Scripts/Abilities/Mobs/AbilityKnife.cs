@@ -9,8 +9,8 @@ public class AbilityKnife : Ability {
         id = AbilityTypeEnum.abilKnife;
         stdName = "Knife";
         passive = true;
-        slot = AbilitySlotCategoty.abilMelee;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilMelee;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

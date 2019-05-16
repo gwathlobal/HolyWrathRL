@@ -12,8 +12,8 @@ public class AbilitySpearOfLight : Ability
         stdName = "Spear of Light";
         passive = false;
         costType = AbilityCostType.wp;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBastionHoly;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBastionHoly;
     }
 
     public override string Description(Mob mob)

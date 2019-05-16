@@ -10,8 +10,8 @@ public class AbilityHealSelf : Ability
         id = AbilityTypeEnum.abilHealSelf;
         stdName = "Heal Self";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

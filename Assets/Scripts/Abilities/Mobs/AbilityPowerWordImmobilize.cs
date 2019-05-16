@@ -10,8 +10,8 @@ public class AbilityPowerWordImmobilize : Ability
         id = AbilityTypeEnum.abilPowerWordImmobilize;
         stdName = "Power Word: Immobilize";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

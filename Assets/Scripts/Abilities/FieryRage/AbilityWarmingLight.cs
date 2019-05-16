@@ -10,8 +10,8 @@ public class AbilityWarmingLight : Ability
         id = AbilityTypeEnum.abilWarmingLight;
         stdName = "Warming Light";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilFieryRage;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilFieryRage;
     }
 
     public override string Description(Mob mob)

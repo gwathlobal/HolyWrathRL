@@ -10,8 +10,8 @@ public class AbilityFear : Ability
         id = AbilityTypeEnum.abilFear;
         stdName = "Fear";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBrilliantMind;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBrilliantMind;
     }
 
     public override string Description(Mob mob)

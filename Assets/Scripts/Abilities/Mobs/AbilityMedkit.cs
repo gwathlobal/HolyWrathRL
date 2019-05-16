@@ -10,8 +10,8 @@ public class AbilityMedkit : Ability
         id = AbilityTypeEnum.abilMedkit;
         stdName = "Medkit";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

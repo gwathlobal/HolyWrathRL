@@ -10,8 +10,8 @@ public class AbilityShootSpikes : Ability
         id = AbilityTypeEnum.abilShootSpikes;
         stdName = "Shoot Spikes";
         passive = false;
-        slot = AbilitySlotCategoty.abilRanged;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilRanged;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

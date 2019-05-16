@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour {
         //Sets this to not be destroyed when reloading scene
         DontDestroyOnLoad(gameObject);
 
+        AbilityCategoryTypes.InitializeAbilityCategories();
+
     }
 
     public void SetUpNemeses()

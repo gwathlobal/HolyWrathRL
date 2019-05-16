@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 public class PlayerMob : Mob {
 
-    public Dictionary<AbilityPlayerCategory, int> categoryBonus;
+    public Dictionary<AbilityPlayerCategoryEnum, int> categoryBonus;
 
     public PlayerMob(MobTypeEnum _idType, int _x, int _y) : base(_idType, _x, _y)
     {
-        categoryBonus = new Dictionary<AbilityPlayerCategory, int>();
-        foreach (AbilityPlayerCategory abilityCategory in System.Enum.GetValues(typeof(AbilityPlayerCategory)))
+        categoryBonus = new Dictionary<AbilityPlayerCategoryEnum, int>();
+        foreach (AbilityPlayerCategoryEnum abilityCategory in System.Enum.GetValues(typeof(AbilityPlayerCategoryEnum)))
         {
             categoryBonus[abilityCategory] = 0;
         }
@@ -169,7 +169,7 @@ public class PlayerMob : Mob {
         foreach (AbilityTypeEnum abilityType in abilities.Keys)
         {
             Ability ability = GetAbility(abilityType);
-            if (ability.passive && ability.slot != AbilitySlotCategoty.abilMelee)
+            if (ability.passive && ability.slot != AbilitySlotEnum.abilMelee)
             {
                 str += GetAbility(abilityType).GetFullDescription(this);
                 str += "\n\n";

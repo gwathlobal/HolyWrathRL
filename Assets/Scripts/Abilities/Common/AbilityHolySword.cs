@@ -9,8 +9,8 @@ public class AbilityHolySword : Ability
         id = AbilityTypeEnum.abilHolySword;
         stdName = "Holy Sword";
         passive = true;
-        slot = AbilitySlotCategoty.abilMelee;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilMelee;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Description(Mob mob)

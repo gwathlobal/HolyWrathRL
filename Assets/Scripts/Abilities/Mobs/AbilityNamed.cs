@@ -10,8 +10,8 @@ public class AbilityNamed : Ability
         id = AbilityTypeEnum.abilNamed;
         stdName = "Named";
         passive = true;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

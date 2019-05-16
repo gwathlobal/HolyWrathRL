@@ -10,8 +10,8 @@ public class AbilityDodge : Ability
         id = AbilityTypeEnum.abilDodge;
         stdName = "Dodge";
         passive = false;
-        slot = AbilitySlotCategoty.abilDodge;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilDodge;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Description(Mob mob)

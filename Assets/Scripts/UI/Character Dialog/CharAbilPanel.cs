@@ -10,7 +10,7 @@ public class CharAbilPanel : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Text txt;
     public int curAbil;
     public AbilityTypeEnum abilType;
-    public AbilitySlotCategoty abilSlot;
+    public AbilitySlotEnum abilSlot;
     public CharacterDialogScript CharacterDialog;
 
     public void InitializeUI(string str)

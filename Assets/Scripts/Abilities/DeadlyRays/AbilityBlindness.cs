@@ -10,8 +10,8 @@ public class AbilityBlindness : Ability
         id = AbilityTypeEnum.abilBlindness;
         stdName = "Blindness";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilDeadlyRays;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilDeadlyRays;
     }
 
     public override string Description(Mob mob)

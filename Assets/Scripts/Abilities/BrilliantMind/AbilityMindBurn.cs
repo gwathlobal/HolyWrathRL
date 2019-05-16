@@ -10,8 +10,8 @@ public class AbilityMindBurn : Ability
         id = AbilityTypeEnum.abilMindBurn;
         stdName = "Mind Burn";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBrilliantMind;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBrilliantMind;
     }
 
     public override string Description(Mob mob)

@@ -818,6 +818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 1
   AbilityDialog: {fileID: 208985270}
+  txt: {fileID: 674582523}
 --- !u!1 &208985268
 GameObject:
   m_ObjectHideFlags: 0
@@ -4202,7 +4203,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1159984287}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999994
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5314,6 +5315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 3
   AbilityDialog: {fileID: 208985270}
+  txt: {fileID: 1544605369}
 --- !u!1 &1185078992
 GameObject:
   m_ObjectHideFlags: 0
@@ -7415,6 +7417,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 2
   AbilityDialog: {fileID: 208985270}
+  txt: {fileID: 285011059}
 --- !u!1 &1730799950
 GameObject:
   m_ObjectHideFlags: 0
@@ -7491,7 +7494,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 600522082}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999976
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7703,6 +7706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 4
   AbilityDialog: {fileID: 208985270}
+  txt: {fileID: 615797137}
 --- !u!1 &1830110319
 GameObject:
   m_ObjectHideFlags: 0
@@ -8643,6 +8647,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: 5
   AbilityDialog: {fileID: 208985270}
+  txt: {fileID: 2120148661}
 --- !u!1 &2048153414
 GameObject:
   m_ObjectHideFlags: 0

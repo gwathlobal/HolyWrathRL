@@ -10,8 +10,8 @@ public class AbilityMeditate : Ability
         id = AbilityTypeEnum.abilMeditate;
         stdName = "Meditate";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBrilliantMind;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBrilliantMind;
     }
 
     public override string Description(Mob mob)

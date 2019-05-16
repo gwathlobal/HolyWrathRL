@@ -10,8 +10,8 @@ public class AbilityCharge : Ability
         id = AbilityTypeEnum.abilCharge;
         stdName = "Charge";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

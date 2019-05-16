@@ -10,7 +10,7 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
     public Text txt;
     public int curAbil;
     public AbilityTypeEnum abilType;
-    public AbilitySlotCategoty abilSlot;
+    public AbilitySlotEnum abilSlot;
     public AbilityDialogScript AbilityDialog;
 
     private Vector3 startPosition;
@@ -49,15 +49,15 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
 
         if (AbilityTypes.abilTypes[abilityType].slot != abilSlot) return;
 
-        if (abilSlot == AbilitySlotCategoty.abilNormal)
+        if (abilSlot == AbilitySlotEnum.abilNormal)
             AbilityDialog.player.curAbils[curAbil] = abilityType;
-        else if (abilSlot == AbilitySlotCategoty.abilDodge)
+        else if (abilSlot == AbilitySlotEnum.abilDodge)
             AbilityDialog.player.dodgeAbil = abilityType;
-        else if (abilSlot == AbilitySlotCategoty.abilBlock)
+        else if (abilSlot == AbilitySlotEnum.abilBlock)
             AbilityDialog.player.blockAbil = abilityType;
-        else if (abilSlot == AbilitySlotCategoty.abilMelee)
+        else if (abilSlot == AbilitySlotEnum.abilMelee)
             AbilityDialog.player.meleeAbil = abilityType;
-        else if (abilSlot == AbilitySlotCategoty.abilRanged)
+        else if (abilSlot == AbilitySlotEnum.abilRanged)
             AbilityDialog.player.rangedAbil = abilityType;
 
         AbilityDialog.InitializeUI(AbilityDialog.player);
@@ -106,15 +106,15 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
         transform.SetParent(startParent, true);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if (abilSlot == AbilitySlotCategoty.abilNormal)
+        if (abilSlot == AbilitySlotEnum.abilNormal)
             AbilityDialog.player.curAbils[curAbil] = AbilityTypeEnum.abilNone;
-        else if (abilSlot == AbilitySlotCategoty.abilDodge)
+        else if (abilSlot == AbilitySlotEnum.abilDodge)
             AbilityDialog.player.dodgeAbil = AbilityTypeEnum.abilNone;
-        else if (abilSlot == AbilitySlotCategoty.abilBlock)
+        else if (abilSlot == AbilitySlotEnum.abilBlock)
             AbilityDialog.player.blockAbil = AbilityTypeEnum.abilNone;
-        else if (abilSlot == AbilitySlotCategoty.abilMelee)
+        else if (abilSlot == AbilitySlotEnum.abilMelee)
             AbilityDialog.player.meleeAbil = AbilityTypeEnum.abilNone;
-        else if (abilSlot == AbilitySlotCategoty.abilRanged)
+        else if (abilSlot == AbilitySlotEnum.abilRanged)
             AbilityDialog.player.rangedAbil = AbilityTypeEnum.abilNone;
 
         AbilityDialog.InitializeUI(AbilityDialog.player);
@@ -134,11 +134,13 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
         if (abilType != AbilityTypeEnum.abilNone)
         {
             AbilityDialog.DescrText.text = AbilityTypes.abilTypes[abilType].GetFullDescription(AbilityDialog.player);
+            txt.color = new Color32(255, 255, 0, 255);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         AbilityDialog.DescrText.text = "";
+        txt.color = new Color32(255, 255, 255, 255);
     }
 }

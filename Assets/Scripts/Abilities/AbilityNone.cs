@@ -10,8 +10,8 @@ public class AbilityNone : Ability
         id = AbilityTypeEnum.abilNone;
         stdName = "None";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Name(Mob mob)

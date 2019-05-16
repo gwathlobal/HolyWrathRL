@@ -11,8 +11,8 @@ public class AbilityLeapOfStrength : Ability
         stdName = "Leap of Strength";
         costType = AbilityCostType.wp;
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilFieryRage;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilFieryRage;
     }
 
     public override string Description(Mob mob)

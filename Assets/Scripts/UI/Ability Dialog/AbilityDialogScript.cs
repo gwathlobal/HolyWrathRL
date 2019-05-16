@@ -29,7 +29,7 @@ public class AbilityDialogScript : MonoBehaviour {
     public Transform canvasTrasform;
 
     public List<GameObject> availAbilPanels;
-    public AbilityPlayerCategory curCategory;
+    public AbilityPlayerCategoryEnum curCategory;
     public Text UnspentTPTxt;
 
     public int curUnspentTP;
@@ -52,7 +52,7 @@ public class AbilityDialogScript : MonoBehaviour {
             maxUnspentTP = 1;
             curUnspentTP = maxUnspentTP;
         }
-        curCategory = AbilityPlayerCategory.abilCommon;
+        curCategory = AbilityPlayerCategoryEnum.abilCommon;
         availAbilPanels = new List<GameObject>();
 
         InitializeUI(GameManager.instance.player);
@@ -163,7 +163,7 @@ public class AbilityDialogScript : MonoBehaviour {
         SceneManager.LoadScene("LevelScene");
     }
 
-    public void SetUpScrollablePanels(AbilityPlayerCategory abilCategory)
+    public void SetUpScrollablePanels(AbilityPlayerCategoryEnum abilCategory)
     {
         foreach (GameObject go in availAbilPanels)
         {

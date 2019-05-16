@@ -10,8 +10,8 @@ public class AbilityTeleportOnHit : Ability
         id = AbilityTypeEnum.abilTeleportOnHit;
         stdName = "Escape Teleport";
         passive = true;
-        slot = AbilitySlotCategoty.abilNone;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNone;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)
@@ -54,6 +54,8 @@ public class AbilityTeleportOnHit : Ability
         string str = String.Format("{0} disappears in thin air. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
+        //actor.mo.TeleportDisappear(actor.x, actor.y);
+
         // make 200 attempts to find a free spot within 5 tile distance from the actor's position
         int tx = actor.x;
         int ty = actor.y;
@@ -72,11 +74,28 @@ public class AbilityTeleportOnHit : Ability
 
         if (result)
         {
+            /*
+            if (BoardManager.instance.level.visible[actor.x, actor.y])
+            {
+                BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(actor.go, () =>
+                {
+                    actor.SetPosition(tx, ty);
+                    actor.go.transform.position = new Vector2(tx, ty);
+                    BoardAnimationController.instance.RemoveProcessedAnimation();
+                }));
+            }
+            else
+            {
+                actor.SetPosition(tx, ty);
+                actor.go.transform.position = new Vector2(tx, ty);
+            }
+            */
             actor.SetPosition(tx, ty);
-            actor.go.transform.position = new Vector2(tx, ty);   
+            actor.go.transform.position = new Vector2(tx, ty);
         }
         str = String.Format("{0} appears out of nowhere. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+        //actor.mo.TeleportReappear(actor.x, actor.y);
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -10,8 +10,8 @@ public class AbilityBlock : Ability
         id = AbilityTypeEnum.abilBlock;
         stdName = "Block";
         passive = false;
-        slot = AbilitySlotCategoty.abilBlock;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilBlock;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Description(Mob mob)

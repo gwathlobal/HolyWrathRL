@@ -17,12 +17,7 @@ public struct TargetStruct {
     }
 }
 
-public enum AbilityPlayerCategory
-{
-    abilMobs, abilCommon, abilDeadlyRays, abilFieryRage, abilBrilliantMind, abilBastionHoly
-}
-
-public enum AbilitySlotCategoty
+public enum AbilitySlotEnum
 {
     abilNormal, abilDodge, abilBlock, abilMelee, abilRanged, abilNone
 }
@@ -61,8 +56,8 @@ public abstract class Ability {
     public abstract int Cost(Mob mob);
     public AbilityCostType costType = AbilityCostType.fp;
 
-    public AbilitySlotCategoty slot;
-    public AbilityPlayerCategory category;
+    public AbilitySlotEnum slot;
+    public AbilityPlayerCategoryEnum category;
 
     public abstract bool AbilityCheckApplic(Ability ability, Mob mob);
     public abstract void AbilityInvoke(Mob actor, TargetStruct target);
@@ -86,16 +81,16 @@ public abstract class Ability {
         string _slot;
         switch (slot)
         {
-            case AbilitySlotCategoty.abilBlock:
+            case AbilitySlotEnum.abilBlock:
                 _slot = "Block Ability. ";
                 break;
-            case AbilitySlotCategoty.abilDodge:
+            case AbilitySlotEnum.abilDodge:
                 _slot = "Dodge Ability. ";
                 break;
-            case AbilitySlotCategoty.abilMelee:
+            case AbilitySlotEnum.abilMelee:
                 _slot = "Melee Ability. ";
                 break;
-            case AbilitySlotCategoty.abilRanged:
+            case AbilitySlotEnum.abilRanged:
                 _slot = "Ranged Ability. ";
                 break;
             default:

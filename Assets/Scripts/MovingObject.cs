@@ -185,6 +185,38 @@ public class MovingObject : MonoBehaviour
         }
     }
 
+    public void TeleportDisappear(int tx, int ty)
+    {
+        if (BoardManager.instance.level.visible[tx, ty])
+        {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
+            {
+                StartCoroutine(SmoothFadeTo(0f, 0.15f));
+            }));
+        }
+        else
+        {
+            Color color = gameObject.GetComponent<SpriteRenderer>().color;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0);
+        }
+    }
+
+    public void TeleportReappear(int tx, int ty)
+    {
+        if (BoardManager.instance.level.visible[tx, ty])
+        {
+            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
+            {
+                StartCoroutine(SmoothFadeTo(1f, 0.15f));
+            }));
+        }
+        else
+        {
+            Color color = gameObject.GetComponent<SpriteRenderer>().color;
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 1);
+        }
+    }
+
     protected IEnumerator SmoothMovement(Vector3 end)
     {
         //Debug.Log("Smooth Movement");
@@ -455,6 +487,59 @@ public class MovingObject : MonoBehaviour
             Destroy(explosions[i]);
         }
         Destroy(this.gameObject);
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+    }
+
+    protected IEnumerator SmoothTeleportDisappear()
+    {
+        float curTime = 0;
+        float waitTime = 0.1f;
+        float alphaStep = 255 / waitTime;
+        Color32 color = gameObject.GetComponent<SpriteRenderer>().color;
+
+        while (gameObject.GetComponent<SpriteRenderer>().color.a > 0)
+        {
+            curTime += Time.deltaTime;
+
+            gameObject.GetComponent<SpriteRenderer>().color = new Color32(color.r, color.g, color.b, (byte)(255 - Time.deltaTime * alphaStep));
+
+            yield return null;
+        }
+
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+    }
+
+    protected IEnumerator SmoothTeleportReappear()
+    {
+        float curTime = 0;
+        float waitTime = 0.1f;
+        float alphaStep = 255 / waitTime;
+        Color32 color = gameObject.GetComponent<SpriteRenderer>().color;
+
+        while (gameObject.GetComponent<SpriteRenderer>().color.a < 1)
+        {
+            curTime += Time.deltaTime;
+
+            gameObject.GetComponent<SpriteRenderer>().color = new Color32(color.r, color.g, color.b, (byte)(0 + Time.deltaTime * alphaStep));
+
+            yield return null;
+        }
+
+        BoardAnimationController.instance.RemoveProcessedAnimation();
+    }
+
+    IEnumerator SmoothFadeTo(float aValue, float aTime)
+    {
+        Color color = gameObject.GetComponent<SpriteRenderer>().color;
+        float alpha = color.a;
+
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Color newColor = new Color(color.r, color.g, color.b, Mathf.Lerp(alpha, aValue, t));
+            gameObject.GetComponent<SpriteRenderer>().color = newColor;
+            yield return null;
+        }
+
         BoardAnimationController.instance.RemoveProcessedAnimation();
     }
 }

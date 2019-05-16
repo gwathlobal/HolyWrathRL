@@ -10,8 +10,8 @@ public class AbilityLightBolt : Ability
         id = AbilityTypeEnum.abilLightBolt;
         stdName = "Light Bolt";
         passive = false;
-        slot = AbilitySlotCategoty.abilRanged;
-        category = AbilityPlayerCategory.abilCommon;
+        slot = AbilitySlotEnum.abilRanged;
+        category = AbilityPlayerCategoryEnum.abilCommon;
     }
 
     public override string Description(Mob mob)

@@ -10,8 +10,8 @@ public class AbilityFireAura : Ability
         id = AbilityTypeEnum.abilFireAura;
         stdName = "Fire Aura";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilFieryRage;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilFieryRage;
     }
 
     public override string Description(Mob mob)

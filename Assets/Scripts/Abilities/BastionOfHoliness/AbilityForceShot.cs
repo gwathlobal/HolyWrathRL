@@ -10,8 +10,8 @@ public class AbilityForceShot : Ability
         id = AbilityTypeEnum.abilForceShot;
         stdName = "Force Arrow";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilBastionHoly;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilBastionHoly;
     }
 
     public override string Description(Mob mob)

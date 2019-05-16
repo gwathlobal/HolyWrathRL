@@ -11,8 +11,8 @@ public class AbilitySummonImp : Ability
         id = AbilityTypeEnum.abilSummonImp;
         stdName = "Summon Imp";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

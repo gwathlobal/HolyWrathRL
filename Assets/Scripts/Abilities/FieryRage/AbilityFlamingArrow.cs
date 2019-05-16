@@ -10,8 +10,8 @@ public class AbilityFlamingArrow : Ability
         id = AbilityTypeEnum.abilFlamingArrow;
         stdName = "Flaming Arrow";
         passive = false;
-        slot = AbilitySlotCategoty.abilRanged;
-        category = AbilityPlayerCategory.abilFieryRage;
+        slot = AbilitySlotEnum.abilRanged;
+        category = AbilityPlayerCategoryEnum.abilFieryRage;
     }
 
     public override string Description(Mob mob)

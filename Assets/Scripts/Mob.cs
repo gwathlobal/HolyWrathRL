@@ -430,7 +430,7 @@ public class Mob
             Ability ability = GetAbility(abilityType);
             if (ability.id != AbilityTypeEnum.abilNone &&
                 (!ability.passive ||
-                 (ability.passive && ability.slot == AbilitySlotCategoty.abilMelee)))
+                 (ability.passive && ability.slot == AbilitySlotEnum.abilMelee)))
             {
                 str += ability.GetFullDescription(this);
                 str += "\n\n";
@@ -449,7 +449,7 @@ public class Mob
         foreach (AbilityTypeEnum abilityType in abilities.Keys)
         {
             Ability ability = GetAbility(abilityType);
-            if (ability.passive && ability.slot != AbilitySlotCategoty.abilMelee)
+            if (ability.passive && ability.slot != AbilitySlotEnum.abilMelee)
             {
                 str += GetAbility(abilityType).GetFullDescription(this);
                 str += "\n\n";

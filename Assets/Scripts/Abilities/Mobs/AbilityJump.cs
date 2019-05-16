@@ -10,8 +10,8 @@ public class AbilityJump : Ability
         id = AbilityTypeEnum.abilJump;
         stdName = "Jump";
         passive = false;
-        slot = AbilitySlotCategoty.abilDodge;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilDodge;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

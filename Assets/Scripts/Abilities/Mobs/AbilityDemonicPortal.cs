@@ -11,8 +11,8 @@ public class AbilityDemonicPortal : Ability
         id = AbilityTypeEnum.abilDemonicPortal;
         stdName = "Demonic Portal";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

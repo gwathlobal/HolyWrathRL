@@ -10,8 +10,8 @@ public class AbilityShootSniperRifle : Ability
         id = AbilityTypeEnum.abilShootSniperRifle;
         stdName = "Shoot Sniper Rifle";
         passive = false;
-        slot = AbilitySlotCategoty.abilRanged;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilRanged;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

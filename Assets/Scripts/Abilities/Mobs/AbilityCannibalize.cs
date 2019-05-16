@@ -10,8 +10,8 @@ public class AbilityCannibalize : Ability
         id = AbilityTypeEnum.abilCannibalize;
         stdName = "Cannibalize";
         passive = false;
-        slot = AbilitySlotCategoty.abilNormal;
-        category = AbilityPlayerCategory.abilMobs;
+        slot = AbilitySlotEnum.abilNormal;
+        category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
     public override string Description(Mob mob)

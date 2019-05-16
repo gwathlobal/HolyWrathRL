@@ -20,6 +20,7 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private Vector3 startPosition;
     private Transform startParent;
     public AbilityAddedStatus status;
+    private Color32 colorName; 
 
     public void InitializeUI(AbilityDialogScript _abilityDialog, string name, AbilityTypeEnum _abilType, AbilityAddedStatus _status)
     {
@@ -31,21 +32,25 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         {
             case AbilityAddedStatus.selected:
                 button.gameObject.SetActive(true);
-                abilName.color = new Color32(255, 255, 255, 255);
+                colorName = new Color32(255, 255, 255, 255);
+                abilName.color = colorName;
                 buttonTxt.text = "-";
                 break;
             case AbilityAddedStatus.available:
                 button.gameObject.SetActive(true);
-                abilName.color = new Color32(150, 150, 150, 255);
+                colorName = new Color32(150, 150, 150, 255);
+                abilName.color = colorName;
                 buttonTxt.text = "+";
                 break;
             case AbilityAddedStatus.added:
                 button.gameObject.SetActive(false);
-                abilName.color = new Color32(255, 255, 255, 255);
+                colorName = new Color32(255, 255, 255, 255);
+                abilName.color = colorName;
                 break;
             default:
                 button.gameObject.SetActive(false);
-                abilName.color = new Color32(150, 150, 150, 255);
+                colorName = new Color32(150, 150, 150, 255);
+                abilName.color = colorName;
                 break;
         }
 
@@ -56,7 +61,7 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (status == AbilityAddedStatus.unavailable || status == AbilityAddedStatus.available || 
-            AbilityTypes.abilTypes[abilType].slot == AbilitySlotCategoty.abilNone)
+            AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilNone)
         {
             eventData.pointerDrag = null;
             return;
@@ -111,12 +116,14 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if (AbilityTypes.abilTypes[abilType].id != AbilityTypeEnum.abilNone)
         {
             AbilityDialog.DescrText.text = AbilityTypes.abilTypes[abilType].GetFullDescription(AbilityDialog.player);
+            abilName.color = new Color32(255, 255, 0, 255);
         }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         AbilityDialog.DescrText.text = "";
+        abilName.color = colorName;
     }
 
     public void ClickSelectAbility()
