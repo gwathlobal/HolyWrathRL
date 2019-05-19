@@ -359,41 +359,47 @@ public class FeatureTypes
                 go.AddComponent<MovingObject>();
                 go.GetComponent<MovingObject>().Explosion5x5(feature.x, feature.y);
 
-                foreach (Vector2Int fireLoc in caughtFire)
-                {
-                    Feature fire = new Feature(FeatureTypeEnum.featFire, fireLoc.x, fireLoc.y);
-                    fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[fireLoc.x, fireLoc.y]].catchesFire;
-                    BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
-                }
-
-                foreach (Mob mob in affectedMobs)
-                {
-                    int dmg = 0;
-                    dmg += Mob.InflictDamage(null, mob,
-                        new Dictionary<DmgTypeEnum, int>()
-                        {
-                            { DmgTypeEnum.Physical, 10 },
-                            { DmgTypeEnum.Fire, 10 }
-                        },
-                        null);
-                    
-                    if (BoardManager.instance.level.visible[mob.x, mob.y])
-                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
-
-                    if (mob.CheckDead())
+                GameObject go2 = new GameObject("tmp2");
+                go.transform.SetParent(feature.go.transform.parent);
+                go.transform.position = feature.go.transform.position;
+                BoardEventController.instance.AddEvent(new BoardEventController.Event(go2,
+                    () =>
                     {
-                        mob.MakeDead(null, true, true, false);
-                    }
+                        foreach (Vector2Int fireLoc in caughtFire)
+                        {
+                            Feature fire = new Feature(FeatureTypeEnum.featFire, fireLoc.x, fireLoc.y);
+                            fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[fireLoc.x, fireLoc.y]].catchesFire;
+                            BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
+                        }
 
-                }
+                        foreach (Mob mob in affectedMobs)
+                        {
+                            int dmg = 0;
+                            dmg += Mob.InflictDamage(null, mob,
+                                new Dictionary<DmgTypeEnum, int>()
+                                {
+                                    { DmgTypeEnum.Physical, 10 },
+                                    { DmgTypeEnum.Fire, 10 }
+                                },
+                                null);
 
-                
+                            if (BoardManager.instance.level.visible[mob.x, mob.y])
+                                UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+
+                            if (mob.CheckDead())
+                            {
+                                mob.MakeDead(null, true, true, false);
+                            }
+
+                        }
+                        GameObject.Destroy(go2);
+                        BoardEventController.instance.RemoveFinishedEvent();
+                    }));
+
                 if (feature.counter <= 0)
                 {
                     level.RemoveFeatureFromLevel(feature);
-                    //level.featureList.Remove(feature);
                     BoardManager.instance.featuresToRemove.Add(feature);
-                    //BoardManager.instance.RemoveFeatureFromWorld(feature);
                 }
             });
     }

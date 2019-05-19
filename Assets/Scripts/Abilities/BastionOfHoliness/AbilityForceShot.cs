@@ -125,8 +125,16 @@ public class AbilityForceShot : Ability
                 Level level = BoardManager.instance.level;
                 if (level.mobs[dx, dy] == null)
                 {
-                    defender.SetPosition(dx, dy);
-                    defender.mo.Move(defender.x, defender.y);
+                    Vector2 end = new Vector2(dx, dy);
+
+                    bool visibleStart = level.visible[defender.x, defender.y];
+                    bool visibleEnd = level.visible[dx, dy];
+
+                    defender.mo.Move(end, (visibleStart || visibleEnd), 
+                        () =>
+                        {
+                            defender.SetPosition(dx, dy);
+                        });
                 }
             });
     }

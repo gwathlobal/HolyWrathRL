@@ -17,7 +17,7 @@ public class AbilityLeapOfStrength : Ability
 
     public override string Description(Mob mob)
     {
-        return "Leap to a unoccupied cell up to 6 tiles away. Upon landing you deal 35 Fire dmg to all enemies around you and applies the Burning effect to them. Burning deals 3 Fire dmg for 5 turns.";
+        return "Leap to a unoccupied cell up to 7 tiles away. Upon landing you deal 35 Fire dmg to all enemies around you and applies the Burning effect to them. Burning deals 3 Fire dmg for 5 turns.";
     }
 
     public override string Name(Mob mob)
@@ -56,13 +56,26 @@ public class AbilityLeapOfStrength : Ability
         string str = String.Format("{0} makes a Leap of Strength. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.SetPosition(target.loc.x, target.loc.y);
-        actor.mo.Move(actor.x, actor.y);
+        Vector2 end = new Vector2(target.loc.x, target.loc.y);
+        Level level = BoardManager.instance.level;
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.loc.x, target.loc.y];
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+            () => 
+            {
+                actor.mo.Move(end, (visibleStart || visibleEnd),
+                    () =>
+                    {
+                        actor.SetPosition(target.loc.x, target.loc.y);
+                    });
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+        
 
         List<Mob> affectedMobs = new List<Mob>();
 
-        Level level = BoardManager.instance.level;
-        level.CheckSurroundings(actor.x, actor.y, false,
+        level.CheckSurroundings(target.loc.x, target.loc.y, false,
             (int x, int y) =>
             {
                 if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction))
@@ -72,47 +85,47 @@ public class AbilityLeapOfStrength : Ability
 
             });
 
-        actor.mo.Explosion3x3(actor.x, actor.y);
-
-        foreach (Mob mob in affectedMobs)
-        {
-            int dmg = 0;
-            dmg += Mob.InflictDamage(actor, mob,
-                new Dictionary<DmgTypeEnum, int>()
-                {
-                    { DmgTypeEnum.Fire, 35 }
-                },
-                (int dmg1) =>
-                {
-                    string str1;
-                    if (dmg1 <= 0)
-                    {
-                        str1 = String.Format("{0} takes no fire dmg. ",
-                            mob.name);
-                    }
-                    else
-                    {
-                        str1 = String.Format("{0} takes {1} fire dmg. ",
-                            mob.name,
-                            dmg1);
-                    }
-                    return str1;
-                });
-            mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
-
-            if (BoardManager.instance.level.visible[mob.x, mob.y])
-                UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
-
-            if (mob.CheckDead())
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+            () =>
             {
-                mob.MakeDead(actor, true, true, false);
-            }
+                actor.mo.Explosion3x3(target.loc.x, target.loc.y);
 
-            if (actor.GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
-                actor.GetAbility(AbilityTypeEnum.abilDivineVengeance).AbilityInvoke(actor, new TargetStruct(new Vector2Int(actor.x, actor.y), actor));
-        }
+                foreach (Mob mob in affectedMobs)
+                {
+                    int dmg = 0;
+                    dmg += Mob.InflictDamage(actor, mob,
+                        new Dictionary<DmgTypeEnum, int>()
+                        {
+                            { DmgTypeEnum.Fire, 35 }
+                        },
+                        (int dmg1) =>
+                        {
+                            string str1;
+                            if (dmg1 <= 0)
+                            {
+                                str1 = String.Format("{0} takes no fire dmg. ",
+                                    mob.name);
+                            }
+                            else
+                            {
+                                str1 = String.Format("{0} takes {1} fire dmg. ",
+                                    mob.name,
+                                    dmg1);
+                            }
+                            return str1;
+                        });
+                    mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
 
-        
+                    if (level.visible[mob.x, mob.y])
+                        UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+
+                    if (mob.CheckDead())
+                    {
+                        mob.MakeDead(actor, true, true, false);
+                    }
+                }
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
@@ -134,7 +147,7 @@ public class AbilityLeapOfStrength : Ability
         if (level.visible[pos.x, pos.y] &&
             level.mobs[pos.x, pos.y] == null &&
             TerrainTypes.terrainTypes[level.terrain[pos.x, pos.y]].blocksMovement == false &&
-            Level.GetSimpleDistance(player.x, player.y, pos.x, pos.y) <= 6)
+            Level.GetSimpleDistance(player.x, player.y, pos.x, pos.y) <= 7)
         {
             bool fresult = LOS_FOV.DrawLine(player.x, player.y, pos.x, pos.y,
                 (int x, int y, int prev_x, int prev_y) =>

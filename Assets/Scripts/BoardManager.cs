@@ -34,6 +34,8 @@ public class BoardManager : MonoBehaviour {
 
     public GameObject unexploredPrefab;
 
+    public int curMobId;
+
     //Awake is always called before any Start functions
     void Awake()
     {
@@ -134,8 +136,8 @@ public class BoardManager : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        if (playersTurn || BoardAnimationController.instance.toProccessQueue.Count > 0 || BoardAnimationController.instance.inProcessCount > 0)
-            //If any of these are true, return and do not start MoveEnemies.
+        if (playersTurn || BoardEventController.instance.toProccessQueue.Count > 0 || BoardEventController.instance.inProcessCount > 0 ||
+            BoardEventController.instance.coroutinesInProcess > 0)
             return;
 
         mobList = mobs.Values.ToList();
@@ -144,7 +146,10 @@ public class BoardManager : MonoBehaviour {
         {
             if (mob.curAP > 0 && !mob.CheckDead())
             {
-                msgLog.SetHasMessageThisTurn(false);
+                //Debug.Log(mob.name + " FINALIZE MSG, msgLog.hasMsg = " + msgLog.HasMessageThisTurn());
+                msgLog.FinalizeMsg();
+
+                //msgLog.SetHasMessageThisTurn(false);
                 mob.AiFunction();
                 mobActed = true;
                 if (playersTurn)
@@ -153,8 +158,11 @@ public class BoardManager : MonoBehaviour {
                     UIManager.instance.LeftPanel.UpdateLeftPanel();
                     return;
                 }
-
-                msgLog.FinalizeMsg();
+                else
+                {
+                    //msgLog.FinalizeMsg();
+                    return;
+                }
             }
         }
 
@@ -165,6 +173,8 @@ public class BoardManager : MonoBehaviour {
         }
         else
         {
+            msgLog.FinalizeMsg();
+
             /*
             for (int id = mobs.Count - 1; id >= 0; id--) 
             {
@@ -249,9 +259,13 @@ public class BoardManager : MonoBehaviour {
 
     public void FinalizePlayerTurn()
     {
-        player.GetFOV();
         playersTurn = false;
-        msgLog.FinalizeMsg();
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(player.go,
+            () =>
+            {
+                player.GetFOV();
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
     }
 
     public void CreateBlooddrop(int x, int y)

@@ -142,7 +142,7 @@ public class PlayerInput : MonoBehaviour {
         {
             UIManager.instance.SetScreenStatusToNormal();
         }
-        else if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             UIManager.instance.InvokeExecFunc();
         }

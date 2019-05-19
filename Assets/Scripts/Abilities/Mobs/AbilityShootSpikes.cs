@@ -93,7 +93,8 @@ public class AbilityShootSpikes : Ability
                                 dmg1);
                         }
                         return str1;
-                    });
+                    },
+                    true);
                 result_str = dmg + " <i>DMG</i>";
                 return result_str;
             },

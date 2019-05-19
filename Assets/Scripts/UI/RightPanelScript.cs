@@ -41,6 +41,8 @@ public class RightPanelScript : MonoBehaviour {
             ep.GetComponent<Text>().text = EffectTypes.effectTypes[effectType].name;
             if (player.effects[effectType].cd != Effect.CD_UNLIMITED)
                 ep.GetComponent<Text>().text += " (" + player.effects[effectType].cd + ")";
+            if (player.effects[effectType].param1 != 0)
+                ep.GetComponent<Text>().text += " [" + player.effects[effectType].param1 + "]";
             ep.GetComponent<Text>().color = EffectTypes.effectTypes[effectType].color;
 
             ep.GetComponent<HintPanelScript>().SetPanelName("Hint Panel " + EffectTypes.effectTypes[effectType].name);

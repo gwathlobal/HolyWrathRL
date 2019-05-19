@@ -59,7 +59,7 @@ public class Mob
 
     public string name;
 
-    public bool ifDead;
+    public bool alreadyDied;
     public float curAP;
     public float curMoveSpeed;
 
@@ -320,10 +320,19 @@ public class Mob
 
     public bool Move(int xDir, int yDir)
     {
+        if (this == BoardManager.instance.player)
+            Debug.Log(String.Format("Player Move ({0}, {1}) + ({2}, {3})", x, y, xDir, yDir));
         if (GetEffect(EffectTypeEnum.effectImmobilize) != null)
         {
-            SetPosition(x, y);
-            mo.Move(x, y);
+            Vector2 end = new Vector2(x, y);
+            Level level = BoardManager.instance.level;
+            bool visible = level.visible[x, y];
+
+            mo.Move(end, visible,
+                () =>
+                {
+                    SetPosition(x, y);
+                });
             MakeAct(curMoveSpeed);
             return true;
         }
@@ -337,8 +346,16 @@ public class Mob
         switch (attemptMoveResult.result)
         {
             case AttemptMoveResultEnum.moveClear:
-                SetPosition(x + xDir, y + yDir);
-                mo.Move(x, y);
+                Vector2 end = new Vector2(x + xDir, y + yDir);
+                Level level = BoardManager.instance.level;
+                bool visibleStart = level.visible[x, y];
+                bool visibleEnd = level.visible[x + xDir, y + yDir];
+
+                mo.Move(end, (visibleStart || visibleEnd),
+                    () =>
+                    {
+                        SetPosition(x + xDir, y + yDir);
+                    });
                 MakeAct(curMoveSpeed);
                 result = true;
                 break;
@@ -481,10 +498,8 @@ public class Mob
         return str;
     }
 
-    public static int InflictDamage(Mob attacker, Mob target, Dictionary<DmgTypeEnum, int> dmgDict, dmg_string dmg_string)
+    public static int InflictDamage(Mob attacker, Mob target, Dictionary<DmgTypeEnum, int> dmgDict, dmg_string dmg_string, bool createBlood = true)
     {
-        // TODO: make the function take a list of dmg types & dmg values instead of invoking the function for each dmg type separately
-
         string str = "";
         int finaldmg = 0;
         foreach (DmgTypeEnum dmgType in dmgDict.Keys)
@@ -589,17 +604,23 @@ public class Mob
             target.InvokeAbility(target.GetAbility(AbilityTypeEnum.abilTeleportOnHit), new TargetStruct(new Vector2Int(0, 0), null));
         }
 
+        if (createBlood && finaldmg > 0)
+            BoardManager.instance.CreateBlooddrop(target.x, target.y);
+
         return finaldmg;
     }
 
     public bool CheckDead()
     {
-        if (curHP <= 0 || ifDead) return true;
+        if (curHP <= 0 || alreadyDied) return true;
         else return false;
     }
 
     public void MakeDead(Mob attacker, bool makeMsg, bool leaveCorpse, bool severLimbs)
     {
+        if (alreadyDied) return;
+        alreadyDied = true;
+
         Level level = BoardManager.instance.level;
         string msg = this.name + " dies. ";
 
@@ -697,7 +718,15 @@ public class Mob
                 corpseSec.go.GetComponent<Transform>().position = new Vector3(this.x, this.y);
                 //if (!level.visible[corpseSec.x, corpseSec.y]) corpseSec.go.GetComponent<Renderer>().enabled = false;
 
-                corpseSec.mo.Move(corpseSec.x, corpseSec.y);
+                Vector2 end = new Vector2(corpseSec.x, corpseSec.y);
+                bool visibleStart = level.visible[this.x, this.y];
+                bool visibleEnd = level.visible[corpseSec.x, corpseSec.y];
+
+                corpseSec.mo.Move(end, (visibleStart || visibleEnd),
+                    () =>
+                    {
+                        return;
+                    });
             }
             
         }
@@ -707,7 +736,6 @@ public class Mob
             BoardManager.instance.msgLog.PlayerVisibleMsg(this.x, this.y, msg);
         }
 
-        ifDead = true;
         level.RemoveMobFromLevel(this);
 
         if (this is PlayerMob) PlayerMob.QuitGame();

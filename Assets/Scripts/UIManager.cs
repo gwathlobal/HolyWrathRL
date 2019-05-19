@@ -286,6 +286,7 @@ public class UIManager : MonoBehaviour {
 
     public bool MovePlayer(int dx, int dy)
     {
+        Debug.Log(System.String.Format("MovePlayer -> ({0}, {1})", dx, dy));
         anyBtnClicked = true;
         BoardManager.instance.prevTime = Time.time;
         BoardManager.instance.msgLog.ClearCurMsg();

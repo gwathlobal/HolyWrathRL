@@ -109,8 +109,16 @@ public class AbilityJump : Ability
                     break;
             }
 
-            actor.SetPosition(path[n].x, path[n].y);
-            actor.mo.Move(actor.x, actor.y);
+            Vector2 end = new Vector2(path[n].x, path[n].y);
+            Level level = BoardManager.instance.level;
+            bool visibleStart = level.visible[actor.x, actor.y];
+            bool visibleEnd = level.visible[path[n].x, path[n].y];
+
+            actor.mo.Move(end, (visibleStart || visibleEnd),
+                () =>
+                {
+                    actor.SetPosition(path[n].x, path[n].y);
+                });
         }
     }
 

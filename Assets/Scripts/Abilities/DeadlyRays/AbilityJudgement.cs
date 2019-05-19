@@ -64,22 +64,35 @@ public class AbilityJudgement : Ability
         else if ((float)target.mob.curHP / target.mob.maxHP > 0.25) dmg = 20;
         else dmg = 30;
 
-        dmg = Mob.InflictDamage(actor, target.mob,
-            new Dictionary<DmgTypeEnum, int>()
-            {
-                { DmgTypeEnum.Physical, dmg }
-            }, 
-            null);
+        Level level = BoardManager.instance.level;
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.mob.x, target.mob.y];
 
-        actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
+        Vector3 start = actor.go.transform.position;
+        Vector3 end = target.mob.go.transform.position;
+
+        actor.mo.MeleeAttack(start, end, (visibleStart || visibleEnd),
             () =>
             {
-                BoardManager.instance.CreateBlooddrop(target.mob.x, target.mob.y);
+                dmg = Mob.InflictDamage(actor, target.mob,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Physical, dmg }
+                    },
+                    null,
+                    true);
+
+                if (target.mob.CheckDead())
+                {
+                    target.mob.MakeDead(actor, true, true, true);
+                }
+
+                if (visibleEnd)
+                {
+                    string str2 = dmg + " <i>DMG</i>";
+                    UIManager.instance.CreateFloatingText(str2, end);
+                }
             });
-        if (target.mob.CheckDead())
-        {
-            target.mob.MakeDead(actor, true, true, true);
-        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

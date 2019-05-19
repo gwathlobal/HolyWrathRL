@@ -162,13 +162,13 @@ public class EffectTypes
                     {
                         { DmgTypeEnum.Fire, 3 }
                     },
-                    null);
+                    null,
+                    true);
                 if (BoardManager.instance.level.visible[actor.x, actor.y])
                 {
                     Vector3 pos = new Vector3(actor.x, actor.y, 0);
                     UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", pos);
                 }
-                BoardManager.instance.CreateBlooddrop(actor.x, actor.y);
                 if (actor.CheckDead())
                 {
                     actor.MakeDead(null, true, true, false);
@@ -323,7 +323,7 @@ public class EffectTypes
            null,
            null, null, 0, true, false, 4);
 
-        Add(EffectTypeEnum.effectRemoveAfterTime, "Temporary", "You will dies once this effect expires", new Color32(255, 255, 0, 255),
+        Add(EffectTypeEnum.effectRemoveAfterTime, "Temporary", "You will die once this effect expires", new Color32(255, 255, 0, 255),
             null,
             null,
             (Effect effect, Mob actor) =>

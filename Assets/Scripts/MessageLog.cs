@@ -41,7 +41,7 @@ public class MessageLog  {
             tmpMsg.Clear();
             msg.Add(result);
             curMsg.Add(result);
-            
+            hasMsgThisTurn = false;
         }
         UIManager.instance.BottomPanel.UpdateInterface();
     }

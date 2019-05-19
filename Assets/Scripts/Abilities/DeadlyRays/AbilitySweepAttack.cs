@@ -58,10 +58,11 @@ public class AbilitySweepAttack : Ability
 
         List<Mob> affectedMobs = new List<Mob>();
 
+        // find all mobs around except the one that is targeted
         level.CheckSurroundings(target.mob.x, target.mob.y, true,
             (int x, int y) =>
             {
-                if (level.mobs[x, y] != null && Level.GetSimpleDistance(x, y, actor.x, actor.y) <= 1 && level.mobs[x, y] != actor)
+                if (level.mobs[x, y] != null && Level.GetSimpleDistance(x, y, actor.x, actor.y) <= 1 && level.mobs[x, y] != actor && level.mobs[x, y] != target.mob)
                     affectedMobs.Add(level.mobs[x, y]);
             });
 
@@ -76,16 +77,48 @@ public class AbilitySweepAttack : Ability
                 }, 
                 null);
 
-            actor.mo.MeleeAttack(mob.x - actor.x, mob.y - actor.y, dmg + " <i>DMG</i>",
-                () =>
-                {
-                    BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
-                });
             if (mob.CheckDead())
             {
                 mob.MakeDead(actor, true, true, true);
             }
+
+            if (level.visible[mob.x, mob.y])
+            {
+                string str2 = dmg + " <i>DMG</i>";
+                UIManager.instance.CreateFloatingText(str2, mob.go.transform.position);
+            }
         }
+
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.mob.x, target.mob.y];
+
+        Vector3 start = actor.go.transform.position;
+        Vector3 end = target.mob.go.transform.position;
+
+        actor.mo.MeleeAttack(start, end, (visibleStart || visibleEnd),
+            () =>
+            {
+                int dmg = 10;
+
+                dmg = Mob.InflictDamage(actor, target.mob,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Physical, dmg }
+                    },
+                    null,
+                    true);
+
+                if (target.mob.CheckDead())
+                {
+                    target.mob.MakeDead(actor, true, true, true);
+                }
+
+                if (visibleEnd)
+                {
+                    string str2 = dmg + " <i>DMG</i>";
+                    UIManager.instance.CreateFloatingText(str2, end);
+                }
+            });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

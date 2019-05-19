@@ -76,6 +76,7 @@ MonoBehaviour:
   moveTime: 0.03
   inverseMoveTime: 0
   rb2D: {fileID: 0}
+  coroutinesRunning: 0
 --- !u!212 &212306529950629564
 SpriteRenderer:
   m_ObjectHideFlags: 1

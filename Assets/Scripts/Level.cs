@@ -92,13 +92,18 @@ public class Level {
 
         mobs[mob.x, mob.y] = null;
         mobList.Remove(mob);
-        //mob.go.GetComponent<SpriteRenderer>().color = new Color32(0, 0, 0, 0);
-        BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(mob.go, () => {
+        /*
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(mob.go, () => {
             //Debug.Log("Removing mob " + mob.name + " from level");
+            mob.mo.StopAllCoroutines();
             mob.go.SetActive(false);
-            BoardAnimationController.instance.RemoveProcessedAnimation();
+            BoardEventController.instance.RemoveFinishedEvent();
         }));
-        
+        */
+        BoardEventController.instance.coroutinesInProcess -= mob.mo.coroutinesRunning;
+        mob.mo.StopAllCoroutines();
+        mob.go.SetActive(false);
+
         return true;
     }
 

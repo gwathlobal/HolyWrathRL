@@ -142,6 +142,16 @@ public abstract class Ability {
     public static void ShootProjectile(Mob actor, Mob target, Color32 color, OnHitProjectile onHitProjectile, PostProjectileFunc postProjectileFunc)
     {
         string str;
+
+        Level level = BoardManager.instance.level;
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.x, target.y];
+
+        Vector2 start = actor.go.transform.position;
+        Vector2 end = target.go.transform.position;
+
+        Vector2Int targetPos = new Vector2Int(target.x, target.y);
+
         bool reflect = false;
         foreach (Effect effect in target.effects.Values)
         {
@@ -152,68 +162,112 @@ public abstract class Ability {
             }
         }
 
-        if (!reflect)
-        {
-            str = onHitProjectile(actor, target);
-        }
-        else
-            str = "<i>REFLECT</i>";
-
-
         GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
         projectile.GetComponent<SpriteRenderer>().color = color;
-        projectile.GetComponent<MovingObject>().MoveProjectile(target.x, target.y, str,
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(projectile,
+            () =>
+            {
+                projectile.GetComponent<MovingObject>().Move(end, (visibleStart || visibleEnd),
+                    () =>
+                    {
+                        return;
+                    });
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(projectile,
+            () =>
+            {
+                GameObject.Destroy(projectile);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
             () =>
             {
                 if (!reflect)
-                    BoardManager.instance.CreateBlooddrop(target.x, target.y);
-            });
+                {
+                    str = onHitProjectile(actor, target);
+                }
+                else
+                    str = "<i>REFLECT</i>";
 
-        if (!reflect)
-        {
-            if (postProjectileFunc != null) postProjectileFunc(actor, target);
-        }
+                if (visibleEnd)
+                {
+                    UIManager.instance.CreateFloatingText(str, end);
+                }
 
-        if (target.CheckDead())
-        {
-            target.MakeDead(actor, true, true, false);
-        }
+                if (!reflect)
+                {
+                    if (postProjectileFunc != null) postProjectileFunc(actor, target);
+                }
+
+                if (target.CheckDead())
+                {
+                    target.MakeDead(actor, true, true, false);
+                }
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
 
         if (reflect)
         {
             str = String.Format("{0} reflects the projectile. ", target.name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(target.x, target.y, str);
 
-            str = onHitProjectile(target, actor);
-
-            GameObject projectile2 = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(target.x, target.y, 0), Quaternion.identity);
-            projectile2.GetComponent<SpriteRenderer>().color = color;
-            projectile2.GetComponent<MovingObject>().MoveProjectile(actor.x, actor.y, str,
+            GameObject projectile2 = null;
+            // fake object to be used in BoardEvents, if projectile game objects are used - the second, reflected projectile is seen immediately (not after the first projectile reaches its target)
+            GameObject fakeProj2 = new GameObject();
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(fakeProj2,
                 () =>
                 {
-                    BoardManager.instance.CreateBlooddrop(actor.x, actor.y);
-                });
+                    projectile2 = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(targetPos.x, targetPos.y, 0), Quaternion.identity);
+                    projectile2.GetComponent<SpriteRenderer>().color = color;
+                    projectile2.GetComponent<MovingObject>().Move(start, (visibleStart || visibleEnd),
+                        () =>
+                        {
+                            return;
+                        });
+                    BoardEventController.instance.RemoveFinishedEvent();
+                }));
 
-            if (postProjectileFunc != null)
-                postProjectileFunc(target, actor);
-
-            if (actor.CheckDead())
-            {
-                actor.MakeDead(target, true, true, false);
-            }
-
-            
-            if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
-            {
-                Effect eff = target.GetEffect(EffectTypeEnum.effectReflectiveBlocking);
-                eff.param1--;
-                
-                if (eff.param1 <= 0)
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(fakeProj2,
+                () =>
                 {
-                    target.RemoveEffect(EffectTypeEnum.effectReflectiveBlocking);
+                    GameObject.Destroy(projectile2);
+                    GameObject.Destroy(fakeProj2);
+                    BoardEventController.instance.RemoveFinishedEvent();
+                }));
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+            () =>
+            {
+                str = onHitProjectile(target, actor);
+
+                if (visibleEnd)
+                {
+                    UIManager.instance.CreateFloatingText(str, start);
                 }
-            }
-            
+
+                if (postProjectileFunc != null) postProjectileFunc(target, actor);
+
+                if (actor.CheckDead())
+                {
+                    actor.MakeDead(target, true, true, false);
+                }
+
+                if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)
+                {
+                    Effect eff = target.GetEffect(EffectTypeEnum.effectReflectiveBlocking);
+                    eff.param1--;
+
+                    if (eff.param1 <= 0)
+                    {
+                        target.RemoveEffect(EffectTypeEnum.effectReflectiveBlocking);
+                    }
+                }
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
         }
     }
 }

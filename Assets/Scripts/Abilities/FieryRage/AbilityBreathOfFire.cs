@@ -109,6 +109,7 @@ public class AbilityBreathOfFire : Ability
         c2.y = dy + (int)v3y;
         //Debug.Log(String.Format("c2 = {0}, {1}", c2.x, c2.y));
 
+        // find the fartherest side of the cone
         List<Vector2Int> dstLine = new List<Vector2Int>();
         LOS_FOV.DrawLine(c1.x, c1.y, c2.x, c2.y,
                 (int x, int y, int prev_x, int prev_y) =>
@@ -117,6 +118,10 @@ public class AbilityBreathOfFire : Ability
                     return true;
                 });
 
+
+
+        // draw lines to each tile of the farthest side to simulate expansion of fire
+        // find all affected mobs
         Level level = BoardManager.instance.level;
         List<Mob> affectedMobs = new List<Mob>();
         foreach (Vector2Int dst in dstLine)
@@ -130,68 +135,66 @@ public class AbilityBreathOfFire : Ability
                     if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction) && !affectedMobs.Contains(level.mobs[x, y]))
                         affectedMobs.Add(level.mobs[x, y]);
 
-                    if (UnityEngine.Random.Range(0, 4) == 0 && !(actor.x == x && actor.y == y))
-                    {
-                        bool empty = true;
-                        foreach (Feature feature in level.features[x, y])
-                        {
-                            if (feature.idType == FeatureTypeEnum.featFire)
-                            {
-                                empty = false;
-                                break;
-                            }
-                        }
-                        if (empty)
-                        {
-                            Feature fire = new Feature(FeatureTypeEnum.featFire, x, y);
-                            fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire;
-                            BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
-                        }
-                    }
-
                     return true;
                 });
         }
 
-        List<Vector3Int> mobStr = new List<Vector3Int>();
-
-        foreach (Mob mob in affectedMobs)
-        {
-            int dmg = 0;
-            dmg += Mob.InflictDamage(actor, mob,
-                new Dictionary<DmgTypeEnum, int>()
-                {
-                    { DmgTypeEnum.Fire, 25 }
-                }, 
-                (int dmg1) =>
-                {
-                    string str1;
-                    if (dmg1 <= 0)
-                    {
-                        str1 = String.Format("{0} takes no fire dmg. ",
-                            mob.name);
-                    }
-                    else
-                    {
-                        str1 = String.Format("{0} takes {1} fire dmg. ",
-                            mob.name,
-                            dmg1);
-                    }
-                    return str1;
-                });
-            mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
-            
-            if (BoardManager.instance.level.visible[mob.x, mob.y])
+        actor.mo.ExplosionCone(actor.x, actor.y, dstLine, affectedMobs, 
+            (Mob mob) =>
             {
-                mobStr.Add(new Vector3Int(mob.x, mob.y, dmg));
-            }
-            if (mob.CheckDead())
-            {
-                mob.MakeDead(actor, true, true, false);
-            }
-        }
-        actor.mo.ExplosionCone(actor.x, actor.y, dstLine, mobStr);
+                int dmg = 0;
+                dmg += Mob.InflictDamage(actor, mob,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Fire, 25 }
+                    },
+                    (int dmg1) =>
+                    {
+                        string str1;
+                        if (dmg1 <= 0)
+                        {
+                            str1 = String.Format("{0} takes no fire dmg. ",
+                                mob.name);
+                        }
+                        else
+                        {
+                            str1 = String.Format("{0} takes {1} fire dmg. ",
+                                mob.name,
+                                dmg1);
+                        }
+                        return str1;
+                    });
+                mob.AddEffect(EffectTypeEnum.effectBurning, actor, 5);
 
+                if (level.visible[mob.x, mob.y])
+                    UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(mob.x, mob.y, 0));
+
+                if (mob.CheckDead())
+                {
+                    mob.MakeDead(actor, true, true, false);
+                }
+            },
+            (int x, int y) =>
+            {
+                if (UnityEngine.Random.Range(0, 4) == 0 && !(actor.x == x && actor.y == y))
+                {
+                    bool empty = true;
+                    foreach (Feature feature in level.features[x, y])
+                    {
+                        if (feature.idType == FeatureTypeEnum.featFire)
+                        {
+                            empty = false;
+                            break;
+                        }
+                    }
+                    if (empty)
+                    {
+                        Feature fire = new Feature(FeatureTypeEnum.featFire, x, y);
+                        fire.counter = 3 + TerrainTypes.terrainTypes[level.terrain[x, y]].catchesFire;
+                        BoardManager.instance.level.AddFeatureToLevel(fire, fire.x, fire.y);
+                    }
+                }
+            });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

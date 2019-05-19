@@ -62,64 +62,95 @@ public class AbilitySpearOfLight : Ability
         BoardManager.instance.mobs.Add(spear.id, spear);
         level.AddMobToLevel(spear, spear.x, spear.y);
 
-        actor.mo.Explosion3x3(spear.x, spear.y);
-
-        level.CheckSurroundings(spear.x, spear.y, false,
-            (int x, int y) =>
-            {
-                if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction))
-                {
-                    Mob mob = level.mobs[x, y];
-
-                    int dx, dy;
-                    double a = Math.Atan2(spear.y - mob.y, spear.x - mob.x) * (180 / Math.PI);
-                    if (a > 22.5 && a <= 67.5)
-                    {
-                        dx = -1; dy = -1;
-                    }
-                    else if (a > 67.5 && a <= 112.5)
-                    {
-                        dx = 0; dy = -1;
-                    }
-                    else if (a > 112.5 && a <= 157.5)
-                    {
-                        dx = 1; dy = -1;
-                    }
-                    else if (a < -22.5 && a >= -67.5)
-                    {
-                        dx = -1; dy = 1;
-                    }
-                    else if (a < -67.5 && a >= -112.5)
-                    {
-                        dx = 0; dy = 1;
-                    }
-                    else if (a < -112.5 && a >= -157.5)
-                    {
-                        dx = 1; dy = 1;
-                    }
-                    else if (a > 157.5 || a < -157.5)
-                    {
-                        dx = 1; dy = 0;
-                    }
-                    else
-                    {
-                        dx = -1; dy = 0;
-                    }
-
-                    dx = mob.x + dx;
-                    dy = mob.y + dy;
-                    if (level.mobs[dx, dy] == null)
-                    {
-                        mob.SetPosition(dx, dy);
-                        mob.mo.Move(mob.x, mob.y);
-                    }
-                }
-            });
-
         spear.AddEffect(EffectTypeEnum.effectAuraMinorProtection, spear, Effect.CD_UNLIMITED);
         spear.AddEffect(EffectTypeEnum.effectRemoveAfterTime, spear, 10);
         spear.AddEffect(EffectTypeEnum.effectFireAura, spear, Effect.CD_UNLIMITED);
         spear.AddEffect(EffectTypeEnum.effectImmobilize, spear, Effect.CD_UNLIMITED);
+
+        Vector3 offset = new Vector3(15, 15, 0);
+        Vector3 landPos = spear.go.transform.position;
+        spear.go.transform.position = landPos + offset;
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(spear.go,
+            () =>
+            {
+                spear.mo.moveTime = 0.01f;
+                spear.mo.inverseMoveTime = 1 / spear.mo.moveTime;
+                spear.mo.Move(landPos, level.visible[spear.x, spear.y], null);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(spear.go,
+            () =>
+            {
+                spear.mo.moveTime = 0.03f;
+                spear.mo.inverseMoveTime = 1 / spear.mo.moveTime;
+
+                actor.mo.Explosion3x3(spear.x, spear.y);
+
+                level.CheckSurroundings(spear.x, spear.y, false,
+                    (int x, int y) =>
+                    {
+                        if (level.mobs[x, y] != null && !actor.GetFactionRelation(level.mobs[x, y].faction))
+                        {
+                            Mob mob = level.mobs[x, y];
+
+                            int dx, dy;
+                            double a = Math.Atan2(spear.y - mob.y, spear.x - mob.x) * (180 / Math.PI);
+                            if (a > 22.5 && a <= 67.5)
+                            {
+                                dx = -1; dy = -1;
+                            }
+                            else if (a > 67.5 && a <= 112.5)
+                            {
+                                dx = 0; dy = -1;
+                            }
+                            else if (a > 112.5 && a <= 157.5)
+                            {
+                                dx = 1; dy = -1;
+                            }
+                            else if (a < -22.5 && a >= -67.5)
+                            {
+                                dx = -1; dy = 1;
+                            }
+                            else if (a < -67.5 && a >= -112.5)
+                            {
+                                dx = 0; dy = 1;
+                            }
+                            else if (a < -112.5 && a >= -157.5)
+                            {
+                                dx = 1; dy = 1;
+                            }
+                            else if (a > 157.5 || a < -157.5)
+                            {
+                                dx = 1; dy = 0;
+                            }
+                            else
+                            {
+                                dx = -1; dy = 0;
+                            }
+
+                            dx = mob.x + dx;
+                            dy = mob.y + dy;
+                            if (level.mobs[dx, dy] == null)
+                            {
+                                Vector2 end = new Vector2(dx, dy);
+
+                                bool visibleStart = level.visible[mob.x, mob.y];
+                                bool visibleEnd = level.visible[dx, dy];
+
+                                mob.mo.Move(end, (visibleStart || visibleEnd),
+                                    () =>
+                                    {
+                                        mob.SetPosition(dx, dy);
+                                    });
+                            }
+                        }
+                    });
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

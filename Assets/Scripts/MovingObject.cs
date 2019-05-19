@@ -3,15 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public delegate void SmoothMeleeMiddleFunc();
 
 
 public class MovingObject : MonoBehaviour
 {
+    public enum StateEnum
+    {
+        none, meleeMoveIn, meleeMiddleFunc, meleeMoveOut
+    };
+
+    public delegate void TeleportMiddleFunc();
+    public delegate void MeleeMiddleFunc();
+    public delegate void MoveMiddleFunc();
+    public delegate void ProjectileMiddleFunc();
+    public delegate void BreathEachTileFunc(int x, int y);
+    public delegate void BreathEachMobFunc(Mob mob);
 
     public float moveTime;
     public float inverseMoveTime;
     public Rigidbody2D rb2D;
+    public int coroutinesRunning;
+    //public StateEnum state;
     //protected bool finishedMove = true;
 
     // Use this for initialization
@@ -19,58 +31,111 @@ public class MovingObject : MonoBehaviour
     {
         inverseMoveTime = 1f / moveTime;
         rb2D = GetComponent<Rigidbody2D>();
+        coroutinesRunning = 0;
     }
 
-    public void Move(int tx, int ty)
+    public void Move(Vector2 end, bool visible, MoveMiddleFunc middleFunc)
     {
-
-        Vector2 start = transform.position;
-        Vector2 end = new Vector2(tx, ty);
-        int xDir = (int)(end.x - start.x);
-        int yDir = (int)(end.y - start.y);
-
-        //Debug.Log("Move: About to dispatch animation");
-
-        if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
-            !(xDir == 0 && yDir == 0))
+        if (visible)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                //Debug.Log("Call Action - Move: About to start Smooth Movement");
-                StartCoroutine(SmoothMovement(end));
-            }));
+            StartCoroutine(CoroutineMovement(end, middleFunc));
         }
         else
         {
             rb2D.MovePosition(end);
+            if (middleFunc != null) middleFunc();
         }
-
-        //Debug.Log("Move: animation dispatched");
     }
 
-    public void MeleeAttack(int xDir, int yDir, string str, SmoothMeleeMiddleFunc middleFunc)
+    protected IEnumerator CoroutineMovement(Vector3 end, MoveMiddleFunc middleFunc)
     {
-        Vector2 start = transform.position;
-        Vector2 end = start + new Vector2(xDir, yDir);
+        yield return StartCoroutine(CoroutineMoveObject(end));
+        yield return StartCoroutine(CoroutineMoveMiddleFunc(middleFunc));
+    }
 
-        if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
-            !(xDir == 0 && yDir == 0))
+    protected IEnumerator CoroutineMoveObject(Vector3 end)
+    {
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+
+        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+
+        while (sqrRemainingDistance > float.Epsilon)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                //Debug.Log("Call Action - Move: About to start Melee Attack");
-                StartCoroutine(SmoothMelee(end, str, middleFunc));
-            }));
+            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+
+            rb2D.MovePosition(newPostion);
+
+            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+
+            yield return null;
+        }
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+    }
+
+    protected IEnumerator CoroutineMoveMiddleFunc(MoveMiddleFunc middleFunc)
+    {
+        //Debug.Log("Move Middle Func started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+
+        if (middleFunc != null) middleFunc();
+        yield return null;
+
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //Debug.Log("Move Middle Func ended");
+    }
+
+    public void MeleeAttack(Vector2 start, Vector2 end, bool visible, MeleeMiddleFunc middleFunc)
+    {
+        if (visible)
+        {
+            StartCoroutine(CoroutineMeleeAttack(start, end, middleFunc));
         }
         else
         {
             middleFunc();
         }
-
-        //Debug.Log("Move: animation dispatched");
     }
 
-    public void MoveProjectile(int tx, int ty, string str, SmoothMeleeMiddleFunc middleFunc)
+    protected IEnumerator CoroutineMeleeAttack(Vector2 start, Vector2 end, MeleeMiddleFunc middleFunc)
+    {
+        yield return StartCoroutine(CoroutineMeleeMoveIn(end));
+        yield return StartCoroutine(CoroutineMeleeMiddleFunc(middleFunc));
+        yield return StartCoroutine(CoroutineMeleeMoveBack(start));
+    }
+
+    public void MoveAndAttack(Vector2 movPos, Vector2 attPos, bool visible, MoveMiddleFunc moveFunc, MeleeMiddleFunc meleeFunc)
+    {
+        if (visible)
+        {
+            StartCoroutine(CoroutineMoveAndAttackFull(movPos, attPos, moveFunc, meleeFunc));
+        }
+        else
+        {
+            StartCoroutine(CoroutineMoveAndAttackShort(movPos, moveFunc, meleeFunc));
+        }
+    }
+
+    protected IEnumerator CoroutineMoveAndAttackFull(Vector2 movPos, Vector2 attPos, MoveMiddleFunc moveFunc, MeleeMiddleFunc meleeFunc)
+    {
+        yield return StartCoroutine(CoroutineMoveObject(movPos));
+        yield return StartCoroutine(CoroutineMoveMiddleFunc(moveFunc));
+        yield return StartCoroutine(CoroutineMeleeMoveIn(attPos));
+        yield return StartCoroutine(CoroutineMeleeMiddleFunc(meleeFunc));
+        yield return StartCoroutine(CoroutineMeleeMoveBack(movPos));
+    }
+
+    protected IEnumerator CoroutineMoveAndAttackShort(Vector2 movPos, MoveMiddleFunc moveFunc, MeleeMiddleFunc meleeFunc)
+    {
+        rb2D.MovePosition(movPos);
+        yield return StartCoroutine(CoroutineMoveMiddleFunc(moveFunc));
+        yield return StartCoroutine(CoroutineMeleeMiddleFunc(meleeFunc));
+    }
+
+    public void MoveProjectile(int tx, int ty, string str, MeleeMiddleFunc middleFunc)
     {
         Vector2 start = transform.position;
         Vector2 end = new Vector2(tx, ty);
@@ -80,7 +145,7 @@ public class MovingObject : MonoBehaviour
         if ((BoardManager.instance.level.visible[(int)end.x, (int)end.y] || BoardManager.instance.level.visible[(int)start.x, (int)start.y]) &&
             !(xDir == 0 && yDir == 0))
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
             {
                 if (this.gameObject.activeSelf)
                     StartCoroutine(SmoothMovementProjectile(end, str, middleFunc));
@@ -96,10 +161,7 @@ public class MovingObject : MonoBehaviour
     {
         if (BoardManager.instance.level.visible[tx, ty])
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                StartCoroutine(SmoothDisappear());
-            }));
+            StartCoroutine(SmoothDisappear());
         }
         else
         {
@@ -107,9 +169,10 @@ public class MovingObject : MonoBehaviour
         }
     }
 
-    public void ExplosionCone(int sx, int sy, List<Vector2Int> dstLine, List<Vector3Int> mobStr)
+    public void ExplosionCone(int sx, int sy, List<Vector2Int> dstLine, List<Mob> affectedMobs, BreathEachMobFunc EachMobFunc, BreathEachTileFunc EachTileFunc)
     {
         List<Vector2Int> explosions = new List<Vector2Int>();
+        bool visible = false;
         Level level = BoardManager.instance.level;
         foreach (Vector2Int dst in dstLine)
         {
@@ -120,19 +183,32 @@ public class MovingObject : MonoBehaviour
                     if (blocks) return false;
 
                     if (!(sx == x && sy == y) && level.visible[x, y])
+                        visible = true;
+
+                    if (!(sx == x && sy == y))
                     {
                         explosions.Add(new Vector2Int(x, y));
                     }
                     return true;
                 });
         }
-        if (explosions.Count > 0)
+        if (visible)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                StartCoroutine(SmoothExplosionCone(sx, sy, explosions, mobStr));
-            }));
+            StartCoroutine(SmoothExplosionCone(sx, sy, explosions, affectedMobs, EachMobFunc, EachTileFunc));
         }
+        else
+        {
+            foreach (Vector2Int pos in explosions)
+            {
+                EachTileFunc(pos.x, pos.y);
+            }
+
+            foreach (Mob mob in affectedMobs)
+            {
+                EachMobFunc(mob);
+            }
+        }
+
     }
 
     public void Explosion3x3(int sx, int sy)
@@ -147,10 +223,7 @@ public class MovingObject : MonoBehaviour
             });
         if (result)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                StartCoroutine(SmoothExplosion3x3(sx, sy));
-            }));
+            StartCoroutine(SmoothExplosion3x3(sx, sy));
         }
     }
 
@@ -174,9 +247,10 @@ public class MovingObject : MonoBehaviour
 
         if (result)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
             {
                 StartCoroutine(SmoothExplosion5x5(sx, sy));
+                BoardEventController.instance.RemoveFinishedEvent();
             }));
         }
         else
@@ -185,113 +259,93 @@ public class MovingObject : MonoBehaviour
         }
     }
 
-    public void TeleportDisappear(int tx, int ty)
+    public void Teleport(bool visibleStart, bool visibleEnd, TeleportMiddleFunc middleFunc)
     {
-        if (BoardManager.instance.level.visible[tx, ty])
+        if (visibleStart || visibleEnd)
         {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                StartCoroutine(SmoothFadeTo(0f, 0.15f));
-            }));
+            StartCoroutine(CoroutineTeleport(middleFunc));
         }
         else
         {
-            Color color = gameObject.GetComponent<SpriteRenderer>().color;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 0);
+            middleFunc();
         }
     }
 
-    public void TeleportReappear(int tx, int ty)
+    private IEnumerator CoroutineTeleport(TeleportMiddleFunc middleFunc)
     {
-        if (BoardManager.instance.level.visible[tx, ty])
-        {
-            BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(this.gameObject, () =>
-            {
-                StartCoroutine(SmoothFadeTo(1f, 0.15f));
-            }));
-        }
-        else
-        {
-            Color color = gameObject.GetComponent<SpriteRenderer>().color;
-            gameObject.GetComponent<SpriteRenderer>().color = new Color(color.r, color.g, color.b, 1);
-        }
+        yield return StartCoroutine(CoroutineFadeTo(0f, 0.15f));
+        yield return StartCoroutine(CoroutineTeleportMiddleFunc(middleFunc));
+        yield return StartCoroutine(CoroutineFadeTo(1f, 0.15f));
     }
 
-    protected IEnumerator SmoothMovement(Vector3 end)
+    protected IEnumerator CoroutineMeleeMoveIn(Vector3 end)
     {
-        //Debug.Log("Smooth Movement");
-        //Calculate the remaining distance to move based on the square magnitude of the difference between current position and end parameter. 
-        //Square magnitude is used instead of magnitude because it's computationally cheaper.
-        float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
+        //Debug.Log("Melee Move In, state = " + state.ToString());
+        //if (state != StateEnum.meleeMoveIn) yield return null;
 
-        //While that distance is greater than a very small amount (Epsilon, almost zero):
-        while (sqrRemainingDistance > float.Epsilon)
-        {
-            //Find a new position proportionally closer to the end, based on the moveTime
-            Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+        //Debug.Log("Melee Move In started");
 
-            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
-            rb2D.MovePosition(newPostion);
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
 
-            //Recalculate the remaining distance after moving.
-            sqrRemainingDistance = (transform.position - end).sqrMagnitude;
-
-            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
-            yield return null;
-        }
-        BoardAnimationController.instance.RemoveProcessedAnimation();
-        //BoardAnimationController.instance.ProcessNext();
-        //finishedMove = true;
-    }
-
-
-    protected IEnumerator SmoothMelee(Vector3 end, string str, SmoothMeleeMiddleFunc middleFunc)
-    {
-        Vector3 start = transform.position;
-        Vector3 halfpoint = (start + end) / 2;
+        Vector3 halfpoint = (transform.position + end) / 2;
 
         float sqrRemainingDistance = (transform.position - halfpoint).sqrMagnitude;
 
         while (sqrRemainingDistance > float.Epsilon)
         {
-            //Find a new position proportionally closer to the end, based on the moveTime
             Vector3 newPostion = Vector3.MoveTowards(rb2D.position, halfpoint, inverseMoveTime * Time.deltaTime);
 
-            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
             rb2D.MovePosition(newPostion);
 
-            //Recalculate the remaining distance after moving.
             sqrRemainingDistance = (transform.position - halfpoint).sqrMagnitude;
 
-            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //Debug.Log("Melee Move In ended");
+    }
 
-        UIManager.instance.CreateFloatingText(str, end);
+    protected IEnumerator CoroutineMeleeMiddleFunc(MeleeMiddleFunc middleFunc)
+    {
+        //Debug.Log("Melee Middle Func started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
 
         middleFunc();
+        yield return null;
 
-        sqrRemainingDistance = (transform.position - start).sqrMagnitude;
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //state = StateEnum.meleeMoveOut;
+        //Debug.Log("Melee Middle Func ended");
+    }
+
+    protected IEnumerator CoroutineMeleeMoveBack(Vector3 start)
+    {
+        //Debug.Log("Melee Move Back started");
+
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+        float sqrRemainingDistance = (transform.position - start).sqrMagnitude;
 
         while (sqrRemainingDistance > float.Epsilon)
         {
-            //Find a new position proportionally closer to the end, based on the moveTime
             Vector3 newPostion = Vector3.MoveTowards(rb2D.position, start, inverseMoveTime * Time.deltaTime);
 
-            //Call MovePosition on attached Rigidbody2D and move it to the calculated position.
             rb2D.MovePosition(newPostion);
 
-            //Recalculate the remaining distance after moving.
             sqrRemainingDistance = (transform.position - start).sqrMagnitude;
 
-            //Return and loop until sqrRemainingDistance is close enough to zero to end the function
             yield return null;
         }
-
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //Debug.Log("Melee Move Back ended");
     }
 
-    protected IEnumerator SmoothMovementProjectile(Vector3 end, string str, SmoothMeleeMiddleFunc middleFunc)
+    protected IEnumerator SmoothMovementProjectile(Vector3 end, string str, MeleeMiddleFunc middleFunc)
     {
         float sqrRemainingDistance = (transform.position - end).sqrMagnitude;
 
@@ -316,7 +370,7 @@ public class MovingObject : MonoBehaviour
         middleFunc();
 
         Destroy(this.gameObject);
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+        BoardEventController.instance.RemoveFinishedEvent();
 
     }
 
@@ -332,12 +386,12 @@ public class MovingObject : MonoBehaviour
         }
 
         Destroy(this.gameObject);
-        BoardAnimationController.instance.RemoveProcessedAnimation();
-
     }
 
-    protected IEnumerator SmoothExplosionCone(int sx, int sy, List<Vector2Int> explosionPos, List<Vector3Int> mobStr)
+    protected IEnumerator SmoothExplosionCone(int sx, int sy, List<Vector2Int> explosionPos, List<Mob> affectedMobs, BreathEachMobFunc EachMobFunc, BreathEachTileFunc EachTileFunc)
     {
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
         List<GameObject> explosions = new List<GameObject>();
 
         int row = 0;
@@ -355,15 +409,17 @@ public class MovingObject : MonoBehaviour
                     else
                         explosion.GetComponent<SpriteRenderer>().color = new Color32(255, 0, 0, 255);
                     explosions.Add(explosion);
+
+                    EachTileFunc(pos.x, pos.y);
                 };
             }
 
-            foreach (Vector3Int pos in mobStr)
+            foreach (Mob mob in affectedMobs)
             {
-                if (Level.GetSimpleDistance(sx, sy, pos.x, pos.y) == row)
+                if (Level.GetSimpleDistance(sx, sy, mob.x, mob.y) == row)
                 {
-                    UIManager.instance.CreateFloatingText(pos.z + " <i>DMG</i>", new Vector3(pos.x, pos.y, 0));
-                };
+                    EachMobFunc(mob);
+                }
             }
 
             row++;
@@ -375,12 +431,15 @@ public class MovingObject : MonoBehaviour
             Destroy(explosions[i]);
         }
 
-        BoardAnimationController.instance.RemoveProcessedAnimation();
-
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
     }
 
     protected IEnumerator SmoothExplosion3x3(int sx, int sy)
     {
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+
         List<GameObject> explosions = new List<GameObject>();
         float waitTime = 0.1f;
         Level level = BoardManager.instance.level;
@@ -415,11 +474,15 @@ public class MovingObject : MonoBehaviour
         {
             Destroy(explosions[i]);
         }
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
     }
 
     protected IEnumerator SmoothExplosion5x5(int sx, int sy)
     {
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
         List<GameObject> explosions = new List<GameObject>();
         float waitTime = 0.1f;
         Level level = BoardManager.instance.level;
@@ -487,7 +550,9 @@ public class MovingObject : MonoBehaviour
             Destroy(explosions[i]);
         }
         Destroy(this.gameObject);
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
     }
 
     protected IEnumerator SmoothTeleportDisappear()
@@ -506,7 +571,7 @@ public class MovingObject : MonoBehaviour
             yield return null;
         }
 
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+        BoardEventController.instance.RemoveFinishedEvent();
     }
 
     protected IEnumerator SmoothTeleportReappear()
@@ -525,11 +590,14 @@ public class MovingObject : MonoBehaviour
             yield return null;
         }
 
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+        BoardEventController.instance.RemoveFinishedEvent();
     }
 
-    IEnumerator SmoothFadeTo(float aValue, float aTime)
+    IEnumerator CoroutineFadeTo(float aValue, float aTime)
     {
+        //Debug.Log("Fade To " + aValue + " started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
         Color color = gameObject.GetComponent<SpriteRenderer>().color;
         float alpha = color.a;
 
@@ -539,7 +607,25 @@ public class MovingObject : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = newColor;
             yield return null;
         }
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //Debug.Log("Fade To " + aValue + " ended");
+    }
 
-        BoardAnimationController.instance.RemoveProcessedAnimation();
+    protected IEnumerator CoroutineTeleportMiddleFunc(TeleportMiddleFunc middleFunc)
+    {
+        //Debug.Log("Melee Middle Func, state = " + state.ToString());
+        //if (state != StateEnum.meleeMiddleFunc) yield return null;
+        //Debug.Log("Teleport Middle Func started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+
+        middleFunc();
+        yield return null;
+
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //state = StateEnum.meleeMoveOut;
+        //Debug.Log("Teleport Middle Func ended");
     }
 }

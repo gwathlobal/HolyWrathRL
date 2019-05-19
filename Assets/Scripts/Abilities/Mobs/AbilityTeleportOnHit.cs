@@ -54,12 +54,9 @@ public class AbilityTeleportOnHit : Ability
         string str = String.Format("{0} disappears in thin air. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        //actor.mo.TeleportDisappear(actor.x, actor.y);
-
         // make 200 attempts to find a free spot within 5 tile distance from the actor's position
         int tx = actor.x;
         int ty = actor.y;
-        bool result = false;
         for (int i = 0; i < 200; i++)
         {
             tx = actor.x + UnityEngine.Random.Range(0, 11) - 5;
@@ -67,35 +64,28 @@ public class AbilityTeleportOnHit : Ability
 
             if (actor.CanMoveToPos(tx, ty).result == AttemptMoveResultEnum.moveClear)
             {
-                result = true;
                 break;
             }
         }
 
-        if (result)
-        {
-            /*
-            if (BoardManager.instance.level.visible[actor.x, actor.y])
-            {
-                BoardAnimationController.instance.AddAnimationProcedure(new AnimationProcedure(actor.go, () =>
-                {
-                    actor.SetPosition(tx, ty);
-                    actor.go.transform.position = new Vector2(tx, ty);
-                    BoardAnimationController.instance.RemoveProcessedAnimation();
-                }));
-            }
-            else
+        Level level = BoardManager.instance.level;
+        bool visibleStart = false;
+        bool visibleEnd = false;
+
+        if (level.visible[actor.x, actor.y])
+            visibleStart = true;
+        if (level.visible[tx, ty])
+            visibleEnd = true;
+
+        actor.mo.Teleport(visibleStart, visibleEnd,
+            () => 
             {
                 actor.SetPosition(tx, ty);
                 actor.go.transform.position = new Vector2(tx, ty);
-            }
-            */
-            actor.SetPosition(tx, ty);
-            actor.go.transform.position = new Vector2(tx, ty);
-        }
+            });
+
         str = String.Format("{0} appears out of nowhere. ", actor.name);
-        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
-        //actor.mo.TeleportReappear(actor.x, actor.y);
+        BoardManager.instance.msgLog.PlayerVisibleMsg(tx, ty, str);
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

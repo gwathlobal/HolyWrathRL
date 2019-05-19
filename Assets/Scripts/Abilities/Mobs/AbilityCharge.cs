@@ -70,6 +70,7 @@ public class AbilityCharge : Ability
         string str = String.Format("{0} charges. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
         int fx = actor.x, fy = actor.y;
+        int sx = actor.x, sy = actor.y;
 
         LOS_FOV.DrawLine(actor.x, actor.y, target.mob.x, target.mob.y,
             (int x, int y, int prev_x, int prev_y) =>
@@ -84,27 +85,55 @@ public class AbilityCharge : Ability
 
         if (!(fx == actor.x && fy == actor.y))
         {
-            int dmg = (int)(Level.GetDistance(actor.x, actor.y, fx, fy));
-            dmg = dmg * 10;
+            Level level = BoardManager.instance.level;
+            bool visibleStart = level.visible[actor.x, actor.y];
+            bool visibleMiddle = level.visible[fx, fy];
+            bool visibleEnd = level.visible[target.mob.x, target.mob.y];
 
-            actor.SetPosition(fx, fy);
-            actor.mo.Move(actor.x, actor.y);
+            Vector2 movPos = new Vector2(fx, fy);
+            Vector2 attPos = target.mob.go.transform.position;
 
-            dmg = Mob.InflictDamage(actor, target.mob,
-                new Dictionary<DmgTypeEnum, int>()
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+                () =>
                 {
-                    { DmgTypeEnum.Physical, dmg }
-                }, 
-                null);
-            actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
-            () =>
-            {
-                BoardManager.instance.CreateBlooddrop(target.mob.x, target.mob.y);
-            });
-            if (target.mob.CheckDead())
-            {
-                target.mob.MakeDead(actor, true, true, false);
-            }
+                    actor.mo.Move(movPos, (visibleStart || visibleMiddle),
+                        () =>
+                        {
+                            actor.SetPosition(fx, fy);
+                        });
+                    BoardEventController.instance.RemoveFinishedEvent();
+                }));
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+                () =>
+                {
+                    actor.mo.MeleeAttack(movPos, attPos, (visibleMiddle || visibleEnd),
+                        () =>
+                        {
+                            int dmg = (int)(Level.GetDistance(sx, sy, fx, fy));
+                            dmg = dmg * 10;
+
+                            dmg = Mob.InflictDamage(actor, target.mob,
+                            new Dictionary<DmgTypeEnum, int>()
+                            {
+                                { DmgTypeEnum.Physical, dmg }
+                            },
+                            null,
+                            true);
+
+                            if (target.mob.CheckDead())
+                            {
+                                target.mob.MakeDead(actor, true, true, false);
+                            }
+
+                            if (visibleEnd)
+                            {
+                                string str2 = dmg + " <i>DMG</i>";
+                                UIManager.instance.CreateFloatingText(str2, attPos);
+                            }
+                        });
+                    BoardEventController.instance.RemoveFinishedEvent();
+                }));
         }
     }
 

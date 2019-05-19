@@ -51,22 +51,35 @@ public class AbilityKnife : Ability {
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
         int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob,
-            new Dictionary<DmgTypeEnum, int>()
-            {
-                { DmgTypeEnum.Physical, 4 }
-            },
-            null);
+        Level level = BoardManager.instance.level;
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.mob.x, target.mob.y];
 
-        actor.mo.MeleeAttack(target.mob.x - actor.x, target.mob.y - actor.y, dmg + " <i>DMG</i>",
+        Vector3 start = actor.go.transform.position;
+        Vector3 end = target.mob.go.transform.position;
+
+        actor.mo.MeleeAttack(start, end, (visibleStart || visibleEnd),
             () =>
             {
-                BoardManager.instance.CreateBlooddrop(target.mob.x, target.mob.y);
+                dmg += Mob.InflictDamage(actor, target.mob,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
+                        { DmgTypeEnum.Physical, 4 }
+                    },
+                    null,
+                    true);
+
+                if (target.mob.CheckDead())
+                {
+                    target.mob.MakeDead(actor, true, true, false);
+                }
+
+                if (visibleEnd)
+                {
+                    string str = dmg + " <i>DMG</i>";
+                    UIManager.instance.CreateFloatingText(str, end);
+                }
             });
-        if (target.mob.CheckDead())
-        {
-            target.mob.MakeDead(actor, true, true, false);
-        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
