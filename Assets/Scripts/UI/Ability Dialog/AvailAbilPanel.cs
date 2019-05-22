@@ -9,7 +9,7 @@ public enum AbilityAddedStatus
     selected, available, added, unavailable
 }
 
-public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     public AbilityDialogScript AbilityDialog;
     public Text abilName;
@@ -122,8 +122,42 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        AbilityDialog.DescrText.text = "";
+        AbilityDialog.DescrText.text = AbilityDialog.defaultHint;
         abilName.color = colorName;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right && (status == AbilityAddedStatus.selected || status == AbilityAddedStatus.added) && 
+            AbilityTypes.abilTypes[abilType].slot != AbilitySlotEnum.abilNone)
+        {
+            switch (AbilityTypes.abilTypes[abilType].slot)
+            {
+                case AbilitySlotEnum.abilBlock:
+                    AbilityDialog.player.blockAbil = abilType;
+                    break;
+                case AbilitySlotEnum.abilDodge:
+                    AbilityDialog.player.dodgeAbil = abilType;
+                    break;
+                case AbilitySlotEnum.abilMelee:
+                    AbilityDialog.player.meleeAbil = abilType;
+                    break;
+                case AbilitySlotEnum.abilRanged:
+                    AbilityDialog.player.rangedAbil = abilType;
+                    break;
+                case AbilitySlotEnum.abilNormal:
+                    for (int i = 0; i < AbilityDialog.curAbilsPanels.Count; i++)
+                    {
+                        if (AbilityDialog.curAbilsPanels[i].abilType == AbilityTypeEnum.abilNone)
+                        {
+                            AbilityDialog.player.curAbils[i] = abilType;
+                            break;
+                        }
+                    }
+                    break;
+            }
+            AbilityDialog.InitializeUI(AbilityDialog.player);
+        }
     }
 
     public void ClickSelectAbility()
@@ -183,6 +217,7 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
             RemoveAbility(abilType);
         }
+        AbilityDialog.InitializeUI(AbilityDialog.player);
     }
 
 
@@ -193,32 +228,37 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             if (AbilityDialog.player.curAbils[i] == abilT)
             {
                 AbilityDialog.player.curAbils[i] = AbilityTypeEnum.abilNone;
-                AbilityDialog.curAbilsPanels[i].ActivateText(false);
+                AbilityDialog.curAbilsPanels[i].abilType = AbilityTypeEnum.abilNone;
+                //AbilityDialog.curAbilsPanels[i].ActivateText(false);
             }
         }
 
         if (AbilityDialog.player.meleeAbil == abilT)
         {
-            AbilityDialog.meleeAbilPanel.abilType = AbilityTypeEnum.abilNone;
-            AbilityDialog.meleeAbilPanel.ActivateText(false);
+            AbilityDialog.player.meleeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].meleeAbil;
+            AbilityDialog.meleeAbilPanel.abilType = AbilityDialog.player.meleeAbil;
+            //AbilityDialog.meleeAbilPanel.ActivateText(false);
         }
 
         if (AbilityDialog.player.rangedAbil == abilT)
         {
-            AbilityDialog.rangedAbilPanel.abilType = AbilityTypeEnum.abilNone;
-            AbilityDialog.rangedAbilPanel.ActivateText(false);
+            AbilityDialog.player.rangedAbil = MobTypes.mobTypes[AbilityDialog.player.idType].rangedAbil;
+            AbilityDialog.rangedAbilPanel.abilType = AbilityDialog.player.rangedAbil;
+            //AbilityDialog.rangedAbilPanel.ActivateText(false);
         }
 
         if (AbilityDialog.player.dodgeAbil == abilT)
         {
-            AbilityDialog.dodgeAbilPanel.abilType = AbilityTypeEnum.abilNone;
-            AbilityDialog.dodgeAbilPanel.ActivateText(false);
+            AbilityDialog.player.dodgeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].dodgeAbil;
+            AbilityDialog.dodgeAbilPanel.abilType = AbilityDialog.player.dodgeAbil;
+            //AbilityDialog.dodgeAbilPanel.ActivateText(false);
         }
 
         if (AbilityDialog.player.blockAbil == abilT)
         {
-            AbilityDialog.blockAbilPanel.abilType = AbilityTypeEnum.abilNone;
-            AbilityDialog.blockAbilPanel.ActivateText(false);
+            AbilityDialog.player.blockAbil = MobTypes.mobTypes[AbilityDialog.player.idType].blockAbil;
+            AbilityDialog.blockAbilPanel.abilType = AbilityDialog.player.blockAbil;
+            //AbilityDialog.blockAbilPanel.ActivateText(false);
         }
     }
 }

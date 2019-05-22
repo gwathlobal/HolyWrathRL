@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler
+public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
 
     public Text txt;
@@ -109,13 +109,13 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
         if (abilSlot == AbilitySlotEnum.abilNormal)
             AbilityDialog.player.curAbils[curAbil] = AbilityTypeEnum.abilNone;
         else if (abilSlot == AbilitySlotEnum.abilDodge)
-            AbilityDialog.player.dodgeAbil = AbilityTypeEnum.abilNone;
+            AbilityDialog.player.dodgeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].dodgeAbil;
         else if (abilSlot == AbilitySlotEnum.abilBlock)
-            AbilityDialog.player.blockAbil = AbilityTypeEnum.abilNone;
+            AbilityDialog.player.blockAbil = MobTypes.mobTypes[AbilityDialog.player.idType].blockAbil;
         else if (abilSlot == AbilitySlotEnum.abilMelee)
-            AbilityDialog.player.meleeAbil = AbilityTypeEnum.abilNone;
+            AbilityDialog.player.meleeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].meleeAbil;
         else if (abilSlot == AbilitySlotEnum.abilRanged)
-            AbilityDialog.player.rangedAbil = AbilityTypeEnum.abilNone;
+            AbilityDialog.player.rangedAbil = MobTypes.mobTypes[AbilityDialog.player.idType].rangedAbil;
 
         AbilityDialog.InitializeUI(AbilityDialog.player);
         
@@ -140,7 +140,26 @@ public class CurAbilPanel : MonoBehaviour, IDropHandler, IBeginDragHandler, IDra
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        AbilityDialog.DescrText.text = "";
+        AbilityDialog.DescrText.text = AbilityDialog.defaultHint;
         txt.color = new Color32(255, 255, 255, 255);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right && abilType != AbilityTypeEnum.abilNone)
+        {
+            if (abilSlot == AbilitySlotEnum.abilNormal)
+                AbilityDialog.player.curAbils[curAbil] = AbilityTypeEnum.abilNone;
+            else if (abilSlot == AbilitySlotEnum.abilDodge)
+                AbilityDialog.player.dodgeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].dodgeAbil;
+            else if (abilSlot == AbilitySlotEnum.abilBlock)
+                AbilityDialog.player.blockAbil = MobTypes.mobTypes[AbilityDialog.player.idType].blockAbil;
+            else if (abilSlot == AbilitySlotEnum.abilMelee)
+                AbilityDialog.player.meleeAbil = MobTypes.mobTypes[AbilityDialog.player.idType].meleeAbil;
+            else if (abilSlot == AbilitySlotEnum.abilRanged)
+                AbilityDialog.player.rangedAbil = MobTypes.mobTypes[AbilityDialog.player.idType].rangedAbil;
+
+            AbilityDialog.InitializeUI(AbilityDialog.player);
+        }
     }
 }

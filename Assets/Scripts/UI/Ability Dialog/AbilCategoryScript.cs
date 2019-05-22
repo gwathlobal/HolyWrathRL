@@ -23,7 +23,7 @@ public class AbilCategoryScript : MonoBehaviour, IPointerClickHandler, IPointerE
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        AbilityDialog.DescrText.text = "";
+        AbilityDialog.DescrText.text = AbilityDialog.defaultHint;
         txt.color = new Color32(255, 255, 255, 255);
     }
 

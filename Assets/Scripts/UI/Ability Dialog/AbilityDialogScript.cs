@@ -35,6 +35,7 @@ public class AbilityDialogScript : MonoBehaviour {
     public int curUnspentTP;
     public int maxUnspentTP;
     public List<AbilityTypeEnum> addedAbils;
+    public string defaultHint;
 
     private void Start()
     {
@@ -57,6 +58,12 @@ public class AbilityDialogScript : MonoBehaviour {
 
         InitializeUI(GameManager.instance.player);
         SetUnspentTPTxt();
+
+        defaultHint = "";
+        defaultHint += "Hint\n";
+        defaultHint += "Select an ability tree. Purchase talents in the Available Abilities panel. Drag&drop the purchased abilities to the Chosen Abilities panel.\n";
+        defaultHint += "To remove the chosen ability, use the right click on the ability or drag&drop the ability out of the slot.";
+        DescrText.text = defaultHint;
     }
 
     public void InitializeUI(PlayerMob _player)
@@ -207,6 +214,6 @@ public class AbilityDialogScript : MonoBehaviour {
 
     public void SetUnspentTPTxt()
     {
-        UnspentTPTxt.text = "Unspent Talent Points: " + curUnspentTP;
+        UnspentTPTxt.text = "Unspent Ability Points: " + curUnspentTP;
     }
 }
