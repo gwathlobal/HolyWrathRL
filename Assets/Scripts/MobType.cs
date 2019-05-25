@@ -189,21 +189,19 @@ public class MobTypes
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
-        armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobHomunculus, "Homunculus", mobHomunculus, 30, 30, 1, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
-            new List<AbilityTypeEnum>());
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
-        armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobFiend, "Fiend", mobFiend, 25, 60, 1, 7, MobType.NORMAL_AP, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilJump, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCharge });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCharge, AbilityTypeEnum.abilMindless });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -215,21 +213,19 @@ public class MobTypes
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
-        armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobScavenger, "Scavenger", mobScavenger, 40, 60, 2, 5, MobType.NORMAL_AP, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility, AiPackageEnum.aiFindCorpse },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize, AbilityTypeEnum.abilMindless });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
-        armorPR.Add(DmgTypeEnum.Mind, 50);
         Add(MobTypeEnum.mobTarDemon, "Tar demon", mobTarDemon, 60, 60, 1, 5, MobType.NORMAL_AP * 2, FactionEnum.factionBeasts,
             AbilityTypeEnum.abilTarTentacles, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
-            new List<AbilityTypeEnum>() {  });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

@@ -163,6 +163,8 @@ public class Mob
         regenHP = regenHPBase;
         curAP = MobType.NORMAL_AP;
         curMoveSpeed = MobTypes.mobTypes[idType].moveSpeed;
+
+        CalculateArmor();
     }
     
     public virtual void AiFunction()
@@ -925,6 +927,12 @@ public class Mob
         foreach (DmgTypeEnum dmgType in MobTypes.mobTypes[idType].armorPR.Keys)
         {
             armorPR[dmgType] = MobTypes.mobTypes[idType].armorPR[dmgType];
+        }
+
+        // Mindless
+        if (GetAbility(AbilityTypeEnum.abilMindless) != null)
+        {
+            armorPR[DmgTypeEnum.Mind] += 50;
         }
 
         // Blocking

@@ -10,7 +10,7 @@ public class AbilityNamed : Ability
         id = AbilityTypeEnum.abilNamed;
         stdName = "Named";
         passive = true;
-        slot = AbilitySlotEnum.abilNormal;
+        slot = AbilitySlotEnum.abilNone;
         category = AbilityPlayerCategoryEnum.abilMobs;
     }
 
@@ -21,12 +21,12 @@ public class AbilityNamed : Ability
 
     public override string Name(Mob mob)
     {
-        return "Named";
+        return stdName;
     }
 
     public override float Spd(Mob mob)
     {
-        return MobType.NORMAL_AP;
+        return 0;
     }
 
     public override int Cost(Mob mob)

@@ -42,7 +42,7 @@ public enum AbilityTypeEnum
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
     abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual, abilSpearOfLight,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize, abilDemonicPortal, abilSummonImp,
-    abilMedkit, abilCallArtillery
+    abilMedkit, abilCallArtillery, abilMindless
 }
 
 
@@ -370,6 +370,8 @@ public class AbilityTypes
         Add(new AbilityMedkit());
 
         Add(new AbilityCallArtillery());
+
+        Add(new AbilityMindless());
 
         //============================
         //
