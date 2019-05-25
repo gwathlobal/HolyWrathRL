@@ -119,9 +119,9 @@ public class LookAtScript : MonoBehaviour {
 
         Level level = BoardManager.instance.level;
 
-        if (level.visible[pos.x, pos.y] && level.mobs[pos.x, pos.y] != null)
+        if (level.visible[pos.x, pos.y])
         {
-            UIManager.instance.ShowCharacterWindow(level.mobs[pos.x, pos.y]);
+            UIManager.instance.ShowCharacterWindow(level.terrain[pos.x, pos.y], level.mobs[pos.x, pos.y]);
         }
     }
 }

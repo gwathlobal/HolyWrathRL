@@ -17,10 +17,18 @@ public class NewCharacterDialogScript : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void InitializeUI(Mob _mob)
+    public void InitializeUI(TerrainTypeEnum terrainType, Mob _mob)
     {
         mob = _mob;
 
-        DescrText.text = mob.Description();
+        DescrText.text = "";
+        DescrText.text += "<b>TERRAIN</b>\n\n";
+        DescrText.text += TerrainTypes.terrainTypes[terrainType].Description();
+
+        if (mob != null)
+        {
+            DescrText.text += "\n\n<b>CREATURE</b>\n\n";
+            DescrText.text += mob.Description();
+        }
     }
 }

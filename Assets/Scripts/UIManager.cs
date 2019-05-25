@@ -88,7 +88,7 @@ public class UIManager : MonoBehaviour {
 
         BottomPanel.UpdateInterface();
 
-        CharacterDialog.InitializeUI(player);
+        //CharacterDialog.InitializeUI(player);
     }
 	
     public void SetScreenStatusToNormal()
@@ -123,10 +123,10 @@ public class UIManager : MonoBehaviour {
         MsgDialog.gameObject.SetActive(false);
     }
 
-    public void ShowCharacterWindow(Mob mob)
+    public void ShowCharacterWindow(TerrainTypeEnum terrainType, Mob mob)
     {
         screenStatus = MainScreenStatus.statusCharacterWindow;
-        CharacterDialog.InitializeUI(mob);
+        CharacterDialog.InitializeUI(terrainType, mob);
         CharacterDialog.gameObject.SetActive(true);
     }
 
@@ -244,7 +244,7 @@ public class UIManager : MonoBehaviour {
         else
         {
 
-            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [x] Examine character [Esc] Cancel");
+            SetScreenStatusToLook(player.x, player.y, "Select the target:", "[Enter] Select [x] Examine tile [Esc] Cancel");
             MoveSelector(0, 0);
             execFunc = () =>
             {
