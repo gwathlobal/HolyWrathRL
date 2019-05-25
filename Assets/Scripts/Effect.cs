@@ -41,6 +41,32 @@ public class Effect
     public int cd;
     public int SV;
     public int param1;
+
+    public string GetEffectLine()
+    {
+        string str = "";
+
+        str = EffectTypes.effectTypes[idType].name;
+        if (cd != Effect.CD_UNLIMITED)
+            str += String.Format(" ({0})", cd);
+        if (param1 != 0)
+            str += String.Format(" [{0}]", param1);
+
+        return str;
+    }
+
+    public string GetEffectFullLine()
+    {
+        string str = "";
+
+        str = EffectTypes.effectTypes[idType].name;
+        if (cd != Effect.CD_UNLIMITED)
+            str += String.Format(" ({0} {1} left)", cd, (cd > 1) ? "turns" : "turn");
+        if (param1 != 0)
+            str += String.Format(" [{0} {1} left]", param1, (param1 > 1) ? "charges" : "charge");
+
+        return str;
+    }
 }
 
 public class EffectTypes

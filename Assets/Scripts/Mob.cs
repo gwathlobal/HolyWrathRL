@@ -484,9 +484,8 @@ public class Mob
         noAbilities = true;
         foreach (Effect eff in effects.Values)
         {
-            
-            str += String.Format("<color=#{2}>{0}{1}</color>\n", EffectTypes.effectTypes[eff.idType].name,
-                        (eff.cd == Effect.CD_UNLIMITED) ? "" : String.Format(" ({0} {1} left)", eff.cd, (eff.cd > 1) ? "turns" : "turn"),
+
+            str += String.Format("<color=#{1}>{0}</color>\n", eff.GetEffectFullLine(),
                         ColorUtility.ToHtmlStringRGBA(EffectTypes.effectTypes[eff.idType].color));
             str += String.Format("{0}.", EffectTypes.effectTypes[eff.idType].descr);
             str += "\n\n";

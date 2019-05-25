@@ -38,15 +38,11 @@ public class RightPanelScript : MonoBehaviour {
 
             EffectScrollPanel.rectTransform.sizeDelta = new Vector2(173, i * 20);
 
-            ep.GetComponent<Text>().text = EffectTypes.effectTypes[effectType].name;
-            if (player.effects[effectType].cd != Effect.CD_UNLIMITED)
-                ep.GetComponent<Text>().text += " (" + player.effects[effectType].cd + ")";
-            if (player.effects[effectType].param1 != 0)
-                ep.GetComponent<Text>().text += " [" + player.effects[effectType].param1 + "]";
+            ep.GetComponent<Text>().text = player.effects[effectType].GetEffectLine();
             ep.GetComponent<Text>().color = EffectTypes.effectTypes[effectType].color;
 
             ep.GetComponent<HintPanelScript>().SetPanelName("Hint Panel " + EffectTypes.effectTypes[effectType].name);
-            ep.GetComponent<HintPanelScript>().hintStr = EffectTypes.effectTypes[effectType].descr +".";
+            ep.GetComponent<HintPanelScript>().hintStr = player.effects[effectType].GetEffectFullLine() + "\n" + EffectTypes.effectTypes[effectType].descr + ".";
 
             effectPanels.Add(ep);
             i++;

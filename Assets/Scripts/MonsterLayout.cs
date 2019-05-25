@@ -31,14 +31,6 @@ public abstract class MonsterLayout {
             // NOTE: for unknown reason it gets shift -1,-1 so I cant put it to 0, 0
             selector.transform.position = new Vector3(1, 1, 0);
             selector.GetComponent<SpriteRenderer>().color = new Color32(0, 100, 0, 255);
-            
-            player.curAbils[0] = AbilityTypeEnum.abilSpearOfLight;
-            //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
-            //player.meleeAbil = AbilityTypeEnum.abilFireFists;
-            //player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
-            player.abilities.Add(AbilityTypeEnum.abilSpearOfLight, true);
-            //player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
-            //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
         }
         else
@@ -625,6 +617,14 @@ public class MonsterLayoutTest : MonsterLayout
 
         PlacePlayer(level);
 
+        BoardManager.instance.player.curAbils[0] = AbilityTypeEnum.abilReflectiveBlock;
+        //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
+        //player.meleeAbil = AbilityTypeEnum.abilFireFists;
+        //player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
+        BoardManager.instance.player.abilities.Add(AbilityTypeEnum.abilReflectiveBlock, true);
+        //player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
+        //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
+
         Mob mob;
 
         //BoardManager.instance.player.curFP = 10;
@@ -640,7 +640,7 @@ public class MonsterLayoutTest : MonsterLayout
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
         */
-        mob = new Mob(MobTypeEnum.mobCrimsonImp, 14, 5);
+        mob = new Mob(MobTypeEnum.mobMachineImp, 14, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);

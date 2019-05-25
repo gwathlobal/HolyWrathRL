@@ -92,6 +92,7 @@ public class PlayerMob : Mob {
         UIManager.instance.ShowYouDiedWindow();
     }
 
+    /*
     public override string Description()
     {
         string str = "";
@@ -200,4 +201,5 @@ public class PlayerMob : Mob {
 
         return str;
     }
+    */
 }
