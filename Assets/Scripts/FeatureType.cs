@@ -15,6 +15,7 @@ public enum FeatureTypeEnum
 public class FeatureType {
     public FeatureTypeEnum id;
     public string name = "Feature Template";
+    public string descr = "";
     public GameObject prefab;
     public Color color;
 
@@ -22,9 +23,10 @@ public class FeatureType {
     public FeatMergeFunc FeatMergeFunc;
     public FeatOnTick FeatOnTick;
 
-    public FeatureType(string _name, GameObject _prefab, Color _color, FeatCheckMerge _checkMerge = null, FeatMergeFunc _mergeFunc = null, FeatOnTick _tickFunc = null)
+    public FeatureType(string _name, string _descr, GameObject _prefab, Color _color, FeatCheckMerge _checkMerge = null, FeatMergeFunc _mergeFunc = null, FeatOnTick _tickFunc = null)
     {
         name = _name;
+        descr = _descr;
         prefab = _prefab;
         color = _color;
         FeatMergeFunc = _mergeFunc;
@@ -53,7 +55,7 @@ public class FeatureTypes
 
         featureTypes = new Dictionary<FeatureTypeEnum, FeatureType>();
 
-        Add(FeatureTypeEnum.featBloodDrop, "Bloodstain", null, new Color(255, 0, 0),
+        Add(FeatureTypeEnum.featBloodDrop, "Bloodstain", "", null, new Color(255, 0, 0),
             (Level level, Feature newFeature) =>
             {
                 foreach (Feature feature in level.features[newFeature.x, newFeature.y])
@@ -68,7 +70,7 @@ public class FeatureTypes
                 level.featureList.Remove(newFeature);
                 BoardManager.instance.RemoveFeatureFromWorld(newFeature);
             });
-        Add(FeatureTypeEnum.featBloodPool, "Bloodstain", featBloodPool, featBloodPool.GetComponent<SpriteRenderer>().color,
+        Add(FeatureTypeEnum.featBloodPool, "Bloodstain", "", featBloodPool, featBloodPool.GetComponent<SpriteRenderer>().color,
             (Level level, Feature newFeature) =>
             {
                 foreach (Feature feature in level.features[newFeature.x, newFeature.y])
@@ -93,7 +95,7 @@ public class FeatureTypes
                 }
                 
             });
-        Add(FeatureTypeEnum.featFire, "Fire", featFire, featFire.GetComponent<SpriteRenderer>().color,
+        Add(FeatureTypeEnum.featFire, "Fire", "Deals 5 fire damage to the creature standing here. Adds the Burning effect for 5 turns. Can spread to nearby tiles that can burn.", featFire, featFire.GetComponent<SpriteRenderer>().color,
             (Level level, Feature newFeature) =>
             {
                 foreach (Feature feature in level.features[newFeature.x, newFeature.y])
@@ -179,7 +181,7 @@ public class FeatureTypes
                 }
             });
 
-        Add(FeatureTypeEnum.featHolyRune, "Holy Rune", featHolyRune, featHolyRune.GetComponent<SpriteRenderer>().color,
+        Add(FeatureTypeEnum.featHolyRune, "Holy Rune", "Deals 3 holy damage to beasts and demons, gives +3 HP and +3 FP to angels standing here.", featHolyRune, featHolyRune.GetComponent<SpriteRenderer>().color,
             (Level level, Feature newFeature) =>
             {
                 foreach (Feature feature in level.features[newFeature.x, newFeature.y])
@@ -254,7 +256,7 @@ public class FeatureTypes
                 }
             });
 
-        Add(FeatureTypeEnum.featAcidCloud, "Acid cloud", featAcidCloud, featAcidCloud.GetComponent<SpriteRenderer>().color,
+        Add(FeatureTypeEnum.featAcidCloud, "Acid cloud", "Deals 10 acid damage to any creature standing here.", featAcidCloud, featAcidCloud.GetComponent<SpriteRenderer>().color,
             (Level level, Feature newFeature) =>
             {
                 foreach (Feature feature in level.features[newFeature.x, newFeature.y])
@@ -322,7 +324,7 @@ public class FeatureTypes
                 }
             });
 
-        Add(FeatureTypeEnum.featArtilleryTarget, "Signal flare", featArtilleryTarget, featArtilleryTarget.GetComponent<SpriteRenderer>().color,
+        Add(FeatureTypeEnum.featArtilleryTarget, "Signal flare", "Designates the tile where the artillery strike will land.", featArtilleryTarget, featArtilleryTarget.GetComponent<SpriteRenderer>().color,
             null,
             null,
             (Level level, Feature feature) =>
@@ -404,10 +406,10 @@ public class FeatureTypes
             });
     }
 
-    private static void Add(FeatureTypeEnum _id, string _name, GameObject _prefab, Color _color, 
+    private static void Add(FeatureTypeEnum _id, string _name, string _descr, GameObject _prefab, Color _color, 
         FeatCheckMerge _checkMerge = null, FeatMergeFunc _mergeFunc = null, FeatOnTick _tickFunc = null)
     {
-        FeatureType ft = new FeatureType(_name, _prefab, _color, _checkMerge, _mergeFunc, _tickFunc)
+        FeatureType ft = new FeatureType(_name, _descr, _prefab, _color, _checkMerge, _mergeFunc, _tickFunc)
         {
             id = _id
         };

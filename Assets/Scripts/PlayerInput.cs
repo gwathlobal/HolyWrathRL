@@ -73,7 +73,11 @@ public class PlayerInput : MonoBehaviour {
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
-            UIManager.instance.ShowCharacterWindow(BoardManager.instance.level.terrain[player.x, player.y], player);
+            UIManager.instance.ShowCharacterWindow(BoardManager.instance.level.terrain[player.x, player.y], 
+                BoardManager.instance.level.features[player.x, player.y], 
+                player,
+                BoardManager.instance.level.items[player.x, player.y],
+                true);
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -184,7 +188,7 @@ public class PlayerInput : MonoBehaviour {
             Vector2Int pos = UIManager.instance.selectorPos;
             if (level.visible[pos.x, pos.y])
             {
-                UIManager.instance.ShowCharacterWindow(level.terrain[pos.x, pos.y], level.mobs[pos.x, pos.y]);
+                UIManager.instance.ShowCharacterWindow(level.terrain[pos.x, pos.y], level.features[pos.x, pos.y], level.mobs[pos.x, pos.y], level.items[pos.x, pos.y]);
             }
         }
     }

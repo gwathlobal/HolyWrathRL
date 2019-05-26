@@ -6,6 +6,7 @@ public class ItemType
 {
     public ItemTypeEnum id;
     public string name = "Item Template";
+    public string descr = "";
     public GameObject prefab;
     public int corpsePwr;
 }
@@ -27,21 +28,22 @@ public class ItemTypes
 
         itemTypes = new Dictionary<ItemTypeEnum, ItemType>();
 
-        Add(ItemTypeEnum.itemCorpseFull, "Corpse", itemCorpse, 4);
-        Add(ItemTypeEnum.itemCorpseArm, "Severed arm", itemCorpse, 1);
-        Add(ItemTypeEnum.itemCorpseLeg, "Severed leg", itemCorpse, 1);
-        Add(ItemTypeEnum.itemCorpseHead, "Severed head", itemCorpse, 1);
-        Add(ItemTypeEnum.itemCorpseMutilated, "Mutilated body", itemCorpse, 3);
-        Add(ItemTypeEnum.itemCorpseUpper, "Upper body", itemCorpse, 2);
-        Add(ItemTypeEnum.itemCorpseLower, "Lower body", itemCorpse, 2);
+        Add(ItemTypeEnum.itemCorpseFull, "Corpse", "", itemCorpse, 4);
+        Add(ItemTypeEnum.itemCorpseArm, "Severed arm", "", itemCorpse, 1);
+        Add(ItemTypeEnum.itemCorpseLeg, "Severed leg", "", itemCorpse, 1);
+        Add(ItemTypeEnum.itemCorpseHead, "Severed head", "", itemCorpse, 1);
+        Add(ItemTypeEnum.itemCorpseMutilated, "Mutilated body", "", itemCorpse, 3);
+        Add(ItemTypeEnum.itemCorpseUpper, "Upper body", "", itemCorpse, 2);
+        Add(ItemTypeEnum.itemCorpseLower, "Lower body", "", itemCorpse, 2);
     }
 
-    private static void Add(ItemTypeEnum _id, string _name, GameObject _prefab, int _corpsePwr)
+    private static void Add(ItemTypeEnum _id, string _name, string _descr, GameObject _prefab, int _corpsePwr)
     {
         ItemType it = new ItemType()
         {
             id = _id,
             name = _name,
+            descr = _descr,
             prefab = _prefab,
             corpsePwr = _corpsePwr
         };

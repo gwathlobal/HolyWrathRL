@@ -8,6 +8,20 @@ public class Item {
     public int id;
     public int x = 0;
     public int y = 0;
+    public string name
+    {
+        get
+        {
+            return ItemTypes.itemTypes[idType].name;
+        }
+    }
+    public string descr
+    {
+        get
+        {
+            return ItemTypes.itemTypes[idType].descr;
+        }
+    }
 
     public GameObject go;
     public MovingObject mo;
@@ -27,5 +41,14 @@ public class Item {
         BoardManager.instance.items.Add(this.id, this);
 
         mo = go.GetComponent<MovingObject>();
+    }
+
+    public string Description()
+    {
+        string str;
+
+        str = descr;
+
+        return str;
     }
 }

@@ -123,10 +123,10 @@ public class UIManager : MonoBehaviour {
         MsgDialog.gameObject.SetActive(false);
     }
 
-    public void ShowCharacterWindow(TerrainTypeEnum terrainType, Mob mob)
+    public void ShowCharacterWindow(TerrainTypeEnum terrainType, List<Feature> featureList, Mob mob, List<Item> itemList, bool showMobOnly = false)
     {
         screenStatus = MainScreenStatus.statusCharacterWindow;
-        CharacterDialog.InitializeUI(terrainType, mob);
+        CharacterDialog.InitializeUI(terrainType, featureList, mob, itemList, showMobOnly);
         CharacterDialog.gameObject.SetActive(true);
     }
 

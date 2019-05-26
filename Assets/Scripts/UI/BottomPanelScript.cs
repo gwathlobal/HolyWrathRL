@@ -39,9 +39,7 @@ public class BottomPanelScript : MonoBehaviour {
             string featuresTxt = "";
             foreach (Feature feature in level.features[pos.x,pos.y])
             {
-                featuresTxt += ", " + FeatureTypes.featureTypes[feature.idType].name;
-                if (feature.counter > 0)
-                    featuresTxt += " [" + feature.counter + "]";
+                featuresTxt += ", " + feature.GetEffectLine();
             }
             string mobTxt = "";
             if (level.mobs[pos.x, pos.y] != null && 

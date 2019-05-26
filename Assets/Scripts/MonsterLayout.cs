@@ -617,11 +617,11 @@ public class MonsterLayoutTest : MonsterLayout
 
         PlacePlayer(level);
 
-        BoardManager.instance.player.curAbils[0] = AbilityTypeEnum.abilReflectiveBlock;
+        BoardManager.instance.player.curAbils[0] = AbilityTypeEnum.abilBreathOfFire;
         //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
         //player.meleeAbil = AbilityTypeEnum.abilFireFists;
         //player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
-        BoardManager.instance.player.abilities.Add(AbilityTypeEnum.abilReflectiveBlock, true);
+        BoardManager.instance.player.abilities.Add(AbilityTypeEnum.abilBreathOfFire, true);
         //player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
         //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
