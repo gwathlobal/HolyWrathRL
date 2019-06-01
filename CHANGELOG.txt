@@ -1,0 +1,11 @@
+
+- Added new level layouts inspired by my City of the Damned: resedential district, abandoned district, corrupted district.
+- Added new enemies inspired by City of the Damned: soldier, machine gunner, scout
+- Added hints to effects
+- Some usability improvements in the UI screen before each level. Added a hint that explains what you should do on this screen. Added hints to the ability trees. The player can also right-click on the ability to move it to selected abilities list (or remove abilities from there), instead of using drag&drop. When you purchase an ability, it automatically goes to the selected abilities list.
+- Added new animations to the abilities: Spear of Light, Breath of Fire, Reflective Block vs Teleport on Hit
+
+--------------------
+May 4, 2019 v0.1
+
+Initial release

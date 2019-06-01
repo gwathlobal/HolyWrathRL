@@ -128,7 +128,15 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right && (status == AbilityAddedStatus.selected || status == AbilityAddedStatus.added) && 
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            MoveToSelected();
+        }
+    }
+
+    private void MoveToSelected()
+    {
+        if ((status == AbilityAddedStatus.selected || status == AbilityAddedStatus.added) &&
             AbilityTypes.abilTypes[abilType].slot != AbilitySlotEnum.abilNone)
         {
             switch (AbilityTypes.abilTypes[abilType].slot)
@@ -180,6 +188,8 @@ public class AvailAbilPanel : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
                 abilPanel.GetComponent<AvailAbilPanel>().InitializeUI(AbilityDialog, AbilityTypes.abilTypes[abilT].stdName, AbilityTypes.abilTypes[abilT].id, status);
             }
+
+            MoveToSelected();
         }
         else if (status == AbilityAddedStatus.selected)
         {
