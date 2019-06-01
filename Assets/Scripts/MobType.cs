@@ -141,7 +141,7 @@ public class MobTypes
             AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDivineVengeance, AbilityTypeEnum.abilAngel });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -151,7 +151,7 @@ public class MobTypes
             AbilityTypeEnum.abilFireFists, AbilityTypeEnum.abilFlamingArrow, AbilityTypeEnum.abilDodge, AbilityTypeEnum.abilBlock,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura, AbilityTypeEnum.abilAngel, AbilityTypeEnum.abilNamed });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -161,7 +161,7 @@ public class MobTypes
             AbilityTypeEnum.abilHolySword, AbilityTypeEnum.abilLightBolt, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilFireAura, AbilityTypeEnum.abilAngel });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -193,7 +193,7 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -201,7 +201,7 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilJump, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCharge, AbilityTypeEnum.abilMindless });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCharge, AbilityTypeEnum.abilMindless, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -209,7 +209,7 @@ public class MobTypes
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>());
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -217,7 +217,7 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility, AiPackageEnum.aiFindCorpse },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize, AbilityTypeEnum.abilMindless });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilCannibalize, AbilityTypeEnum.abilMindless, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -225,7 +225,7 @@ public class MobTypes
             AbilityTypeEnum.abilTarTentacles, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilMindless, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -234,7 +234,7 @@ public class MobTypes
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -243,7 +243,7 @@ public class MobTypes
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilCorpseExplosion });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilCorpseExplosion, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -251,7 +251,7 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -260,7 +260,7 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize, AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -269,7 +269,8 @@ public class MobTypes
             AbilityTypeEnum.abilClaws, AbilityTypeEnum.abilShootSpikes, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize, AbilityTypeEnum.abilDemonicPortal });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize, AbilityTypeEnum.abilDemonicPortal,
+                AbilityTypeEnum.abilDemon });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

@@ -148,11 +148,21 @@ public class Mob
             armorPR[dmgType] = MobTypes.mobTypes[idType].armorPR[dmgType];
         }
 
+        
         if (abilities.ContainsKey(AbilityTypeEnum.abilNamed))
         {
-            int r = UnityEngine.Random.Range(0, Nemesis.names.Count);
-            name = Nemesis.names[r];
-            Nemesis.names.RemoveAt(r);
+            if (abilities.ContainsKey(AbilityTypeEnum.abilAngel))
+            {
+                int r = UnityEngine.Random.Range(0, Nemesis.angelNames.Count);
+                name = Nemesis.angelNames[r];
+                Nemesis.angelNames.RemoveAt(r);
+            }
+            else if (abilities.ContainsKey(AbilityTypeEnum.abilDemon))
+            {
+                int r = UnityEngine.Random.Range(0, Nemesis.demonNames.Count);
+                name = Nemesis.demonNames[r];
+                Nemesis.demonNames.RemoveAt(r);
+            }
         }
 
         path = new List<Vector2Int>();

@@ -20,7 +20,7 @@ public class MainMenuScript : MonoBehaviour {
 
     public void PlayGame()
     {
-        
+        Nemesis.InitializeNames();
         DmgTypes.InitializeDmgTypes();
         AIs.InitializeAIPackages();
         Factions.InitializeFactions();
@@ -55,6 +55,8 @@ public class MainMenuScript : MonoBehaviour {
 
     public void TestGame()
     {
+        Nemesis.InitializeNames();
+
         GameManager.instance.levelLayout = LevelLayoutEnum.levelTest;
         GameManager.instance.monsterLayout = MonsterLayoutEnum.levelTest;
         GameManager.instance.objectiveLayout = ObjectiveLayoutEnum.levelTest;

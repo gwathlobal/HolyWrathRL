@@ -58,6 +58,7 @@ public class BoardManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
 
+        Nemesis.InitializeNames();
         DmgTypes.InitializeDmgTypes();
         AIs.InitializeAIPackages();
         Factions.InitializeFactions();
