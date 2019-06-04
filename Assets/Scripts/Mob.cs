@@ -58,6 +58,7 @@ public class Mob
     public const int MAX_WP = 200;
 
     public string name;
+    public bool hasPersonalName;
 
     public bool alreadyDied;
     public float curAP;
@@ -148,7 +149,7 @@ public class Mob
             armorPR[dmgType] = MobTypes.mobTypes[idType].armorPR[dmgType];
         }
 
-        
+        hasPersonalName = false;
         if (abilities.ContainsKey(AbilityTypeEnum.abilNamed))
         {
             if (abilities.ContainsKey(AbilityTypeEnum.abilAngel))
@@ -156,12 +157,14 @@ public class Mob
                 int r = UnityEngine.Random.Range(0, Nemesis.angelNames.Count);
                 name = Nemesis.angelNames[r];
                 Nemesis.angelNames.RemoveAt(r);
+                hasPersonalName = true;
             }
             else if (abilities.ContainsKey(AbilityTypeEnum.abilDemon))
             {
                 int r = UnityEngine.Random.Range(0, Nemesis.demonNames.Count);
                 name = Nemesis.demonNames[r];
                 Nemesis.demonNames.RemoveAt(r);
+                hasPersonalName = true;
             }
         }
 
@@ -429,7 +432,8 @@ public class Mob
     {
         string str = "";
         bool noAbilities;
-        str += String.Format("{0}\n", name);
+        str += GetFullName() + "\n";
+        str += String.Format("{0}\n", MobTypes.mobTypes[idType].name);
         str += String.Format("HP: {0}/{1}\n", curHP, maxHP);
         str += String.Format("FP: {0}/{1}\n", curFP, maxFP);
         if (GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)
@@ -1070,5 +1074,15 @@ public class Mob
                 curSH += effect.SV;
             }
         }
+    }
+
+    public string GetFullName()
+    {
+        string str = "";
+        if (hasPersonalName)
+            str += String.Format("{0}", name);
+        else
+            str += String.Format("{0}", name);
+        return str;
     }
 }

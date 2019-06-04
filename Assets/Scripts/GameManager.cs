@@ -40,14 +40,13 @@ public class GameManager : MonoBehaviour {
     public void SetUpNemeses()
     {
 
-        Nemesis.InitializeNames();
         nemeses = new List<Nemesis>();
 
         for (int i = 0; i < 20; i++)
         {
             Nemesis nemesis = new Nemesis()
             {
-                mob = new Mob(MobTypeEnum.mobArchdemon, 1, 1),
+                mob = new Mob(MobTypeEnum.mobAngel, 1, 1),
                 status = NemesisStatusEnum.hidden
             };
 

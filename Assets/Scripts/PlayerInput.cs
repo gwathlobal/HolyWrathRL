@@ -67,6 +67,10 @@ public class PlayerInput : MonoBehaviour {
         {
             UIManager.instance.ShowMsgWindow();
         }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            UIManager.instance.ShowJournalDialogWindow();
+        }
         else if (Input.GetKeyDown(KeyCode.Slash) && (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)))
         {
             UIManager.instance.ShowHelpDialogWindow();
@@ -241,6 +245,14 @@ public class PlayerInput : MonoBehaviour {
         }
     }
 
+    void GetInputJournalDialog()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UIManager.instance.HideJournalDialogWindow();
+        }
+    }
+
     void GetPlayerInput()
     {
         if (!BoardManager.instance.playersTurn) return;
@@ -272,6 +284,9 @@ public class PlayerInput : MonoBehaviour {
                 break;
             case MainScreenStatus.statusHelpWindow:
                 GetInputHelpDialog();
+                break;
+            case MainScreenStatus.statusJournalWindow:
+                GetInputJournalDialog();
                 break;
         }
 
