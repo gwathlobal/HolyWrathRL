@@ -54,7 +54,14 @@ public class PlayerMob : Mob {
 
                 if (level.mobs[dx, dy] != null && !visibleMobs.Contains(level.mobs[dx, dy]))
                 {
-                    visibleMobs.Add(level.mobs[dx, dy]);
+                    Mob mob = level.mobs[dx, dy];
+
+                    visibleMobs.Add(mob);
+
+                    if (mob.GetAbility(AbilityTypeEnum.abilNamed) != null)
+                    {
+                        mob.GetAbility(AbilityTypeEnum.abilNamed).AbilityInvoke(mob, new TargetStruct(new Vector2Int(dx, dy), mob));
+                    }
                 }
 
                 if (level.items[dx, dy].Count > 0)
@@ -91,115 +98,4 @@ public class PlayerMob : Mob {
         BoardManager.instance.playersTurn = true;
         UIManager.instance.ShowYouDiedWindow();
     }
-
-    /*
-    public override string Description()
-    {
-        string str = "";
-        bool noAbilities;
-        str += String.Format("{0}\n", name);
-        str += String.Format("HP: {0}/{1}\n", curHP, maxHP);
-        str += String.Format("FP: {0}/{1}\n", curFP, maxFP);
-        str += String.Format("WP: {0}\n", curWP);
-
-        bool hasArmor = false;
-        str += "\nDamage Reduction (DR):\n";
-        foreach (DmgType dmgType in DmgTypes.dmgTypes.Values)
-        {
-            if (armorDR[dmgType.dmgType] > 0 || armorPR[dmgType.dmgType] > 0)
-            {
-                hasArmor = true;
-                str += String.Format("   {0}: {1} pts/{2}%\n", dmgType.name.Substring(0, 1).ToUpper() + dmgType.name.Substring(1), armorDR[dmgType.dmgType], armorPR[dmgType.dmgType]);
-            }
-        }
-        if (!hasArmor)
-            str += "   None.\n";
-
-        str += "\n";
-        str += "-----------------------------------\n";
-        str += "CURRENT ABILITIES\n";
-        str += "-----------------------------------\n";
-        str += "\n";
-        noAbilities = true;
-        if (GetAbility(meleeAbil) != null && GetAbility(meleeAbil).id != AbilityTypeEnum.abilNone)
-        {
-            Ability ability = GetAbility(meleeAbil);
-            str += ability.GetFullDescription(this);
-            str += "\n\n";
-            noAbilities = false;
-        }
-        if (GetAbility(rangedAbil) != null && GetAbility(rangedAbil).id != AbilityTypeEnum.abilNone)
-        {
-            Ability ability = GetAbility(rangedAbil);
-            str += ability.GetFullDescription(this);
-            str += "\n\n";
-            noAbilities = false;
-        }
-        foreach (AbilityTypeEnum abilityType in curAbils)
-        {
-            Ability ability = GetAbility(abilityType);
-            if (ability != null && ability.id != AbilityTypeEnum.abilNone)
-            {
-                str += ability.GetFullDescription(this);
-                str += "\n\n";
-                noAbilities = false;
-            }
-        }
-        if (GetAbility(dodgeAbil) != null && GetAbility(dodgeAbil).id != AbilityTypeEnum.abilNone)
-        {
-            Ability ability = GetAbility(dodgeAbil);
-            str += ability.GetFullDescription(this);
-            str += "\n\n";
-            noAbilities = false;
-        }
-        if (GetAbility(blockAbil) != null && GetAbility(blockAbil).id != AbilityTypeEnum.abilNone)
-        {
-            Ability ability = GetAbility(blockAbil);
-            str += ability.GetFullDescription(this);
-            str += "\n\n";
-            noAbilities = false;
-        }
-        if (noAbilities) str += "No abilities.\n\n";
-
-        str += "\n";
-        str += "-----------------------------------\n";
-        str += "PASSIVE ABILITIES\n";
-        str += "-----------------------------------\n";
-        str += "\n";
-        noAbilities = true;
-        foreach (AbilityTypeEnum abilityType in abilities.Keys)
-        {
-            Ability ability = GetAbility(abilityType);
-            if (ability.passive && ability.slot != AbilitySlotEnum.abilMelee)
-            {
-                str += GetAbility(abilityType).GetFullDescription(this);
-                str += "\n\n";
-                noAbilities = false;
-            }
-        }
-
-        if (noAbilities) str += "No abilities.\n\n";
-
-        str += "\n";
-        str += "-----------------------------------\n";
-        str += "EFFECTS\n";
-        str += "-----------------------------------\n";
-        str += "\n";
-        noAbilities = true;
-        foreach (Effect eff in effects.Values)
-        {
-
-            str += String.Format("<color=#{2}>{0}{1}</color>\n", EffectTypes.effectTypes[eff.idType].name,
-                        (eff.cd == Effect.CD_UNLIMITED) ? "" : String.Format(" ({0} {1} left)", eff.cd, (eff.cd > 1) ? "turns" : "turn"),
-                        ColorUtility.ToHtmlStringRGBA(EffectTypes.effectTypes[eff.idType].color));
-            str += String.Format("{0}.", EffectTypes.effectTypes[eff.idType].descr);
-            str += "\n\n";
-            noAbilities = false;
-        }
-
-        if (noAbilities) str += "No active effects.\n\n";
-
-        return str;
-    }
-    */
 }

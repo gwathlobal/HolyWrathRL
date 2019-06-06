@@ -56,14 +56,69 @@ public class NextLocDialogScript : MonoBehaviour
             nextLocPanel.transform.SetParent(NextLocScrollPanel.transform, false);
             nextLocPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(-1, 0 + i * -30);
 
+            List<LevelModifier> levelModifiers = new List<LevelModifier>();
+
+            /*
+            // prepare a list of available level modifiers
+            List<LevelModifierTypes.LevelModifierEnum> availLevelModifiers = new List<LevelModifierTypes.LevelModifierEnum>();
+            foreach (LevelModifierTypes.LevelModifierEnum lme in System.Enum.GetValues(typeof(LevelModifierTypes.LevelModifierEnum)))
+            {
+                if (LevelModifierTypes.levelModifiers[lme].CheckRequirements())
+                    availLevelModifiers.Add(lme);
+            }
+
+            // 25% to pick a random level modifier, if picked - try to pick a next one until no more are available
+            bool oneMoreLM = false;
+            do
+            {
+                if (availLevelModifiers.Count > 0)
+                {
+                    if (Random.Range(0, 100) <= 100)
+                    {
+                        LevelModifierTypes.LevelModifierEnum lme = availLevelModifiers[Random.Range(0, availLevelModifiers.Count)];
+
+                        System.Type t = LevelModifierTypes.levelModifiers[lme].GetType();
+
+                        LevelModifier lm = (LevelModifier)System.Activator.CreateInstance(t);
+
+                        lm.Initialize();
+
+                        levelModifiers.Add(lm);
+                        availLevelModifiers.Remove(lme);
+
+                        oneMoreLM = true;
+                    }
+                    else
+                        oneMoreLM = false;
+                }
+                else
+                    oneMoreLM = false;
+
+            } while (oneMoreLM);
+            */
+            string str = "";
+            str += System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
+                    MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name);
+
+            bool firstLM = true;
+            foreach (LevelModifier lm in levelModifiers)
+            {
+                if (firstLM)
+                {
+                    str += "\n\nLevel features:\n\n";
+                    firstLM = false;
+                }
+                str += lm.Description();
+            }
+
             nextLocPanel.GetComponent<NextLocPanelDialog>().InitializeUI(this, LevelLayouts.levelLayouts[levelLayout].name,
-                System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
-                    MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name),
+                str,
                 () =>
                 {
                     GameManager.instance.monsterLayout = monsterLayout;
                     GameManager.instance.levelLayout = levelLayout;
                     GameManager.instance.objectiveLayout = objectiveLayout;
+                    GameManager.instance.levelModifiers = levelModifiers;
                 });
             i++;
             nextLocPanels.Add(nextLocPanel);
@@ -86,14 +141,68 @@ public class NextLocDialogScript : MonoBehaviour
                 nextLocPanel.transform.SetParent(NextLocScrollPanel.transform, false);
                 nextLocPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(-1, 0 + i * -30);
 
+                List<LevelModifier> levelModifiers = new List<LevelModifier>();
+
+                // prepare a list of available level modifiers
+                List<LevelModifierTypes.LevelModifierEnum> availLevelModifiers = new List<LevelModifierTypes.LevelModifierEnum>();
+                foreach (LevelModifierTypes.LevelModifierEnum lme in System.Enum.GetValues(typeof(LevelModifierTypes.LevelModifierEnum)))
+                {
+                    if (LevelModifierTypes.levelModifiers[lme].CheckRequirements())
+                        availLevelModifiers.Add(lme);
+                }
+
+                // 25% to pick a random level modifier, if picked - try to pick a next one until no more are available
+                bool oneMoreLM = false;
+                do
+                {
+                    if (availLevelModifiers.Count > 0)
+                    {
+                        if (Random.Range(0, 100) <= 25)
+                        {
+                            LevelModifierTypes.LevelModifierEnum lme = availLevelModifiers[Random.Range(0, availLevelModifiers.Count)];
+
+                            System.Type t = LevelModifierTypes.levelModifiers[lme].GetType();
+
+                            LevelModifier lm = (LevelModifier)System.Activator.CreateInstance(t);
+
+                            lm.Initialize();
+
+                            levelModifiers.Add(lm);
+                            availLevelModifiers.Remove(lme);
+
+                            oneMoreLM = true;
+                        }
+                        else
+                            oneMoreLM = false;
+                    }
+                    else
+                        oneMoreLM = false;
+
+                } while (oneMoreLM);
+
+                string str = "";
+                str += System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
+                        MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name);
+
+                bool firstLM = true;
+                foreach (LevelModifier lm in levelModifiers)
+                {
+                    if (firstLM)
+                    {
+                        str += "\n\nLevel features:\n";
+                        firstLM = false;
+                    }
+                    str += lm.Description();
+                }
+
                 nextLocPanel.GetComponent<NextLocPanelDialog>().InitializeUI(this, LevelLayouts.levelLayouts[levelLayout].name,
-                    System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
-                        MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name),
+                    str,
                     () =>
                     {
                         GameManager.instance.monsterLayout = monsterLayout;
                         GameManager.instance.levelLayout = levelLayout;
                         GameManager.instance.objectiveLayout = objectiveLayout;
+                        GameManager.instance.levelModifiers = levelModifiers;
                     });
                 nextLocPanels.Add(nextLocPanel);
             }

@@ -60,6 +60,14 @@ public class Mob
     public string name;
     public bool hasPersonalName;
 
+    public string typeName
+    {
+        get
+        {
+            return MobTypes.mobTypes[idType].name;
+        }
+    }
+
     public bool alreadyDied;
     public float curAP;
     public float curMoveSpeed;
@@ -750,6 +758,9 @@ public class Mob
         {
             BoardManager.instance.msgLog.PlayerVisibleMsg(this.x, this.y, msg);
         }
+
+        if (GetAbility(AbilityTypeEnum.abilNamed) != null)
+            GetAbility(AbilityTypeEnum.abilNamed).AbilityInvoke(this, new TargetStruct(new Vector2Int(this.x, this.y), this));
 
         level.RemoveMobFromLevel(this);
 

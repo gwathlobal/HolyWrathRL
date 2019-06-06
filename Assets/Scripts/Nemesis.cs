@@ -3,11 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public enum NemesisStatusEnum
 {
-    hidden, revealedName, revealedAbils
+    hidden, revealedAbils, revealedName, deceasedAbils, deceasedName 
 }
 
 public class Nemesis {
@@ -38,17 +36,45 @@ public class Nemesis {
     public string GetNemesisDescription()
     {
         string str = "";
-        str = String.Format("{0} the {1}\n\nAbilities\n", mob.name, MobTypes.mobTypes[mob.idType].name);
-        foreach (AbilityTypeEnum abil in mob.abilities.Keys)
+
+        str = String.Format("{0} the {1}\n\n", mob.name, MobTypes.mobTypes[mob.idType].name);
+
+        if (status == NemesisStatusEnum.revealedAbils)
         {
-            if (abil != AbilityTypeEnum.abilNone)
+            str += "Abilities\n";
+            foreach (AbilityTypeEnum abil in mob.abilities.Keys)
             {
-                Ability ability = AbilityTypes.abilTypes[abil];
-                str += "   " + ability.stdName;
-                str += " (" + ability.Description(mob) + ")\n";
+                if (abil != AbilityTypeEnum.abilNone)
+                {
+                    Ability ability = AbilityTypes.abilTypes[abil];
+                    str += "   " + ability.stdName;
+                    str += " (" + ability.Description(mob) + ")\n";
+                }
             }
         }
-           
+        else if (status == NemesisStatusEnum.revealedName)
+        {
+            str += "You know nothing else about this character.\n";
+        }
+        else if (status == NemesisStatusEnum.deceasedName)
+        {
+            str += "Deceased.\n";
+        }
+        else if (status == NemesisStatusEnum.deceasedAbils)
+        {
+            str += "Deceased.\n\n";
+            str += "Abilities\n";
+            foreach (AbilityTypeEnum abil in mob.abilities.Keys)
+            {
+                if (abil != AbilityTypeEnum.abilNone)
+                {
+                    Ability ability = AbilityTypes.abilTypes[abil];
+                    str += "   " + ability.stdName;
+                    str += " (" + ability.Description(mob) + ")\n";
+                }
+            }
+        }
+
         return str;
     }
     

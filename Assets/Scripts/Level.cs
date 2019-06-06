@@ -41,7 +41,7 @@ public class Level {
                                                                         new Vector2Int(1, 1)
                                                                       };
 
-    public Level(LevelLayoutEnum levelLayoutType, MonsterLayoutEnum monsterLayoutType, ObjectiveLayoutEnum objectiveLayoutType)
+    public Level(LevelLayoutEnum levelLayoutType, MonsterLayoutEnum monsterLayoutType, ObjectiveLayoutEnum objectiveLayoutType, List<LevelModifier> levelModifiers)
     {
         terrain = new TerrainTypeEnum[maxX, maxY];
         items = new List<Item>[maxX, maxY];
@@ -64,7 +64,7 @@ public class Level {
             }
         }
 
-        GenerateLevel(levelLayoutType, monsterLayoutType);
+        GenerateLevel(levelLayoutType, monsterLayoutType, levelModifiers);
 
         CalculateConnectivity();
 
@@ -276,7 +276,7 @@ public class Level {
         else return System.Math.Abs(sy - ty);
     }
 
-    public void GenerateLevel(LevelLayoutEnum levelLayoutType, MonsterLayoutEnum monsterLayoutType)
+    public void GenerateLevel(LevelLayoutEnum levelLayoutType, MonsterLayoutEnum monsterLayoutType, List<LevelModifier> levelModifiers)
     {
         LevelLayout levelLayout = LevelLayouts.levelLayouts[levelLayoutType];
         MonsterLayout monsterLayout = MonsterLayouts.monsterLayouts[monsterLayoutType];
@@ -294,7 +294,15 @@ public class Level {
 
         monsterLayout.PlaceMobs(this, levelGeneratorResult);
 
-        // place buildings from pre-processed function
+        if (levelModifiers != null)
+        {
+            foreach (LevelModifier lm in levelModifiers)
+            {
+                lm.Activate(this, levelGeneratorResult);
+            }
+        }
+
+        // invoke post-processing function
         if (levelLayout.PostProcessFunc != null)
             levelLayout.PostProcessFunc(levelLayout, this);
     }

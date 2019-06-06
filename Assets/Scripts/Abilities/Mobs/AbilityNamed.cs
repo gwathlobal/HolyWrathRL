@@ -51,7 +51,32 @@ public class AbilityNamed : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        
+        Nemesis nemesis = null;
+        foreach (Nemesis nem in GameManager.instance.nemeses)
+        {
+            if (nem.mob == actor)
+            {
+                nemesis = nem;
+                break;
+            }
+        }
+
+        if (nemesis.status == NemesisStatusEnum.hidden)
+        {
+            nemesis.status = NemesisStatusEnum.revealedName;
+            if (BoardManager.instance.player.faction == actor.faction)
+            {
+                nemesis.status = NemesisStatusEnum.revealedAbils;
+            }
+        }
+
+        if (actor.CheckDead())
+        {
+            if (nemesis.status == NemesisStatusEnum.revealedAbils)
+                nemesis.status = NemesisStatusEnum.deceasedAbils;
+            else if (nemesis.status == NemesisStatusEnum.revealedName)
+                nemesis.status = NemesisStatusEnum.deceasedName;
+        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

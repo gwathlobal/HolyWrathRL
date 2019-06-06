@@ -34,17 +34,37 @@ public class JournalDialogScript : MonoBehaviour {
         float w = NemesisPanelPrefab.GetComponent<RectTransform>().sizeDelta.x;
         float h = NemesisPanelPrefab.GetComponent<RectTransform>().sizeDelta.y;
 
+        GameManager.instance.nemeses.Sort((a, b) => (a.status.CompareTo(b.status)));
+
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            GameObject nemsisPanel = GameObject.Instantiate(NemesisPanelPrefab);
-            nemsisPanel.transform.SetParent(NemesisScrollPanel.transform, false);
-            nemsisPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0 + i * h * -1);
+            if (nemesis.status != NemesisStatusEnum.hidden)
+            {
+                string str = "";
 
-            nemsisPanel.GetComponent<NemesisPanelScript>().InitializeUI(this, nemesis.mob.GetFullName() + "\n" + MobTypes.mobTypes[nemesis.mob.idType].name,
-                nemesis.GetNemesisDescription());
-            i++;
-            nemesisPanels.Add(nemsisPanel);
+                switch (nemesis.status)
+                {
+                    case NemesisStatusEnum.revealedName:
+                    case NemesisStatusEnum.revealedAbils:
+                        str = System.String.Format("{0}\n{1}", nemesis.mob.GetFullName(), MobTypes.mobTypes[nemesis.mob.idType].name);
+                        break;
+                    case NemesisStatusEnum.deceasedName:
+                    case NemesisStatusEnum.deceasedAbils:
+                        str = System.String.Format("<color=#808080ff>{0}\n{1}</color>", nemesis.mob.GetFullName(), MobTypes.mobTypes[nemesis.mob.idType].name);
+                        break;
+                }
+
+                GameObject nemsisPanel = GameObject.Instantiate(NemesisPanelPrefab);
+                nemsisPanel.transform.SetParent(NemesisScrollPanel.transform, false);
+                nemsisPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0 + i * h * -1);
+
+                nemsisPanel.GetComponent<NemesisPanelScript>().InitializeUI(this, str,
+                    nemesis.GetNemesisDescription());
+                i++;
+                nemesisPanels.Add(nemsisPanel);
+            }
         }
+
         NemesisScrollPanel.rectTransform.sizeDelta = new Vector2(w, i * h);
     }
 }

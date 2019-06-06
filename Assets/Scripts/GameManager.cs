@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour {
     public LevelLayoutEnum levelLayout;
     public MonsterLayoutEnum monsterLayout;
     public ObjectiveLayoutEnum objectiveLayout;
+    public List<LevelModifier> levelModifiers;
 
     public int levelNum;
     public PlayerMob player;
@@ -42,13 +43,14 @@ public class GameManager : MonoBehaviour {
 
         nemeses = new List<Nemesis>();
 
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < 10; i++)
         {
             Nemesis nemesis = new Nemesis()
             {
                 mob = new Mob(MobTypeEnum.mobAngel, 1, 1),
                 status = NemesisStatusEnum.hidden
             };
+            GameObject.Destroy(nemesis.mob.go);
 
             nemeses.Add(nemesis);
         }

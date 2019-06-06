@@ -87,13 +87,15 @@ public class BoardManager : MonoBehaviour {
         LevelLayoutEnum ll = LevelLayoutEnum.levelTest;
         MonsterLayoutEnum ml = MonsterLayoutEnum.levelTest;
         ObjectiveLayoutEnum ol = ObjectiveLayoutEnum.levelTest;
+        List<LevelModifier> lm = new List<LevelModifier>();
         if (GameManager.instance != null)
         {
             ll = GameManager.instance.levelLayout;
             ml = GameManager.instance.monsterLayout;
             ol = GameManager.instance.objectiveLayout;
+            lm = GameManager.instance.levelModifiers;
         }
-        level = new Level(ll, ml, ol);
+        level = new Level(ll, ml, ol, lm);
 
         if (GameManager.instance != null && GameManager.instance.player == null)
             GameManager.instance.player = player;
