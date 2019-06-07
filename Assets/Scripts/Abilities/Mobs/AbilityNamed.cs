@@ -61,21 +61,18 @@ public class AbilityNamed : Ability
             }
         }
 
-        if (nemesis.status == NemesisStatusEnum.hidden)
+        if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
         {
-            nemesis.status = NemesisStatusEnum.revealedName;
+            nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedName;
             if (BoardManager.instance.player.faction == actor.faction)
             {
-                nemesis.status = NemesisStatusEnum.revealedAbils;
+                nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedAbils;
             }
         }
 
         if (actor.CheckDead())
         {
-            if (nemesis.status == NemesisStatusEnum.revealedAbils)
-                nemesis.status = NemesisStatusEnum.deceasedAbils;
-            else if (nemesis.status == NemesisStatusEnum.revealedName)
-                nemesis.status = NemesisStatusEnum.deceasedName;
+            nemesis.deathStatus = Nemesis.DeathStatusEnum.deceased;
         }
     }
 

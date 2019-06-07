@@ -41,7 +41,10 @@ public class AbilityAbsorbingShield : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return false;
+        if (actor.CanInvokeAbility(ability) && nearestEnemy != null && actor.GetEffect(EffectTypeEnum.effectAbsorbingShield) == null)
+            return true;
+        else
+            return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)

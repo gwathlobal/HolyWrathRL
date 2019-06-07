@@ -17,8 +17,7 @@ public class LevelModifierAngel : LevelModifier
         int angelNum = 0;
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.status != NemesisStatusEnum.deceasedName && nemesis.status != NemesisStatusEnum.deceasedAbils && 
-                nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
                 angelNum++;
         }
         if (angelNum != 0)
@@ -35,8 +34,7 @@ public class LevelModifierAngel : LevelModifier
         // collect a list of available angels
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.status != NemesisStatusEnum.deceasedName && nemesis.status != NemesisStatusEnum.deceasedAbils && 
-                nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
             {
                 availAngels.Add(nemesis);
             }
@@ -75,7 +73,7 @@ public class LevelModifierAngel : LevelModifier
 
         foreach (Nemesis nemesis in angels)
         {
-            if (nemesis.status == NemesisStatusEnum.hidden)
+            if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
             {
                 str += "An angel\nAn unknown angel is present here\n\n";
             }

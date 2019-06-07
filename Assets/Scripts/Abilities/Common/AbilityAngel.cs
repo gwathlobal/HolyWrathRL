@@ -51,7 +51,63 @@ public class AbilityAngel : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        
+        if (actor.idType == MobTypeEnum.mobAngel)
+        {
+            List<AbilityTypeEnum> abilities = new List<AbilityTypeEnum>();
+
+            int r = Random.Range(0, 4);
+
+            switch (r)
+            {
+                // Deadly Rays
+                case 1:
+                    abilities.Add(AbilityTypeEnum.abilJudgement);
+                    abilities.Add(AbilityTypeEnum.abilAmbush);
+                    break;
+                // Brilliant Mind
+                case 2:
+                    abilities.Add(AbilityTypeEnum.abilMindBurn);
+                    abilities.Add(AbilityTypeEnum.abilFear);
+                    break;
+                // Holy Bastion
+                case 3:
+                    abilities.Add(AbilityTypeEnum.abilAbsorbingShield);
+                    abilities.Add(AbilityTypeEnum.abilForceShot);
+                    break;
+                // Fiery Rage
+                default:
+                    abilities.Add(AbilityTypeEnum.abilFireFists);
+                    abilities.Add(AbilityTypeEnum.abilFlamingArrow);
+                    break;
+            }
+
+            foreach (AbilityTypeEnum abilType in abilities)
+            {
+                if (!actor.abilities.ContainsKey(abilType))
+                    actor.abilities.Add(abilType, true);
+
+                if (AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilMelee)
+                {
+                    actor.abilities.Remove(actor.meleeAbil);
+                    actor.meleeAbil = abilType;
+                }
+                if (AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilRanged)
+                {
+                    actor.abilities.Remove(actor.rangedAbil);
+                    actor.rangedAbil = abilType;
+                }
+                if (AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilDodge)
+                {
+                    actor.abilities.Remove(actor.dodgeAbil);
+                    actor.dodgeAbil = abilType;
+                }
+                if (AbilityTypes.abilTypes[abilType].slot == AbilitySlotEnum.abilBlock)
+                {
+                    actor.abilities.Remove(actor.blockAbil);
+                    actor.blockAbil = abilType;
+                }
+            }
+        }
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

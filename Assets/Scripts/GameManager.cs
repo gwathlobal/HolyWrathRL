@@ -48,7 +48,8 @@ public class GameManager : MonoBehaviour {
             Nemesis nemesis = new Nemesis()
             {
                 mob = new Mob(MobTypeEnum.mobAngel, 1, 1),
-                status = NemesisStatusEnum.hidden
+                personalStatus = Nemesis.PersonalStatusEnum.hidden,
+                deathStatus = Nemesis.DeathStatusEnum.alive
             };
             GameObject.Destroy(nemesis.mob.go);
 

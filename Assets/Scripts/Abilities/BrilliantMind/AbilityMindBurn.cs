@@ -41,7 +41,10 @@ public class AbilityMindBurn : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return false;
+        if (actor.CanInvokeAbility(ability) && nearestEnemy != null)
+            return true;
+        else
+            return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)
@@ -89,7 +92,8 @@ public class AbilityMindBurn : Ability
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return;
+        TargetStruct target = new TargetStruct(new Vector2Int(nearestEnemy.x, nearestEnemy.y), nearestEnemy);
+        actor.InvokeAbility(ability, target);
     }
 
     public override bool AbilityMapCheck(Ability ability)

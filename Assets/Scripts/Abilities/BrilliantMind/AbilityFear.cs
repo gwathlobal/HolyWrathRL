@@ -41,7 +41,10 @@ public class AbilityFear : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return false;
+        if (actor.CanInvokeAbility(ability) && nearestEnemy != null && ((float)actor.curHP / actor.maxHP <= 0.5))
+            return true;
+        else
+            return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)

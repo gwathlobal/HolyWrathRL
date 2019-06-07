@@ -41,7 +41,22 @@ public class AbilityForceShot : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        return false;
+        if (actor.CanInvokeAbility(ability) && nearestEnemy != null && Level.GetDistance(actor.x, actor.y, nearestEnemy.x, nearestEnemy.y) > 2 && 
+            ((float)actor.curHP / actor.maxHP <= 0.5))
+        {
+            Level level = BoardManager.instance.level;
+
+            bool result = LOS_FOV.DrawLine(actor.x, actor.y, nearestEnemy.x, nearestEnemy.y,
+                (int x, int y, int prev_x, int prev_y) =>
+                {
+                    bool blocks = TerrainTypes.terrainTypes[level.terrain[x, y]].blocksProjectiles;
+                    if (blocks) return true;
+                    else return false;
+                });
+            if (result) return true;
+            else return false;
+        }
+        else return false;
     }
 
     public override bool AbilityCheckApplic(Ability ability, Mob mob)

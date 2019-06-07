@@ -1,4 +1,8 @@
 
+- Introduced the concept of prominent characters. These are powerful characters with a unique proper name. So far, all allied angels are now prominent characters. They can sometimes be encountered during most missions. You can see the list of prominent characters you have seen in the Journal. If a prominent character dies, you will ne longer be able to meet it during missions.
+- You can view Journal using 'j' button.
+- All angels now have randomized abilities. At the start of the game, they choose between 4 sets of abilities. Each set has the first 2 abilities taken from the respective ability tree.
+- Removed the Demons vs Angels and Beasts vs Angels encounters.
 - Added new level layouts inspired by my City of the Damned: resedential district, abandoned district, corrupted district.
 - Added new enemies inspired by City of the Damned: soldier, machine gunner, scout
 - Added hints to effects

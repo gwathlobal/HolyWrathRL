@@ -348,9 +348,9 @@ public class BuildingLayoutTarRiverV : BuildingLayout
     public BuildingLayoutTarRiverV()
     {
         gw = 2;
-        gh = 6;
+        gh = 8;
         lw = 10;
-        lh = 30;
+        lh = 40;
         id = BuildingLayoutEnum.buildTarRiverV;
         buildType = BuildingLayoutType.buildNone;
     }
@@ -386,6 +386,16 @@ public class BuildingLayoutTarRiverV : BuildingLayout
                         ".~~~~~~~..",
                         ".~~~~~~~..",
                         ".~~~~~~~..",
+                        ".~~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~..",
+                        "..~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~~.",
+                        "..~~~~~~~.",
+                        "..~~~~~~..",
+                        ".~~~~~~~..",
+                        ".~~~~~~~~.",
                         ".~~~~~~~~."};
 
         TranslateCharsToLevel(level, levelLayout, l, x, y);
@@ -398,9 +408,9 @@ public class BuildingLayoutTarRiverH : BuildingLayout
 {
     public BuildingLayoutTarRiverH()
     {
-        gw = 6;
+        gw = 8;
         gh = 2;
-        lw = 30;
+        lw = 40;
         lh = 10;
         id = BuildingLayoutEnum.buildTarRiverH;
         buildType = BuildingLayoutType.buildNone;
@@ -408,16 +418,16 @@ public class BuildingLayoutTarRiverH : BuildingLayout
 
     public override BuildingLayoutResult PlaceBuilding(Level level, LevelLayout levelLayout, int x, int y)
     {
-        string[] l =  { "..............................",
-                        "~~..~~~~~~....~~~~~~~....~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
-                        "~~~~...~~~~~~~....~~~~~~~...~~",
-                        ".............................." };
+        string[] l =  { "........................................",
+                        "~~..~~~~~~....~~~~~~~....~~~~~.....~~..~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~",
+                        "~~~~...~~~~~~~....~~~~~~~...~~..~~...~~~",
+                        "........................................" };
 
         TranslateCharsToLevel(level, levelLayout, l, x, y);
 

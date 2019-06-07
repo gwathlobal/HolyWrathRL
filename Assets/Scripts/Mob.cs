@@ -176,6 +176,9 @@ public class Mob
             }
         }
 
+        if (GetAbility(AbilityTypeEnum.abilAngel) != null)
+            GetAbility(AbilityTypeEnum.abilAngel).AbilityInvoke(this, new TargetStruct());
+
         path = new List<Vector2Int>();
         pathDst = new Vector2Int(x, y);
         curHP = maxHP;

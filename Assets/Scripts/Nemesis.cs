@@ -3,18 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum NemesisStatusEnum
-{
-    hidden, revealedAbils, revealedName, deceasedAbils, deceasedName 
-}
+
+
+
 
 public class Nemesis {
+
+    public enum PersonalStatusEnum
+    {
+        hidden, revealedAbils, revealedName
+    }
+
+    public enum DeathStatusEnum
+    {
+        alive, deceased
+    }
 
     public static List<string> demonNames;
     public static List<string> angelNames;
 
     public Mob mob;
-    public NemesisStatusEnum status;
+    public PersonalStatusEnum personalStatus;
+    public DeathStatusEnum deathStatus;
 
     public static void InitializeNames()
     {
@@ -39,40 +49,40 @@ public class Nemesis {
 
         str = String.Format("{0} the {1}\n\n", mob.name, MobTypes.mobTypes[mob.idType].name);
 
-        if (status == NemesisStatusEnum.revealedAbils)
-        {
-            str += "Abilities\n";
-            foreach (AbilityTypeEnum abil in mob.abilities.Keys)
-            {
-                if (abil != AbilityTypeEnum.abilNone)
-                {
-                    Ability ability = AbilityTypes.abilTypes[abil];
-                    str += "   " + ability.stdName;
-                    str += " (" + ability.Description(mob) + ")\n";
-                }
-            }
-        }
-        else if (status == NemesisStatusEnum.revealedName)
-        {
-            str += "You know nothing else about this character.\n";
-        }
-        else if (status == NemesisStatusEnum.deceasedName)
-        {
-            str += "Deceased.\n";
-        }
-        else if (status == NemesisStatusEnum.deceasedAbils)
+        if (deathStatus == DeathStatusEnum.deceased)
         {
             str += "Deceased.\n\n";
-            str += "Abilities\n";
+        }
+
+        if (personalStatus == PersonalStatusEnum.revealedAbils)
+        {
+            str += "Abilities\n\n";
+            str += "   Active:\n";
             foreach (AbilityTypeEnum abil in mob.abilities.Keys)
             {
-                if (abil != AbilityTypeEnum.abilNone)
+                Ability ability = mob.GetAbility(abil);
+                if (ability.id != AbilityTypeEnum.abilNone &&
+                    (!ability.passive ||
+                    (ability.passive && ability.slot == AbilitySlotEnum.abilMelee)))
                 {
-                    Ability ability = AbilityTypes.abilTypes[abil];
-                    str += "   " + ability.stdName;
+                    str += "      " + ability.stdName;
                     str += " (" + ability.Description(mob) + ")\n";
                 }
             }
+            str += "\n   Passive:\n";
+            foreach (AbilityTypeEnum abil in mob.abilities.Keys)
+            {
+                Ability ability = mob.GetAbility(abil);
+                if (ability.passive && ability.slot != AbilitySlotEnum.abilMelee)
+                {
+                    str += "      " + ability.stdName;
+                    str += " (" + ability.Description(mob) + ")\n";
+                }
+            }
+        }
+        else if (personalStatus == PersonalStatusEnum.revealedName)
+        {
+            str += "You know nothing else about this character.\n";
         }
 
         return str;
