@@ -61,6 +61,8 @@ public class AbilityNamed : Ability
             }
         }
 
+        if (nemesis == null) return;
+
         if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
         {
             nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedName;

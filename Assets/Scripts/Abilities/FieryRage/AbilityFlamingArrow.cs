@@ -41,7 +41,7 @@ public class AbilityFlamingArrow : Ability
 
     public override bool AbilityCheckAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
     {
-        if (actor.CanInvokeAbility(ability) && nearestEnemy != null && Level.GetDistance(actor.x, actor.y, nearestEnemy.x, nearestEnemy.y) > 2)
+        if (actor.CanInvokeAbility(ability) && nearestEnemy != null && Level.GetSimpleDistance(actor.x, actor.y, nearestEnemy.x, nearestEnemy.y) > 1)
         {
             Level level = BoardManager.instance.level;
 
@@ -49,7 +49,7 @@ public class AbilityFlamingArrow : Ability
                 (int x, int y, int prev_x, int prev_y) =>
                 {
                     bool blocks = TerrainTypes.terrainTypes[level.terrain[x, y]].blocksProjectiles;
-                    if (blocks) return true;
+                    if (!blocks) return true;
                     else return false;
                 });
             if (result) return true;

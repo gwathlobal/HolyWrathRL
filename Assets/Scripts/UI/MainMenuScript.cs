@@ -20,6 +20,35 @@ public class MainMenuScript : MonoBehaviour {
 
     public void PlayGame()
     {
+        Initialize();
+
+        GameManager.instance.levelNum = 0;
+        GameManager.instance.player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
+        SceneManager.LoadScene("IntermissionScene");
+    }
+
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+		Application.Quit();
+#endif
+    }
+
+    public void TestGame()
+    {
+        Initialize();
+
+        GameManager.instance.levelLayout = LevelLayoutEnum.levelTest;
+        GameManager.instance.monsterLayout = MonsterLayoutEnum.levelTest;
+        GameManager.instance.objectiveLayout = ObjectiveLayoutEnum.levelTest;
+        GameManager.instance.levelNum = 0;
+        SceneManager.LoadScene("LevelScene");
+    }
+
+    private void Initialize()
+    {
         Nemesis.InitializeNames();
         DmgTypes.InitializeDmgTypes();
         AIs.InitializeAIPackages();
@@ -38,29 +67,5 @@ public class MainMenuScript : MonoBehaviour {
         BuildingLayouts.InitializeLayouts();
 
         GameManager.instance.SetUpNemeses();
-
-        GameManager.instance.levelNum = 0;
-        GameManager.instance.player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
-        SceneManager.LoadScene("IntermissionScene");
-    }
-
-    public void QuitGame()
-    {
-#if UNITY_EDITOR
-        EditorApplication.isPlaying = false;
-#else
-		Application.Quit();
-#endif
-    }
-
-    public void TestGame()
-    {
-        Nemesis.InitializeNames();
-
-        GameManager.instance.levelLayout = LevelLayoutEnum.levelTest;
-        GameManager.instance.monsterLayout = MonsterLayoutEnum.levelTest;
-        GameManager.instance.objectiveLayout = ObjectiveLayoutEnum.levelTest;
-        GameManager.instance.levelNum = 0;
-        SceneManager.LoadScene("LevelScene");
     }
 }

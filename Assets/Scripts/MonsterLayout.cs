@@ -500,6 +500,12 @@ public class MonsterLayoutTest : MonsterLayout
         //player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
         //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
+        level.mobs[BoardManager.instance.player.x, BoardManager.instance.player.y] = null;
+        level.mobs[15, 6] = BoardManager.instance.player;
+        BoardManager.instance.player.x = 15;
+        BoardManager.instance.player.y = 6;
+        BoardManager.instance.player.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(15, 6));
+
         Mob mob;
 
         //BoardManager.instance.player.curFP = 10;
@@ -509,13 +515,13 @@ public class MonsterLayoutTest : MonsterLayout
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
-
-        mob = new Mob(MobTypeEnum.mobCrimsonImp, 15, 5);
+        */
+        mob = new Mob(MobTypeEnum.mobCrimsonImp, 18, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
-        */
-        mob = new Mob(MobTypeEnum.mobAngel, 14, 5);
+        
+        mob = new Mob(MobTypeEnum.mobAngel, 12, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);

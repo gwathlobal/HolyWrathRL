@@ -61,7 +61,7 @@ public class NextLocDialogScript : MonoBehaviour
             /*
             // prepare a list of available level modifiers
             List<LevelModifierTypes.LevelModifierEnum> availLevelModifiers = new List<LevelModifierTypes.LevelModifierEnum>();
-            foreach (LevelModifierTypes.LevelModifierEnum lme in System.Enum.GetValues(typeof(LevelModifierTypes.LevelModifierEnum)))
+            foreach (LevelModifierTypes.LevelModifierEnum lme in LevelLayouts.levelLayouts[levelLayout].levelModifiers)
             {
                 if (LevelModifierTypes.levelModifiers[lme].CheckRequirements())
                     availLevelModifiers.Add(lme);
@@ -145,7 +145,7 @@ public class NextLocDialogScript : MonoBehaviour
 
                 // prepare a list of available level modifiers
                 List<LevelModifierTypes.LevelModifierEnum> availLevelModifiers = new List<LevelModifierTypes.LevelModifierEnum>();
-                foreach (LevelModifierTypes.LevelModifierEnum lme in System.Enum.GetValues(typeof(LevelModifierTypes.LevelModifierEnum)))
+                foreach (LevelModifierTypes.LevelModifierEnum lme in LevelLayouts.levelLayouts[levelLayout].levelModifiers)
                 {
                     if (LevelModifierTypes.levelModifiers[lme].CheckRequirements())
                         availLevelModifiers.Add(lme);

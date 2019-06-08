@@ -28,7 +28,7 @@ public class JournalDialogScript : MonoBehaviour {
         }
         nemesisPanels = new List<GameObject>();
 
-        DescrText.text = "";
+        DescrText.text = "You do not know anybody yet.";
 
         int i = 0;
         float w = NemesisPanelPrefab.GetComponent<RectTransform>().sizeDelta.x;
@@ -58,6 +58,7 @@ public class JournalDialogScript : MonoBehaviour {
         }
         if (nemesisPanels.Count > 0)
             nemesisPanels[0].GetComponent<NemesisPanelScript>().OnClick();
+
 
         NemesisScrollPanel.rectTransform.sizeDelta = new Vector2(w, i * h);
     }
