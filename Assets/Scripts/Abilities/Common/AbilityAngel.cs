@@ -16,7 +16,7 @@ public class AbilityAngel : Ability
 
     public override string Description(Mob mob)
     {
-        return "This one belongs to the Thirdborn, the divine and spiritual beings.";
+        return "This one belongs to the Thirdborn, the soulful and spiritual beings.";
     }
 
     public override string Name(Mob mob)

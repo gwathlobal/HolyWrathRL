@@ -16,7 +16,7 @@ public class AbilityDemon : Ability
 
     public override string Description(Mob mob)
     {
-        return "This one belongs to the Firstborn, the mundane and fleshly beings.";
+        return "This one belongs to the Firstborn, the soulless and fleshly beings.";
     }
 
     public override string Name(Mob mob)
