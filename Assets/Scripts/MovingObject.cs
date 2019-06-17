@@ -7,11 +7,8 @@ using UnityEngine.UI;
 
 public class MovingObject : MonoBehaviour
 {
-    public enum StateEnum
-    {
-        none, meleeMoveIn, meleeMiddleFunc, meleeMoveOut
-    };
 
+    public delegate void DebuffMiddleFunc();
     public delegate void TeleportMiddleFunc();
     public delegate void MeleeMiddleFunc();
     public delegate void MoveMiddleFunc();
@@ -276,6 +273,60 @@ public class MovingObject : MonoBehaviour
         yield return StartCoroutine(CoroutineFadeTo(0f, 0.15f));
         yield return StartCoroutine(CoroutineTeleportMiddleFunc(middleFunc));
         yield return StartCoroutine(CoroutineFadeTo(1f, 0.15f));
+    }
+
+    public void BuffDebuff(Vector2Int startPos, Vector2Int endPos, GameObject debuffStartPrefab, GameObject debufEndPrefab, DebuffMiddleFunc middleFunc)
+    {
+        if (BoardManager.instance.level.visible[startPos.x, startPos.y] && debuffStartPrefab != null)  
+        {
+            GameObject debuffStart = GameObject.Instantiate(debuffStartPrefab,
+                    new Vector3(startPos.x + 0.5f, startPos.y - 0.5f, this.gameObject.transform.position.z),
+                    Quaternion.identity);
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                debuffStart.GetComponent<MovingObject>().StartCoroutine(debuffStart.GetComponent<MovingObject>().CoroutineFadeTo(0f, 0.15f));
+                debuffStart.GetComponent<MovingObject>().StartCoroutine(debuffStart.GetComponent<MovingObject>().CoroutineScaleTo(3f, 0.15f));
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                Destroy(debuffStart.gameObject);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+        }
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+        {
+            if (middleFunc != null) middleFunc();
+            BoardEventController.instance.RemoveFinishedEvent();
+        }));
+
+        if (BoardManager.instance.level.visible[endPos.x, endPos.y] && debufEndPrefab != null)
+        {
+            GameObject debuffEnd = GameObject.Instantiate(debufEndPrefab,
+                    new Vector3(endPos.x + 0.5f, endPos.y - 0.5f, this.gameObject.transform.position.z),
+                    Quaternion.identity);
+            debuffEnd.transform.localScale = new Vector3(3, 3, 1);
+            debuffEnd.GetComponent<SpriteRenderer>().color = new Color(debufEndPrefab.GetComponent<SpriteRenderer>().color.r,
+                debufEndPrefab.GetComponent<SpriteRenderer>().color.g,
+                debufEndPrefab.GetComponent<SpriteRenderer>().color.b,
+                0);
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                debuffEnd.GetComponent<MovingObject>().StartCoroutine(debuffEnd.GetComponent<MovingObject>().CoroutineFadeTo(1f, 0.15f));
+                debuffEnd.GetComponent<MovingObject>().StartCoroutine(debuffEnd.GetComponent<MovingObject>().CoroutineScaleTo(1f, 0.15f));
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                Destroy(debuffEnd.gameObject);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+        }
     }
 
     protected IEnumerator CoroutineMeleeMoveIn(Vector3 end)
@@ -605,6 +656,26 @@ public class MovingObject : MonoBehaviour
         {
             Color newColor = new Color(color.r, color.g, color.b, Mathf.Lerp(alpha, aValue, t));
             gameObject.GetComponent<SpriteRenderer>().color = newColor;
+            yield return null;
+        }
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //Debug.Log("Fade To " + aValue + " ended");
+    }
+
+    IEnumerator CoroutineScaleTo(float scaleValue, float aTime)
+    {
+        //Debug.Log("Fade To " + aValue + " started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+        Vector3 scale = gameObject.transform.localScale;
+        float scaleX = scale.x;
+        float scaleY = scale.y;
+
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / aTime)
+        {
+            Vector3 newScale = new Vector3(Mathf.Lerp(scaleX, scaleValue, t), Mathf.Lerp(scaleY, scaleValue, t), scale.z);
+            gameObject.transform.localScale = newScale;
             yield return null;
         }
         coroutinesRunning--;

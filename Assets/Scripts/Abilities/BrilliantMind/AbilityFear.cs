@@ -57,7 +57,12 @@ public class AbilityFear : Ability
         string str = String.Format("{0} instills fear into {1}. ", actor.name, target.mob.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        target.mob.AddEffect(EffectTypeEnum.effectFear, actor, 4);
+        target.mob.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(target.mob.x, target.mob.y),
+                UIManager.instance.demonDebuffPrefab, UIManager.instance.demonDebuffPrefab,
+                () =>
+                {
+                    target.mob.AddEffect(EffectTypeEnum.effectFear, actor, 4);
+                });   
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

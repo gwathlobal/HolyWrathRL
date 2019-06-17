@@ -492,11 +492,11 @@ public class MonsterLayoutTest : MonsterLayout
 
         PlacePlayer(level);
 
-        BoardManager.instance.player.curAbils[0] = AbilityTypeEnum.abilBreathOfFire;
+        BoardManager.instance.player.curAbils[0] = AbilityTypeEnum.abilBurdenOfSins;
         //player.curAbils[1] = AbilityTypeEnum.abilMindBurn;
         //player.meleeAbil = AbilityTypeEnum.abilFireFists;
         //player.abilities.Add(AbilityTypeEnum.abilFireFists, true);
-        BoardManager.instance.player.abilities.Add(AbilityTypeEnum.abilBreathOfFire, true);
+        BoardManager.instance.player.abilities.Add(AbilityTypeEnum.abilBurdenOfSins, true);
         //player.blockAbil = AbilityTypeEnum.abilReflectiveBlock;
         //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
@@ -516,10 +516,11 @@ public class MonsterLayoutTest : MonsterLayout
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
         */
-        mob = new Mob(MobTypeEnum.mobCrimsonImp, 18, 5);
+        mob = new Mob(MobTypeEnum.mobMachineDemon, 18, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
+        mob.curHP = 25;
         
         mob = new Mob(MobTypeEnum.mobAngel, 12, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);

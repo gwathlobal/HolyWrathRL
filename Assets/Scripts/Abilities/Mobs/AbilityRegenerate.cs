@@ -56,7 +56,12 @@ public class AbilityRegenerate : Ability
         string str = String.Format("{0} starts to regenerate faster. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.AddEffect(EffectTypeEnum.effectRegenerate, actor, 10);
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.demonBuffPrefab, UIManager.instance.demonBuffPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectRegenerate, actor, 10);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

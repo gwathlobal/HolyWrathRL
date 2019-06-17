@@ -43,6 +43,10 @@ public class UIManager : MonoBehaviour {
     public GameObject highlightPrefab;
     public GameObject highlightGO;
     public Vector2Int highlightPos;
+    public GameObject demonDebuffPrefab;
+    public GameObject demonBuffPrefab;
+    public GameObject angelDebuffPrefab;
+    public GameObject angelBuffPrefab;
 
     public bool anyBtnClicked;
     public ExecFunc execFunc;

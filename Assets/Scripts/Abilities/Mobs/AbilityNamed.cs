@@ -63,6 +63,12 @@ public class AbilityNamed : Ability
 
         if (nemesis == null) return;
 
+        if (actor.CheckDead())
+        {
+            nemesis.deathStatus = Nemesis.DeathStatusEnum.deceased;
+            return;
+        }
+
         if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
         {
             nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedName;
@@ -70,12 +76,10 @@ public class AbilityNamed : Ability
             {
                 nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedAbils;
             }
+            return;
         }
 
-        if (actor.CheckDead())
-        {
-            nemesis.deathStatus = Nemesis.DeathStatusEnum.deceased;
-        }
+        
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)
