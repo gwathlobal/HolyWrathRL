@@ -54,13 +54,23 @@ public class AbilitySyphonLight : Ability
     {
         string str = String.Format("{0} invokes Syphon Light. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.angelDebuffPrefab, null,
+                null);
+
         foreach (Mob mob in actor.visibleMobs)
         {
-            if (mob != actor)
+            if (mob != actor && !actor.GetFactionRelation(mob.faction))
             {
-                str = String.Format("{0} is affected. ", mob.name);
-                BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
-                mob.AddEffect(EffectTypeEnum.effectSyphonLight, actor, 5);
+                mob.mo.BuffDebuff(new Vector2Int(mob.x, mob.y), new Vector2Int(mob.x, mob.y),
+                    null, UIManager.instance.angelDebuffPrefab,
+                    () =>
+                    {
+                        str = String.Format("{0} is affected. ", mob.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
+                        mob.AddEffect(EffectTypeEnum.effectSyphonLight, actor, 5);
+                    });
             }
         }
         

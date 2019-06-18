@@ -66,14 +66,25 @@ public class AbilityBlock : Ability
             string str = String.Format("{0} starts to block. ", actor.name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-            actor.AddEffect(EffectTypeEnum.effectBlock, actor, Effect.CD_UNLIMITED);
+            actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.blockPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectBlock, actor, Effect.CD_UNLIMITED);
+                });
         }
         else
         {
             string str = String.Format("{0} stops blocking. ", actor.name);
             BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-            actor.RemoveEffect(EffectTypeEnum.effectBlock);
+            actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.blockPrefab, null,
+                () =>
+                {
+                    actor.RemoveEffect(EffectTypeEnum.effectBlock);
+                });
+            
         }
     }
 

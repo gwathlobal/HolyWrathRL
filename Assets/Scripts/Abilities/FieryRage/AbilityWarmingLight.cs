@@ -55,7 +55,12 @@ public class AbilityWarmingLight : Ability
             MobTypes.mobTypes[actor.idType].name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.AddEffect(EffectTypeEnum.effectMinorRegeneration, actor, 10);
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.angelBuffPrefab, UIManager.instance.angelBuffPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectMinorRegeneration, actor, 10);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

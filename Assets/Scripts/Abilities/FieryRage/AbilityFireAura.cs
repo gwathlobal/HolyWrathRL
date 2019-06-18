@@ -57,8 +57,12 @@ public class AbilityFireAura : Ability
         string str = String.Format("{0} invokes a fire aura. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.AddEffect(EffectTypeEnum.effectFireAura, actor, 5);
-
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.fireShieldPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectFireAura, actor, 5);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -47,6 +47,10 @@ public class UIManager : MonoBehaviour {
     public GameObject demonBuffPrefab;
     public GameObject angelDebuffPrefab;
     public GameObject angelBuffPrefab;
+    public GameObject fireShieldPrefab;
+    public GameObject blockPrefab;
+    public GameObject absorbShieldPrefab;
+    public GameObject reflectBlockPrefab;
 
     public bool anyBtnClicked;
     public ExecFunc execFunc;

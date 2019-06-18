@@ -5916,7 +5916,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000030517578}
+  m_AnchoredPosition: {x: 0, y: -0.00015258789}
   m_SizeDelta: {x: 665, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &536454896
@@ -9961,8 +9961,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1865289410}
   m_HandleRect: {fileID: 1865289408}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99999976
+  m_Value: 1
+  m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13350,6 +13350,14 @@ MonoBehaviour:
   angelDebuffPrefab: {fileID: 1957739273840598, guid: 344f9a6928f9db0468bbd5b2a781af65,
     type: 2}
   angelBuffPrefab: {fileID: 1957739273840598, guid: 513de677d0b54974a99d9bd905724dc6,
+    type: 2}
+  fireShieldPrefab: {fileID: 1957739273840598, guid: b8c56686839057a4bba2d968c2fab4ec,
+    type: 2}
+  blockPrefab: {fileID: 1957739273840598, guid: b888e4d9617ab45459ba06042afff8fa,
+    type: 2}
+  absorbShieldPrefab: {fileID: 1957739273840598, guid: 1446bf6ada2a7e9468e4849a21a34d30,
+    type: 2}
+  reflectBlockPrefab: {fileID: 1957739273840598, guid: 4b15535a1ee63ef43b88a5a807be5913,
     type: 2}
   anyBtnClicked: 0
   curAbility: 0

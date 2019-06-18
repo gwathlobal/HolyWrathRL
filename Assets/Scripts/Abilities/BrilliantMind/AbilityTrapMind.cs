@@ -54,12 +54,25 @@ public class AbilityTrapMind : Ability
         string str = String.Format("{0} immobilizes {1}. ", actor.name, target.mob.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        if (actor.GetEffect(EffectTypeEnum.effectImmobilizeImmunity) == null)
-            target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 5);
+        if (target.mob.GetEffect(EffectTypeEnum.effectImmobilizeImmunity) == null)
+        {
+            target.mob.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(target.mob.x, target.mob.y),
+               UIManager.instance.angelDebuffPrefab, UIManager.instance.angelDebuffPrefab,
+               () =>
+               {
+                   target.mob.AddEffect(EffectTypeEnum.effectImmobilize, actor, 5);
+               });
+        }
         else
         {
-            str = String.Format("{0} is unaffected. ", target.mob.name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+            target.mob.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(target.mob.x, target.mob.y),
+               UIManager.instance.angelDebuffPrefab, null,
+               () =>
+               {
+                   str = String.Format("{0} is unaffected. ", target.mob.name);
+                   BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+               });
+            
         }
     }
 

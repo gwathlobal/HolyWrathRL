@@ -55,7 +55,13 @@ public class AbilityDominateMind : Ability
         string str = String.Format("{0} dominates the mind of {1}. ", actor.name, target.mob.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        target.mob.AddEffect(EffectTypeEnum.effectDominateMind, actor, 10);
+        target.mob.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(target.mob.x, target.mob.y),
+                UIManager.instance.angelDebuffPrefab, UIManager.instance.angelDebuffPrefab,
+                () =>
+                {
+                    target.mob.AddEffect(EffectTypeEnum.effectDominateMind, actor, 10);
+                });
+        
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

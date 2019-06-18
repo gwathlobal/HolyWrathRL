@@ -54,24 +54,31 @@ public class AbilityPurgeRitual : Ability
         string str = String.Format("{0} recites a purging incantation. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        List<Effect> effectsToRemove = new List<Effect>();
-        foreach (Effect effect in actor.effects.Values)
-        {
-            if (EffectTypes.effectTypes[effect.idType].canBePurged)
-            {
-                effectsToRemove.Add(effect);
-            }
-        }
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.angelBuffPrefab, UIManager.instance.angelBuffPrefab,
+                () =>
+                {
+                    List<Effect> effectsToRemove = new List<Effect>();
+                    foreach (Effect effect in actor.effects.Values)
+                    {
+                        if (EffectTypes.effectTypes[effect.idType].canBePurged)
+                        {
+                            effectsToRemove.Add(effect);
+                        }
+                    }
 
-        actor.curHP += 10 * effectsToRemove.Count;
-        if (actor.curHP > actor.maxHP)
-            actor.curHP = actor.maxHP;
+                    actor.curHP += 10 * effectsToRemove.Count;
+                    if (actor.curHP > actor.maxHP)
+                        actor.curHP = actor.maxHP;
 
-        for (int i = effectsToRemove.Count - 1; i >= 0; i--)
-        {
-            actor.RemoveEffect(effectsToRemove[i].idType);
-        }
-        effectsToRemove.Clear();
+                    for (int i = effectsToRemove.Count - 1; i >= 0; i--)
+                    {
+                        actor.RemoveEffect(effectsToRemove[i].idType);
+                    }
+                    effectsToRemove.Clear();
+                });
+
+        
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -54,7 +54,12 @@ public class AbilityReflectiveBlock : Ability
         string str = String.Format("{0} starts to reflect projectiles. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.AddEffect(EffectTypeEnum.effectReflectiveBlocking, actor, 3);
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.reflectBlockPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectReflectiveBlocking, actor, 3);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -58,9 +58,14 @@ public class AbilitySphereOfSilence : Ability
         {
             if (mob != actor && !actor.GetFactionRelation(mob.faction))
             {
-                str = String.Format("{0} is affected. ", mob.name);
-                BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
-                mob.AddEffect(EffectTypeEnum.effectSilence, actor, 8);
+                mob.mo.BuffDebuff(new Vector2Int(mob.x, mob.y), new Vector2Int(mob.x, mob.y),
+                    null, UIManager.instance.angelDebuffPrefab,
+                    () =>
+                    {
+                        str = String.Format("{0} is affected. ", mob.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
+                        mob.AddEffect(EffectTypeEnum.effectSilence, actor, 8);
+                    });
             }
         }  
     }
