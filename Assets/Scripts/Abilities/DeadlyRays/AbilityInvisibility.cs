@@ -55,7 +55,13 @@ public class AbilityInvisibility : Ability
         string str = String.Format("{0} invokes Invisibility. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.AddEffect(EffectTypeEnum.effectInvisibility, actor, 4);
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.invisBuffPrefab,
+                () =>
+                {
+                    actor.AddEffect(EffectTypeEnum.effectInvisibility, actor, 4);
+                });
+        
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

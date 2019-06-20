@@ -51,6 +51,10 @@ public class UIManager : MonoBehaviour {
     public GameObject blockPrefab;
     public GameObject absorbShieldPrefab;
     public GameObject reflectBlockPrefab;
+    public GameObject invisBuffPrefab;
+    public GameObject beastBuffPrefab;
+    public GameObject medkitPrefab;
+    public GameObject artilleryMarkPrefab;
 
     public bool anyBtnClicked;
     public ExecFunc execFunc;

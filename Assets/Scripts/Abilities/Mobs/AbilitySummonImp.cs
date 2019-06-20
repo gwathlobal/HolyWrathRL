@@ -65,26 +65,30 @@ public class AbilitySummonImp : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        int r = UnityEngine.Random.Range(0, 2);
-        Mob mob;
-        if (r == 0)
-        {
-            string str = String.Format("{0} summons a Crimson Imp. ", actor.name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
-            mob = new Mob(MobTypeEnum.mobCrimsonImp, target.loc.x, target.loc.y);
-        }
-        else
-        {
-            string str = String.Format("{0} summons a Machine Imp. ", actor.name);
-            BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
-            mob = new Mob(MobTypeEnum.mobMachineImp, target.loc.x, target.loc.y);
-        }
-        
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.demonBuffPrefab, null,
+                () =>
+                {
+                    int r = UnityEngine.Random.Range(0, 2);
+                    Mob mob;
+                    if (r == 0)
+                    {
+                        string str = String.Format("{0} summons a Crimson Imp. ", actor.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+                        mob = new Mob(MobTypeEnum.mobCrimsonImp, target.loc.x, target.loc.y);
+                    }
+                    else
+                    {
+                        string str = String.Format("{0} summons a Machine Imp. ", actor.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+                        mob = new Mob(MobTypeEnum.mobMachineImp, target.loc.x, target.loc.y);
+                    }
 
-        Level level = BoardManager.instance.level;
-        mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
-        BoardManager.instance.mobs.Add(mob.id, mob);
-        level.AddMobToLevel(mob, mob.x, mob.y);
+                    Level level = BoardManager.instance.level;
+                    mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                    BoardManager.instance.mobs.Add(mob.id, mob);
+                    level.AddMobToLevel(mob, mob.x, mob.y);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

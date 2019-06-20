@@ -57,16 +57,21 @@ public class AbilityMedkit : Ability
 
     public override void AbilityInvoke(Mob actor, TargetStruct target)
     {
-        int HPhealed;
-        if (actor.curHP + 20 > actor.maxHP) HPhealed = actor.maxHP - actor.curHP;
-        else HPhealed = 20;
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.medkitPrefab,
+                () =>
+                {
+                    int HPhealed;
+                    if (actor.curHP + 20 > actor.maxHP) HPhealed = actor.maxHP - actor.curHP;
+                    else HPhealed = 20;
 
-        string str = String.Format("{0} uses a medkit to heal himself for {1} HP. ",
-            MobTypes.mobTypes[actor.idType].name,
-            HPhealed);
-        BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
+                    string str = String.Format("{0} uses a medkit to heal himself for {1} HP. ",
+                        MobTypes.mobTypes[actor.idType].name,
+                        HPhealed);
+                    BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.curHP += HPhealed;
+                    actor.curHP += HPhealed;
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -57,7 +57,7 @@ public class AbilityRegenerate : Ability
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
         actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
-                UIManager.instance.demonBuffPrefab, UIManager.instance.demonBuffPrefab,
+                null, UIManager.instance.demonBuffPrefab,
                 () =>
                 {
                     actor.AddEffect(EffectTypeEnum.effectRegenerate, actor, 10);

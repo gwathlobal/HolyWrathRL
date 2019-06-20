@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public delegate string OnHitProjectile(Mob attacker, Mob target);
-public delegate void PostProjectileFunc(Mob attacker, Mob target);
+public delegate string OnHitProjectileMob(Mob attacker, Mob target);
+public delegate void PostProjectileMobFunc(Mob attacker, Mob target);
+public delegate string OnHitProjectileItem(Mob attacker, Item target);
+public delegate void PostProjectileItemFunc(Mob attacker, Item target);
+
 
 public struct TargetStruct {
     public Vector2Int loc;
@@ -139,7 +142,7 @@ public abstract class Ability {
         
     }
 
-    public static void ShootProjectile(Mob actor, Mob target, Color32 color, OnHitProjectile onHitProjectile, PostProjectileFunc postProjectileFunc)
+    public static void ShootProjectile(Mob actor, Mob target, Color32 color, OnHitProjectileMob onHitProjectile, PostProjectileMobFunc postProjectileFunc)
     {
         string str;
 
@@ -269,6 +272,49 @@ public abstract class Ability {
                 BoardEventController.instance.RemoveFinishedEvent();
             }));
         }
+    }
+
+    public static void ShootProjectile(Mob actor, Item target, Color32 color, OnHitProjectileItem onHitProjectile, PostProjectileItemFunc postProjectileFunc)
+    {
+        Level level = BoardManager.instance.level;
+        bool visibleStart = level.visible[actor.x, actor.y];
+        bool visibleEnd = level.visible[target.x, target.y];
+
+        Vector2 start = actor.go.transform.position;
+        Vector2 end = target.go.transform.position;
+
+        Vector2Int targetPos = new Vector2Int(target.x, target.y);
+
+        GameObject projectile = GameObject.Instantiate(UIManager.instance.projectilePrefab, new Vector3(actor.x, actor.y, 0), Quaternion.identity);
+        projectile.GetComponent<SpriteRenderer>().color = color;
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(projectile,
+            () =>
+            {
+                projectile.GetComponent<MovingObject>().Move(end, (visibleStart || visibleEnd),
+                    () =>
+                    {
+                        return;
+                    });
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(projectile,
+            () =>
+            {
+                GameObject.Destroy(projectile);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        BoardEventController.instance.AddEvent(new BoardEventController.Event(actor.go,
+            () =>
+            {
+                if (onHitProjectile != null) onHitProjectile(actor, target);
+                if (postProjectileFunc != null) postProjectileFunc(actor, target);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+
+        
     }
 }
 

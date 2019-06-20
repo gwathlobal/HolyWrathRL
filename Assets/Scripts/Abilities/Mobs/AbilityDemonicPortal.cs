@@ -71,14 +71,19 @@ public class AbilityDemonicPortal : Ability
         string str = String.Format("{0} summons a Demonic Portal. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        Level level = BoardManager.instance.level;
-        Mob portal = new Mob(MobTypeEnum.mobDemonicPortal, target.loc.x, target.loc.y);
-        portal.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
-        BoardManager.instance.mobs.Add(portal.id, portal);
-        level.AddMobToLevel(portal, portal.x, portal.y);
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                UIManager.instance.demonBuffPrefab, null,
+                () =>
+                {
+                    Level level = BoardManager.instance.level;
+                    Mob portal = new Mob(MobTypeEnum.mobDemonicPortal, target.loc.x, target.loc.y);
+                    portal.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+                    BoardManager.instance.mobs.Add(portal.id, portal);
+                    level.AddMobToLevel(portal, portal.x, portal.y);
 
-        portal.AddEffect(EffectTypeEnum.effectImmobilize, portal, Effect.CD_UNLIMITED);
-        actor.AddEffect(EffectTypeEnum.effectPortalSummoned, actor, Effect.CD_UNLIMITED);
+                    portal.AddEffect(EffectTypeEnum.effectImmobilize, portal, Effect.CD_UNLIMITED);
+                    actor.AddEffect(EffectTypeEnum.effectPortalSummoned, actor, Effect.CD_UNLIMITED);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

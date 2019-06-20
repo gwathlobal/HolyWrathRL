@@ -58,24 +58,29 @@ public class AbilityCannibalize : Ability
         string str = String.Format("{0} eats a corpse and looks healthier and more vigorous. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        Item corpse = null;
-        Level level = BoardManager.instance.level;
-        foreach (Item item in level.items[actor.x, actor.y])
-        {
-            if (item.corpsePwr > 0)
-            {
-                corpse = item;
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
+                null, UIManager.instance.beastBuffPrefab,
+                () =>
+                {
+                    Item corpse = null;
+                    Level level = BoardManager.instance.level;
+                    foreach (Item item in level.items[actor.x, actor.y])
+                    {
+                        if (item.corpsePwr > 0)
+                        {
+                            corpse = item;
 
-                break;
-            }
-        }
+                            break;
+                        }
+                    }
 
-        actor.curFP += 30 * corpse.corpsePwr;
-        actor.curHP += 30 * corpse.corpsePwr;
-        if (actor.curFP > actor.maxFP) actor.curFP = actor.maxFP;
-        if (actor.curHP > actor.maxHP) actor.curHP = actor.maxHP;
+                    actor.curFP += 30 * corpse.corpsePwr;
+                    actor.curHP += 30 * corpse.corpsePwr;
+                    if (actor.curFP > actor.maxFP) actor.curFP = actor.maxFP;
+                    if (actor.curHP > actor.maxHP) actor.curHP = actor.maxHP;
 
-        BoardManager.instance.RemoveItemFromWorld(corpse);
+                    BoardManager.instance.RemoveItemFromWorld(corpse);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

@@ -57,13 +57,17 @@ public class AbilityCallArtillery : Ability
         string str = String.Format("{0} calls for an artillery strike. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        Level level = BoardManager.instance.level;
-        level.AddFeatureToLevel(new Feature(FeatureTypeEnum.featArtilleryTarget, target.loc.x, target.loc.y)
-            {
-                counter = 2
-            }, 
-            target.loc.x, target.loc.y);
-        
+        actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(target.loc.x, target.loc.y),
+                null, UIManager.instance.artilleryMarkPrefab,
+                () =>
+                {
+                    Level level = BoardManager.instance.level;
+                    level.AddFeatureToLevel(new Feature(FeatureTypeEnum.featArtilleryTarget, target.loc.x, target.loc.y)
+                        {
+                            counter = 2
+                        },
+                        target.loc.x, target.loc.y);
+                });
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

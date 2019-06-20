@@ -1881,7 +1881,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 330, y: -0.000045776367}
+  m_AnchoredPosition: {x: 330, y: -0.000015258789}
   m_SizeDelta: {x: 660, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &134747874
@@ -3829,7 +3829,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000091552734}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 158, y: 289}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &348146396
@@ -5607,7 +5607,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5232788}
   m_HandleRect: {fileID: 5232786}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5916,7 +5916,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00015258789}
+  m_AnchoredPosition: {x: 0, y: -0.00012207031}
   m_SizeDelta: {x: 665, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &536454896
@@ -8268,7 +8268,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 631093383}
   m_HandleRect: {fileID: 631093382}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9962,7 +9962,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1865289408}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999964
+  m_Size: 0.99999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11608,7 +11608,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 330, y: -0.000045776367}
+  m_AnchoredPosition: {x: 330, y: -0.000015258789}
   m_SizeDelta: {x: 660, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1220870266
@@ -13359,6 +13359,14 @@ MonoBehaviour:
     type: 2}
   reflectBlockPrefab: {fileID: 1957739273840598, guid: 4b15535a1ee63ef43b88a5a807be5913,
     type: 2}
+  invisBuffPrefab: {fileID: 1957739273840598, guid: 25b0366be0fee0b408fc69de55cf5ed8,
+    type: 2}
+  beastBuffPrefab: {fileID: 1957739273840598, guid: b08f18d6e7c865b4cb84c35cde4a0cdf,
+    type: 2}
+  medkitPrefab: {fileID: 1957739273840598, guid: a4fcd1e400566bd4b9c4d741f7bc1091,
+    type: 2}
+  artilleryMarkPrefab: {fileID: 1957739273840598, guid: 1f6e3b73d44629544b101f80de04118a,
+    type: 2}
   anyBtnClicked: 0
   curAbility: 0
 --- !u!1 &1377073691
@@ -14566,7 +14574,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 777606222}
   m_HandleRect: {fileID: 777606221}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14843,7 +14851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 220, y: 0.000061035316}
+  m_AnchoredPosition: {x: 220, y: 1.6007107e-10}
   m_SizeDelta: {x: 440, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &1556432674
@@ -19587,7 +19595,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1294969037}
   m_HandleRect: {fileID: 1294969036}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
