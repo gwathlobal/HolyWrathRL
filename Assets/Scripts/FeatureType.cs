@@ -335,6 +335,31 @@ public class FeatureTypes
                 string str = String.Format("The artillery bombardment lands. ");
                 BoardManager.instance.msgLog.PlayerVisibleMsg(feature.x, feature.y, str);
 
+                if (level.visible[feature.x, feature.y])
+                {
+                    GameObject shell = GameObject.Instantiate(UIManager.instance.artilleryShellPrefab, new Vector3(feature.x, feature.y, 0), Quaternion.identity);
+
+                    Vector3 offset = new Vector3(0, 15, 0);
+                    Vector3 landPos = shell.transform.position;
+                    shell.transform.position = landPos + offset;
+
+                    BoardEventController.instance.AddEvent(new BoardEventController.Event(shell,
+                        () =>
+                        {
+                            shell.GetComponent<MovingObject>().moveTime = 0.01f;
+                            shell.GetComponent<MovingObject>().inverseMoveTime = 1 / shell.GetComponent<MovingObject>().moveTime;
+                            shell.GetComponent<MovingObject>().Move(landPos, level.visible[feature.x, feature.y], null);
+                            BoardEventController.instance.RemoveFinishedEvent();
+                        }));
+
+                    BoardEventController.instance.AddEvent(new BoardEventController.Event(shell,
+                        () =>
+                        {
+                            GameObject.Destroy(shell);
+                            BoardEventController.instance.RemoveFinishedEvent();
+                        }));
+                }
+
                 List<Mob> affectedMobs = new List<Mob>();
                 List<Vector2Int> caughtFire = new List<Vector2Int>();
 
