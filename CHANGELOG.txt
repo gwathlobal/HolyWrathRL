@@ -1,4 +1,7 @@
 
+- Added animations to all angelic and demonic abilities.
+- Added animations to all soldiers' abilities.
+
 --------------------
 June 8, 2019 v0.2
 

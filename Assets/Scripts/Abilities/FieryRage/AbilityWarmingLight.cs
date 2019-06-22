@@ -56,7 +56,7 @@ public class AbilityWarmingLight : Ability
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
         actor.mo.BuffDebuff(new Vector2Int(actor.x, actor.y), new Vector2Int(actor.x, actor.y),
-                UIManager.instance.angelBuffPrefab, UIManager.instance.angelBuffPrefab,
+                null, UIManager.instance.angelBuffPrefab,
                 () =>
                 {
                     actor.AddEffect(EffectTypeEnum.effectMinorRegeneration, actor, 10);
