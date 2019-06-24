@@ -166,13 +166,11 @@ public class MonsterLayoutCrimsonDemons : MonsterLayout
     {
         int numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
-        int numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
         int numTarDemon = GameManager.instance.levelNum;
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
 
         PlacePlayer(level);
 
@@ -210,13 +208,11 @@ public class MonsterLayoutMachineDemons : MonsterLayout
     {
         int numMachineImp = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numMachineDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
-        int numArchdevil = -4 + Random.Range(0, GameManager.instance.levelNum);
         int numTarDemon = GameManager.instance.levelNum;
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
 
         PlacePlayer(level);
 
@@ -254,10 +250,8 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
     {
         int numCrimsonImp = 0;
         int numCrimsonDemon = 0;
-        int numArchdemon = 0;
         int numMachineImp = 0;
         int numMachineDemon = 0;
-        int numArchdevil = 0;
         int numHomunculus = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numFiend = 4 + Random.Range(0, GameManager.instance.levelNum);
         int numScavenger = 4 + Random.Range(0, GameManager.instance.levelNum);
@@ -270,7 +264,6 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
             case 1:
                 numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
                 break;
             // shadow demons
             case 2:
@@ -281,20 +274,16 @@ public class MonsterLayoutBeastsAndDemons : MonsterLayout
             default:
                 numCrimsonImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 break;
         }
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
         mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
         mobsToSpawn.Add(MobTypeEnum.mobHomunculus, numHomunculus);
         mobsToSpawn.Add(MobTypeEnum.mobFiend, numFiend);
         mobsToSpawn.Add(MobTypeEnum.mobScavenger, numScavenger);
@@ -335,10 +324,8 @@ public class MonsterLayoutHumansVsDemons : MonsterLayout
     {
         int numCrimsonImp = 0;
         int numCrimsonDemon = 0;
-        int numArchdemon = 0;
         int numMachineImp = 0;
         int numMachineDemon = 0;
-        int numArchdevil = 0;
         int r = Random.Range(0, 3);
         switch (r)
         {
@@ -346,7 +333,6 @@ public class MonsterLayoutHumansVsDemons : MonsterLayout
             case 1:
                 numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
                 break;
             // shadow demons
             case 2:
@@ -357,20 +343,16 @@ public class MonsterLayoutHumansVsDemons : MonsterLayout
             default:
                 numCrimsonImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 break;
         }
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
         mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
 
         PlacePlayer(level);
 
@@ -410,10 +392,8 @@ public class MonsterLayoutSoldiersVsDemons : MonsterLayout
     {
         int numCrimsonImp = 0;
         int numCrimsonDemon = 0;
-        int numArchdemon = 0;
         int numMachineImp = 0;
         int numMachineDemon = 0;
-        int numArchdevil = 0;
         int r = Random.Range(0, 3);
         switch (r)
         {
@@ -421,7 +401,6 @@ public class MonsterLayoutSoldiersVsDemons : MonsterLayout
             case 1:
                 numCrimsonImp = 4 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 4 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, GameManager.instance.levelNum);
                 break;
             // shadow demons
             case 2:
@@ -432,20 +411,16 @@ public class MonsterLayoutSoldiersVsDemons : MonsterLayout
             default:
                 numCrimsonImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numCrimsonDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdemon = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 numMachineImp = 2 + Random.Range(0, GameManager.instance.levelNum);
                 numMachineDemon = 2 + Random.Range(0, GameManager.instance.levelNum);
-                numArchdevil = -4 + Random.Range(0, (int)(GameManager.instance.levelNum / 2f));
                 break;
         }
 
         Dictionary<MobTypeEnum, int> mobsToSpawn = new Dictionary<MobTypeEnum, int>();
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonImp, numCrimsonImp);
         mobsToSpawn.Add(MobTypeEnum.mobCrimsonDemon, numCrimsonDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdemon, numArchdemon);
         mobsToSpawn.Add(MobTypeEnum.mobMachineImp, numMachineImp);
         mobsToSpawn.Add(MobTypeEnum.mobMachineDemon, numMachineDemon);
-        mobsToSpawn.Add(MobTypeEnum.mobArchdevil, numArchdevil);
 
         PlacePlayer(level);
 

@@ -243,7 +243,7 @@ public class MobTypes
             AbilityTypeEnum.abilVorpaniteClaws, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone, AbilityTypeEnum.abilNone,
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
-            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilCorpseExplosion, AbilityTypeEnum.abilDemon });
+            new List<AbilityTypeEnum>() { AbilityTypeEnum.abilRegenerate, AbilityTypeEnum.abilCorpseExplosion, AbilityTypeEnum.abilDemon, AbilityTypeEnum.abilNamed });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();
@@ -270,7 +270,7 @@ public class MobTypes
             armorPR, armorDR,
             new List<AiPackageEnum>() { AiPackageEnum.aiFindRandomLocation, AiPackageEnum.aiMeleeEnemy, AiPackageEnum.aiUseAbility },
             new List<AbilityTypeEnum>() { AbilityTypeEnum.abilTeleportOnHit, AbilityTypeEnum.abilPowerWordImmobilize, AbilityTypeEnum.abilDemonicPortal,
-                AbilityTypeEnum.abilDemon });
+                AbilityTypeEnum.abilDemon, AbilityTypeEnum.abilNamed });
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
         armorPR = new Dictionary<DmgTypeEnum, int>();

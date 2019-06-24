@@ -58,7 +58,7 @@ public class NextLocDialogScript : MonoBehaviour
 
             List<LevelModifier> levelModifiers = new List<LevelModifier>();
 
-            /*
+            
             // prepare a list of available level modifiers
             List<LevelModifierTypes.LevelModifierEnum> availLevelModifiers = new List<LevelModifierTypes.LevelModifierEnum>();
             foreach (LevelModifierTypes.LevelModifierEnum lme in LevelLayouts.levelLayouts[levelLayout].levelModifiers)
@@ -95,7 +95,7 @@ public class NextLocDialogScript : MonoBehaviour
                     oneMoreLM = false;
 
             } while (oneMoreLM);
-            */
+            
             string str = "";
             str += System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
                     MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name);

@@ -71,11 +71,11 @@ public class AbilityNamed : Ability
 
         if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
         {
-            nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedName;
-            if (BoardManager.instance.player.faction == actor.faction)
-            {
-                nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedAbils;
-            }
+            nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedAbils;
+            //if (BoardManager.instance.player.faction == actor.faction)
+            //{
+            //    nemesis.personalStatus = Nemesis.PersonalStatusEnum.revealedAbils;
+            //}
             return;
         }
 

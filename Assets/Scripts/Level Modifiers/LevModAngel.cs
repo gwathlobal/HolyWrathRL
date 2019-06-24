@@ -98,7 +98,7 @@ public class LevelModifierAngel : LevelModifier
 
                 mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
 
-                mob.go = GameObject.Instantiate(MobTypes.mobTypes[mob.idType].prefab, new Vector3(mob.x, mob.y, 0f), Quaternion.identity);
+                mob.go = GameObject.Instantiate(MobTypes.mobTypes[mob.idType].prefab, new Vector3(loc.x, loc.y, 0f), Quaternion.identity);
                 mob.mo = mob.go.GetComponent<MovingObject>();
 
                 mob.curHP = mob.maxHP;
@@ -109,7 +109,7 @@ public class LevelModifierAngel : LevelModifier
                 mob.effects = new Dictionary<EffectTypeEnum, Effect>();
 
                 BoardManager.instance.mobs.Add(mob.id, mob);
-                level.AddMobToLevel(mob, mob.x, mob.y);
+                level.AddMobToLevel(mob, loc.x, loc.y);
             }
         }
     }
