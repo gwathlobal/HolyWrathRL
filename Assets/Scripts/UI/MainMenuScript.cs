@@ -24,7 +24,7 @@ public class MainMenuScript : MonoBehaviour {
 
         GameManager.instance.levelNum = 0;
         GameManager.instance.player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
-        SceneManager.LoadScene("IntermissionScene");
+        SceneManager.LoadScene("NameScene");
     }
 
     public void QuitGame()

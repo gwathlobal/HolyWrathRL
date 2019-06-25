@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IntermissionScene.unity
     guid: 33df8b1ce52ea344fa99750139ea2f11
+  - enabled: 1
+    path: Assets/Scenes/NameScene.unity
+    guid: 0488113454cb1f1409571cde033ed81d
   m_configObjects: {}
