@@ -121,7 +121,7 @@ public class AbilityLeapOfStrength : Ability
 
                     if (mob.CheckDead())
                     {
-                        mob.MakeDead(actor, true, true, false);
+                        mob.MakeDead(actor, true, true, false, "");
                     }
                 }
                 BoardEventController.instance.RemoveFinishedEvent();

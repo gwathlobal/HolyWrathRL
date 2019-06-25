@@ -69,6 +69,7 @@ public class Mob
     }
 
     public bool alreadyDied;
+    public string killedBy;
     public float curAP;
     public float curMoveSpeed;
 
@@ -642,7 +643,7 @@ public class Mob
         else return false;
     }
 
-    public void MakeDead(Mob attacker, bool makeMsg, bool leaveCorpse, bool severLimbs)
+    public void MakeDead(Mob attacker, bool makeMsg, bool leaveCorpse, bool severLimbs, string killedByStr)
     {
         if (alreadyDied) return;
         alreadyDied = true;
@@ -650,6 +651,25 @@ public class Mob
         Level level = BoardManager.instance.level;
         string msg = this.name + " dies. ";
 
+        if (attacker != null && killedByStr == "")
+        {
+            if (attacker.hasPersonalName)
+                killedBy = String.Format("Killed by {0} the {1}.", attacker.name, attacker.typeName);
+            else
+                killedBy = String.Format("Killed by an unnamed {0}.", attacker.name.ToLower());
+        }
+        else if (attacker != null && killedByStr != "")
+        {
+            killedBy = killedByStr;
+        }
+        else if (attacker == null && killedByStr != "")
+        {
+            killedBy = killedByStr;
+        }
+        else
+        {
+            killedBy = String.Format("Killed by unknown forces.", killedByStr);
+        }
 
         if (leaveCorpse)
         {

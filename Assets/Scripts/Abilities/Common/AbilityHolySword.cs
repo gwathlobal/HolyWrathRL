@@ -72,7 +72,7 @@ public class AbilityHolySword : Ability
 
                 if (target.mob.CheckDead())
                 {
-                    target.mob.MakeDead(actor, true, true, true);
+                    target.mob.MakeDead(actor, true, true, true, "");
                 }
 
                 if (visibleEnd)

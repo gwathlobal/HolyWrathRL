@@ -105,7 +105,7 @@ public class AbilityIncineration : Ability
 
             if (mob.CheckDead())
             {
-                mob.MakeDead(actor, true, true, false);
+                mob.MakeDead(actor, true, true, false, "");
             }
 
             if (actor.GetAbility(AbilityTypeEnum.abilDivineVengeance) != null)

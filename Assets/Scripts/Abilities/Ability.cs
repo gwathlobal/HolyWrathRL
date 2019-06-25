@@ -208,7 +208,7 @@ public abstract class Ability {
 
                 if (target.CheckDead())
                 {
-                    target.MakeDead(actor, true, true, false);
+                    target.MakeDead(actor, true, true, false, "");
                 }
                 BoardEventController.instance.RemoveFinishedEvent();
             }));
@@ -256,7 +256,7 @@ public abstract class Ability {
 
                 if (actor.CheckDead())
                 {
-                    actor.MakeDead(target, true, true, false);
+                    actor.MakeDead(target, true, true, false, "");
                 }
 
                 if (target.GetEffect(EffectTypeEnum.effectReflectiveBlocking) != null)

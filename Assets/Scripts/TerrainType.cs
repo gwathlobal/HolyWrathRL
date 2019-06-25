@@ -184,7 +184,7 @@ public class TerrainTypes
                 BoardManager.instance.CreateBlooddrop(actor.x, actor.y);
                 if (actor.CheckDead())
                 {
-                    actor.MakeDead(null, true, true, false);
+                    actor.MakeDead(null, true, true, false, "Killed by razorthorns.");
                 }
             });
 

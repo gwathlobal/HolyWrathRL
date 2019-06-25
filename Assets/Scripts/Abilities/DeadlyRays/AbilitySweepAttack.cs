@@ -79,7 +79,7 @@ public class AbilitySweepAttack : Ability
 
             if (mob.CheckDead())
             {
-                mob.MakeDead(actor, true, true, true);
+                mob.MakeDead(actor, true, true, true, "");
             }
 
             if (level.visible[mob.x, mob.y])
@@ -110,7 +110,7 @@ public class AbilitySweepAttack : Ability
 
                 if (target.mob.CheckDead())
                 {
-                    target.mob.MakeDead(actor, true, true, true);
+                    target.mob.MakeDead(actor, true, true, true, "");
                 }
 
                 if (visibleEnd)

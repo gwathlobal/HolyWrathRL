@@ -9,7 +9,7 @@ public class EventLevelCollapse : GameEvent
     public EventLevelCollapse()
     {
         idType = GameEventTypes.GameEventEnum.eventCollapseLevel;
-        name = "Collapsing Level";
+        name = "Collapsing dimension";
     }
 
     public override void Activate()
@@ -28,7 +28,7 @@ public class EventLevelCollapse : GameEvent
                 if (!mob.CheckDead())
                 {
                     mob.curHP = 0;
-                    mob.MakeDead(null, false, true, false);
+                    mob.MakeDead(null, false, true, false, "Obliterated by a collapsed dimension.");
                 }
             }
         }

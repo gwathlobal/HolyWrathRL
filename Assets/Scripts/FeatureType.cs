@@ -148,7 +148,7 @@ public class FeatureTypes
                     BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
                     if (mob.CheckDead())
                     {
-                        mob.MakeDead(null, true, true, false);
+                        mob.MakeDead(null, true, true, false, "Burned to ashes.");
                     }
                 }
 
@@ -242,7 +242,7 @@ public class FeatureTypes
                     BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
                     if (mob.CheckDead())
                     {
-                        mob.MakeDead(null, true, true, false);
+                        mob.MakeDead(null, true, true, false, "Destroyed by a holy rune.");
                     }
                 }
 
@@ -309,7 +309,7 @@ public class FeatureTypes
                     BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
                     if (mob.CheckDead())
                     {
-                        mob.MakeDead(null, true, true, false);
+                        mob.MakeDead(null, true, true, false, "Dissolved in acid.");
                     }
                 }
 
@@ -415,7 +415,7 @@ public class FeatureTypes
 
                             if (mob.CheckDead())
                             {
-                                mob.MakeDead(null, true, true, false);
+                                mob.MakeDead(null, true, true, false, "Destroyed by an artillery strike.");
                             }
 
                         }

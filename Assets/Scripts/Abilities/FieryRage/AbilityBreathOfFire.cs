@@ -171,7 +171,7 @@ public class AbilityBreathOfFire : Ability
 
                 if (mob.CheckDead())
                 {
-                    mob.MakeDead(actor, true, true, false);
+                    mob.MakeDead(actor, true, true, false, "");
                 }
             },
             (int x, int y) =>

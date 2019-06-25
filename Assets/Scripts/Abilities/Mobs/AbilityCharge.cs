@@ -123,7 +123,7 @@ public class AbilityCharge : Ability
 
                             if (target.mob.CheckDead())
                             {
-                                target.mob.MakeDead(actor, true, true, false);
+                                target.mob.MakeDead(actor, true, true, false, "");
                             }
 
                             if (visibleEnd)

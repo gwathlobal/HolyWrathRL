@@ -51,7 +51,7 @@ public class Nemesis {
 
         if (deathStatus == DeathStatusEnum.deceased)
         {
-            str += "Deceased.\n\n";
+            str += String.Format("{0}\n\n", mob.killedBy);
         }
 
         if (personalStatus == PersonalStatusEnum.revealedAbils)

@@ -197,7 +197,7 @@ public class EffectTypes
                 }
                 if (actor.CheckDead())
                 {
-                    actor.MakeDead(null, true, true, false);
+                    actor.MakeDead(null, true, true, false, "Burned to ashes.");
                 }
             }, 0, false, true);
 
@@ -251,7 +251,7 @@ public class EffectTypes
                     BoardManager.instance.CreateBlooddrop(mob.x, mob.y);
                     if (mob.CheckDead())
                     {
-                        mob.MakeDead(actor, true, true, false);
+                        mob.MakeDead(actor, true, true, false, "");
                     }
                 }
                 
@@ -320,7 +320,7 @@ public class EffectTypes
                 string str = String.Format("{0} ceases to exist. ", actor.name);
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
                 actor.curHP = 0;
-                actor.MakeDead(null, false, false, false);
+                actor.MakeDead(null, false, false, false, "");
             },
             null);
 
@@ -358,7 +358,7 @@ public class EffectTypes
                 string str = String.Format("{0} ceases to exist. ", actor.name);
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
                 actor.curHP = 0;
-                actor.MakeDead(null, false, false, false);
+                actor.MakeDead(null, false, false, false, "Returned to the source dimension.");
             },
             null);
 
