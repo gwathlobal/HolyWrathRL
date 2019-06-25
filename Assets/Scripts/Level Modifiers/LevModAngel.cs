@@ -75,11 +75,11 @@ public class LevelModifierAngel : LevelModifier
         {
             if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
             {
-                str += "An angel\nAn unknown angel is present here\n\n";
+                str += "An angel\nAn unknown angel is present here.\n\n";
             }
             else
             {
-                str += System.String.Format("An angel\n{0} {1} is present here\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
+                str += System.String.Format("An angel\n{0} {1} is present here.\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
             }
         }
 
@@ -110,6 +110,8 @@ public class LevelModifierAngel : LevelModifier
 
                 BoardManager.instance.mobs.Add(mob.id, mob);
                 level.AddMobToLevel(mob, loc.x, loc.y);
+
+                BoardManager.instance.nemesesPresent.Add(nemesis);
             }
         }
     }

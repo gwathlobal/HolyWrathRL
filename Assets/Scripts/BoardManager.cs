@@ -28,9 +28,11 @@ public class BoardManager : MonoBehaviour {
 
     public bool playersTurn = false;
 
-    public int levelNum = 0;
+    public int turnNum = 0;
 
     private List<Mob> mobList;
+
+    public List<Nemesis> nemesesPresent;
 
     public GameObject unexploredPrefab;
 
@@ -79,6 +81,8 @@ public class BoardManager : MonoBehaviour {
         items = new Dictionary<int, Item>();
         features = new Dictionary<int, Feature>();
         effects = new Dictionary<int, Effect>();
+
+        nemesesPresent = new List<Nemesis>();
 
         featuresToRemove = new List<Feature>();
 
@@ -134,6 +138,8 @@ public class BoardManager : MonoBehaviour {
             msgLog.AddMsg("Welcome to Holy Wrath RL. To view help, press '?'.");
             msgLog.FinalizeMsg();
         }
+
+        UIManager.instance.RightPanel.ShowStatus();
     }
 
     // Update is called once per frame
@@ -174,50 +180,48 @@ public class BoardManager : MonoBehaviour {
             mobActed = false;
             return;
         }
-        else
+
+        msgLog.FinalizeMsg();
+
+        /*
+        for (int id = mobs.Count - 1; id >= 0; id--) 
         {
-            msgLog.FinalizeMsg();
-
-            /*
-            for (int id = mobs.Count - 1; id >= 0; id--) 
-            {
-                if (mobs.ContainsKey(id) && mobs[id].CheckDead()) mobs.Remove(id);
-            }
-            */
-
-            foreach (Feature feature in features.Values.ToList())
-            {
-                msgLog.SetHasMessageThisTurn(false);
-                if (FeatureTypes.featureTypes[feature.idType].FeatOnTick != null)
-                    FeatureTypes.featureTypes[feature.idType].FeatOnTick(level, feature);
-                msgLog.FinalizeMsg();
-            }
-
-            for (int i = featuresToRemove.Count - 1; i >= 0; i--) 
-            {
-                RemoveFeatureFromWorld(featuresToRemove[i]);
-            }
-            featuresToRemove.Clear();
-
-            foreach (int mobId in mobs.Keys)
-            {
-                msgLog.SetHasMessageThisTurn(false);
-                if (!mobs[mobId].CheckDead()) mobs[mobId].OnTick();
-                msgLog.FinalizeMsg();
-            }
-
-            
-            /*
-            for (int id = 0; id < mobs.Count; id++) 
-            {
-                if (mobs.ContainsKey(id) && !mobs[id].CheckDead()) mobs[id].OnTick();
-            }
-            */
+            if (mobs.ContainsKey(id) && mobs[id].CheckDead()) mobs.Remove(id);
         }
+        */
+
+        foreach (Feature feature in features.Values.ToList())
+        {
+            msgLog.SetHasMessageThisTurn(false);
+            if (FeatureTypes.featureTypes[feature.idType].FeatOnTick != null)
+                FeatureTypes.featureTypes[feature.idType].FeatOnTick(level, feature);
+            msgLog.FinalizeMsg();
+        }
+
+        for (int i = featuresToRemove.Count - 1; i >= 0; i--)
+        {
+            RemoveFeatureFromWorld(featuresToRemove[i]);
+        }
+        featuresToRemove.Clear();
+
+        foreach (int mobId in mobs.Keys)
+        {
+            msgLog.SetHasMessageThisTurn(false);
+            if (!mobs[mobId].CheckDead()) mobs[mobId].OnTick();
+            msgLog.FinalizeMsg();
+        }
+
+        /*
+        for (int id = 0; id < mobs.Count; id++) 
+        {
+            if (mobs.ContainsKey(id) && !mobs[id].CheckDead()) mobs[id].OnTick();
+        }
+        */
 
         if (ObjectiveLayouts.objectiveLayouts[level.objectiveType].CheckObjective() &&
             FinalObjectives.finalObjectives[FinalObjectiveEnum.objWin10Levels].CheckObjective())
         {
+            GameManager.instance.msgLog = BoardManager.instance.msgLog.GetLastMessagesAsText(BoardManager.instance.msgLog.MsgLength());
             SceneManager.LoadScene("WinScene");
         }
 
@@ -226,7 +230,19 @@ public class BoardManager : MonoBehaviour {
             GameManager.instance.levelNum++;
             UIManager.instance.ShowMissionWonWindow();
             playersTurn = true;
+            return;
         }
+
+        foreach (GameEvent gameEvent in level.gameEvents)
+        {
+            if (gameEvent.CheckEvent())
+            {
+                gameEvent.Activate();
+            }
+        }
+
+        turnNum++;
+        UIManager.instance.RightPanel.ShowStatus();
     }
 
     public void RemoveMobFromWorld(Mob mob)

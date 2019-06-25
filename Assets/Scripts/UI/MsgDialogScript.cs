@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class MsgDialogScript : MonoBehaviour {
 
     public Text msgTxt;
+    public ScrollRect msgScrollRect;
 
     void Start()
     {
         GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
         gameObject.SetActive(false);
     }
-
 }

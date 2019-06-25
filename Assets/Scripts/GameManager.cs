@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour {
 
     public int levelNum;
     public PlayerMob player;
+    public string msgLog;
 
     public List<Nemesis> nemeses;
 

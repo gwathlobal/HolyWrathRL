@@ -128,7 +128,8 @@ public class UIManager : MonoBehaviour {
     public void ShowMsgWindow()
     {
         screenStatus = MainScreenStatus.statusMsgWindow;
-        MsgDialog.msgTxt.text = BoardManager.instance.msgLog.GetLastMessagesAsText(BoardManager.instance.msgLog.MsgLength());
+        MsgDialog.msgTxt.text = BoardManager.instance.msgLog.GetFirstMessagesAsText(BoardManager.instance.msgLog.MsgLength());
+        MsgDialog.msgScrollRect.verticalNormalizedPosition = 0;
         MsgDialog.gameObject.SetActive(true);
     }
 
@@ -370,11 +371,13 @@ public class UIManager : MonoBehaviour {
 
     public void GoToDefeatScene()
     {
+        GameManager.instance.msgLog = BoardManager.instance.msgLog.GetFirstMessagesAsText(BoardManager.instance.msgLog.MsgLength());
         SceneManager.LoadScene("DefeatScene");
     }
 
     public void GoToIntermissionScene()
     {
+        GameManager.instance.msgLog = BoardManager.instance.msgLog.GetFirstMessagesAsText(BoardManager.instance.msgLog.MsgLength());
         SceneManager.LoadScene("IntermissionScene");
     }
 }

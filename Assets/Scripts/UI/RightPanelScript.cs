@@ -7,6 +7,7 @@ public class RightPanelScript : MonoBehaviour {
 
     public Image EffectScrollPanel;
     private List<GameObject> effectPanels;
+    public Text statusText;
 
     public GameObject effectPanelPrefab;
 
@@ -47,7 +48,16 @@ public class RightPanelScript : MonoBehaviour {
             effectPanels.Add(ep);
             i++;
         }
-        
-        
+    }
+
+    public void ShowStatus()
+    {
+        string str = "";
+        foreach (GameEvent gameEvent in BoardManager.instance.level.gameEvents)
+        {
+            if (gameEvent.Description() != "")
+                str += System.String.Format("{0}\n", gameEvent.LineDescription());
+        }
+        statusText.text = System.String.Format("{0}Turns: {1}", str, BoardManager.instance.turnNum);
     }
 }

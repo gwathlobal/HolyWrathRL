@@ -69,6 +69,19 @@ public class MessageLog  {
         return result;
     }
 
+    public string GetFirstMessagesAsText(int n)
+    {
+        string result = "";
+
+        if (n > msg.Count) n = msg.Count;
+
+        for (int i = 0; i < n; i++)
+        {
+            result = result + msg[i];
+        }
+        return result;
+    }
+
     public string GetCurMessages()
     {
         string result = "";

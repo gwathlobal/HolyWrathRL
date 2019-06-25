@@ -20,7 +20,7 @@ public class LevelModifierDemon : LevelModifier
             if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null)
                 demonNum++;
         }
-        if (GameManager.instance.levelNum >= 0 && demonNum != 0)
+        if (GameManager.instance.levelNum >= 5 && demonNum != 0)
             return true;
         else
             return false;
@@ -75,11 +75,11 @@ public class LevelModifierDemon : LevelModifier
         {
             if (nemesis.personalStatus == Nemesis.PersonalStatusEnum.hidden)
             {
-                str += "A demon\nAn unknown demon is present here\n\n";
+                str += "A demon\nAn unknown demon is present here.\n\n";
             }
             else
             {
-                str += System.String.Format("A demon\n{0} {1} is present here\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
+                str += System.String.Format("A demon\n{0} {1} is present here.\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
             }
         }
 
@@ -110,6 +110,8 @@ public class LevelModifierDemon : LevelModifier
 
                 BoardManager.instance.mobs.Add(mob.id, mob);
                 level.AddMobToLevel(mob, loc.x, loc.y);
+
+                BoardManager.instance.nemesesPresent.Add(nemesis);
             }
         }
     }

@@ -55,10 +55,19 @@ public static class LevelLayouts
         Add(LevelLayoutEnum.levelDesolatePlains, "Desolate plains", 0,
             TerrainTypeEnum.terrainStoneFloorBorder, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
             TerrainTypeEnum.terrainSlimeFloor, TerrainTypeEnum.terrainSlimeFloorBright, TerrainTypeEnum.terrainWaterTar, TerrainTypeEnum.terrainCorruptedTree,
-            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildTarPool, BuildingLayoutType.buildSingleTree },
-            new List<MonsterLayoutEnum>() { MonsterLayoutEnum.levelBeastsOnly, MonsterLayoutEnum.levelCrimsonDemons, MonsterLayoutEnum.levelMachineDemons,
-                MonsterLayoutEnum.levelBeastsAndDemons },
-            new List<LevelModifierTypes.LevelModifierEnum>() { LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon },
+            new List<BuildingLayoutType>
+            {
+                BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildTarPool, BuildingLayoutType.buildSingleTree
+            },
+            new List<MonsterLayoutEnum>()
+            {
+                MonsterLayoutEnum.levelBeastsOnly, MonsterLayoutEnum.levelCrimsonDemons, MonsterLayoutEnum.levelMachineDemons, MonsterLayoutEnum.levelBeastsAndDemons
+            },
+            new List<LevelModifierTypes.LevelModifierEnum>()
+            {
+                LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+            },
             null,
             null);
 
@@ -68,7 +77,11 @@ public static class LevelLayouts
             new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape, BuildingLayoutType.buildSingleTree },
             new List<MonsterLayoutEnum>() { MonsterLayoutEnum.levelBeastsOnly, MonsterLayoutEnum.levelCrimsonDemons, MonsterLayoutEnum.levelMachineDemons,
                 MonsterLayoutEnum.levelBeastsAndDemons },
-            new List<LevelModifierTypes.LevelModifierEnum>() { LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon },
+            new List<LevelModifierTypes.LevelModifierEnum>()
+            {
+                LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+            },
             (LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings, MonsterLayoutEnum monsterLayout) =>
             {
                 int maxXres = (int)(level.maxX / BuildingLayout.GRID_SIZE);
@@ -116,7 +129,11 @@ public static class LevelLayouts
             new List<BuildingLayoutType> { BuildingLayoutType.buildSingleTree, BuildingLayoutType.buildCorruptedForest },
             new List<MonsterLayoutEnum>() { MonsterLayoutEnum.levelBeastsOnly, MonsterLayoutEnum.levelCrimsonDemons, MonsterLayoutEnum.levelMachineDemons,
                 MonsterLayoutEnum.levelBeastsAndDemons },
-            new List<LevelModifierTypes.LevelModifierEnum>() { LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon },
+            new List<LevelModifierTypes.LevelModifierEnum>()
+            {
+                LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+            },
             null,
             (LevelLayout ll, Level level) =>
             {

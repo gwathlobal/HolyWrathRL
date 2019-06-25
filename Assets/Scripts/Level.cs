@@ -26,6 +26,8 @@ public class Level {
 
     public ObjectiveLayoutEnum objectiveType;
 
+    public List<GameEvent> gameEvents;
+
     public const int roomNotConnected = 0;
 
     public Dictionary<MobTypeEnum, int> mobsToSpawn;
@@ -53,6 +55,8 @@ public class Level {
         mobList = new List<Mob>();
         itemList = new List<Item>();
         featureList = new List<Feature>();
+
+        gameEvents = new List<GameEvent>();
 
         // initialize items array
         for (int y = 0; y < maxY; y++)
