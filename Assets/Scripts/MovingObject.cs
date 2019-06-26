@@ -330,11 +330,11 @@ public class MovingObject : MonoBehaviour
         }
     }
 
-    public void MindBurn(Vector2Int targetPos, MindBurnMiddleFunc middleFunc)
+    public void MindBurn(Mob target, MindBurnMiddleFunc middleFunc)
     {
-        if (BoardManager.instance.level.visible[targetPos.x, targetPos.y]) 
+        if (BoardManager.instance.level.visible[target.x, target.y]) 
         {
-            GameObject mindBurn = GameObject.Instantiate(UIManager.instance.mindBurnPrefab, new Vector3(targetPos.x, targetPos.y, 0), Quaternion.identity);
+            GameObject mindBurn = GameObject.Instantiate(target.go, new Vector3(target.x, target.y, 0), Quaternion.identity);
             mindBurn.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
 
             BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
@@ -357,7 +357,7 @@ public class MovingObject : MonoBehaviour
 
     public IEnumerator CoroutineMindBurn(MindBurnMiddleFunc middleFunc)
     {
-        yield return StartCoroutine(CoroutineFadeTo(0.3f, 0.15f));
+        yield return StartCoroutine(CoroutineFadeTo(0.6f, 0.15f));
         yield return StartCoroutine(CoroutineMindBurnMiddleFunc(middleFunc));
         yield return StartCoroutine(CoroutineFadeTo(0f, 0.15f));
     }

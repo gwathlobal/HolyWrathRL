@@ -57,7 +57,7 @@ public class AbilityMindBurn : Ability
         string str = String.Format("{0} invokes mind burn. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        actor.mo.MindBurn(new Vector2Int(target.mob.x, target.mob.y),
+        actor.mo.MindBurn(target.mob,
             () =>
             {
                 int dmg = 0;
