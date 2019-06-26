@@ -57,37 +57,40 @@ public class AbilityMindBurn : Ability
         string str = String.Format("{0} invokes mind burn. ", actor.name);
         BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
 
-        int dmg = 0;
-        dmg += Mob.InflictDamage(actor, target.mob,
-            new Dictionary<DmgTypeEnum, int>()
+        actor.mo.MindBurn(new Vector2Int(target.mob.x, target.mob.y),
+            () =>
             {
+                int dmg = 0;
+                dmg += Mob.InflictDamage(actor, target.mob,
+                    new Dictionary<DmgTypeEnum, int>()
+                    {
                 { DmgTypeEnum.Mind, 20 }
-            }, 
-            (int dmg1) =>
-            {
-                string str1;
-                if (dmg1 <= 0)
+                    },
+                    (int dmg1) =>
+                    {
+                        string str1;
+                        if (dmg1 <= 0)
+                        {
+                            str1 = String.Format("{0} takes no mind dmg. ",
+                        target.mob.name);
+                        }
+                        else
+                        {
+                            str1 = String.Format("{0} takes {1} mind dmg. ",
+                                target.mob.name,
+                                dmg1);
+                        }
+                        return str1;
+                    });
+
+                if (BoardManager.instance.level.visible[target.mob.x, target.mob.y])
+                    UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(target.mob.x, target.mob.y, 0));
+
+                if (target.mob.CheckDead())
                 {
-                   str1 = String.Format("{0} takes no mind dmg. ",
-                       target.mob.name);
+                    target.mob.MakeDead(actor, true, true, false, "");
                 }
-                else
-                {
-                    str1 = String.Format("{0} takes {1} mind dmg. ",
-                        target.mob.name,
-                        dmg1);
-                }
-                return str1;
             });
-
-        if (BoardManager.instance.level.visible[target.mob.x, target.mob.y])
-            UIManager.instance.CreateFloatingText(dmg + " <i>DMG</i>", new Vector3(target.mob.x, target.mob.y, 0));
-
-        if (target.mob.CheckDead())
-        {
-            target.mob.MakeDead(actor, true, true, false, "");
-        }
-
     }
 
     public override void AbilityInvokeAI(Ability ability, Mob actor, Mob nearestEnemy, Mob nearestAlly)

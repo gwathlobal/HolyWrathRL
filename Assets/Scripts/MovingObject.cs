@@ -15,6 +15,7 @@ public class MovingObject : MonoBehaviour
     public delegate void ProjectileMiddleFunc();
     public delegate void BreathEachTileFunc(int x, int y);
     public delegate void BreathEachMobFunc(Mob mob);
+    public delegate void MindBurnMiddleFunc();
 
     public float moveTime;
     public float inverseMoveTime;
@@ -327,6 +328,38 @@ public class MovingObject : MonoBehaviour
                 BoardEventController.instance.RemoveFinishedEvent();
             }));
         }
+    }
+
+    public void MindBurn(Vector2Int targetPos, MindBurnMiddleFunc middleFunc)
+    {
+        if (BoardManager.instance.level.visible[targetPos.x, targetPos.y]) 
+        {
+            GameObject mindBurn = GameObject.Instantiate(UIManager.instance.mindBurnPrefab, new Vector3(targetPos.x, targetPos.y, 0), Quaternion.identity);
+            mindBurn.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 0);
+
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                mindBurn.GetComponent<MovingObject>().StartCoroutine(mindBurn.GetComponent<MovingObject>().CoroutineMindBurn(middleFunc));
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+            
+            BoardEventController.instance.AddEvent(new BoardEventController.Event(this.gameObject, () =>
+            {
+                Destroy(mindBurn.gameObject);
+                BoardEventController.instance.RemoveFinishedEvent();
+            }));
+        }
+        else
+        {
+            middleFunc();
+        }
+    }
+
+    public IEnumerator CoroutineMindBurn(MindBurnMiddleFunc middleFunc)
+    {
+        yield return StartCoroutine(CoroutineFadeTo(0.3f, 0.15f));
+        yield return StartCoroutine(CoroutineMindBurnMiddleFunc(middleFunc));
+        yield return StartCoroutine(CoroutineFadeTo(0f, 0.15f));
     }
 
     protected IEnumerator CoroutineMeleeMoveIn(Vector3 end)
@@ -684,6 +717,23 @@ public class MovingObject : MonoBehaviour
     }
 
     protected IEnumerator CoroutineTeleportMiddleFunc(TeleportMiddleFunc middleFunc)
+    {
+        //Debug.Log("Melee Middle Func, state = " + state.ToString());
+        //if (state != StateEnum.meleeMiddleFunc) yield return null;
+        //Debug.Log("Teleport Middle Func started");
+        BoardEventController.instance.coroutinesInProcess++;
+        coroutinesRunning++;
+
+        middleFunc();
+        yield return null;
+
+        coroutinesRunning--;
+        BoardEventController.instance.coroutinesInProcess--;
+        //state = StateEnum.meleeMoveOut;
+        //Debug.Log("Teleport Middle Func ended");
+    }
+
+    protected IEnumerator CoroutineMindBurnMiddleFunc(MindBurnMiddleFunc middleFunc)
     {
         //Debug.Log("Melee Middle Func, state = " + state.ToString());
         //if (state != StateEnum.meleeMiddleFunc) yield return null;

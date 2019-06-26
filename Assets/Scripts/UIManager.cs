@@ -56,6 +56,7 @@ public class UIManager : MonoBehaviour {
     public GameObject medkitPrefab;
     public GameObject artilleryMarkPrefab;
     public GameObject artilleryShellPrefab;
+    public GameObject mindBurnPrefab;
 
     public bool anyBtnClicked;
     public ExecFunc execFunc;
