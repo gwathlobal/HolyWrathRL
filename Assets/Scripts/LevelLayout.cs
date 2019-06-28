@@ -66,7 +66,7 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
             },
             null,
             null);
@@ -80,7 +80,7 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
             },
             (LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings, MonsterLayoutEnum monsterLayout) =>
             {
@@ -132,7 +132,7 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
             },
             null,
             (LevelLayout ll, Level level) =>
@@ -250,7 +250,10 @@ public static class LevelLayouts
                 BuildingLayoutType.buildCorruptedForest, BuildingLayoutType.buildSingleTree },
             new List<MonsterLayoutEnum>() { MonsterLayoutEnum.levelBeastsOnly, MonsterLayoutEnum.levelCrimsonDemons, MonsterLayoutEnum.levelMachineDemons,
                 MonsterLayoutEnum.levelBeastsAndDemons },
-            new List<LevelModifierTypes.LevelModifierEnum>() { LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon },
+            new List<LevelModifierTypes.LevelModifierEnum>()
+            {
+                LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
+            },
             null,
             (LevelLayout ll, Level level) =>
             {

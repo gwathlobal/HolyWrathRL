@@ -37,7 +37,7 @@ public static class GameEventTypes
 {
     public enum GameEventEnum
     {
-        eventCollapseLevel
+        eventCollapseLevel, eventAcidRain
     }
 
     public static Dictionary<GameEventEnum, GameEvent> gameEvents;
@@ -47,7 +47,7 @@ public static class GameEventTypes
         gameEvents = new Dictionary<GameEventEnum, GameEvent>();
 
         Add(new EventLevelCollapse());
-        //Add(new LevelModifierDemon());
+        Add(new EventAcidRain());
     }
 
     public static void Add(GameEvent ge)

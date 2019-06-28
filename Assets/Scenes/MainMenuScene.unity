@@ -1009,6 +1009,7 @@ MonoBehaviour:
   monsterLayout: 0
   objectiveLayout: 0
   levelNum: 0
+  msgLog: 
 --- !u!4 &2013554478
 Transform:
   m_ObjectHideFlags: 0

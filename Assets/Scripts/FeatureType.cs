@@ -346,7 +346,7 @@ public class FeatureTypes
                     BoardEventController.instance.AddEvent(new BoardEventController.Event(shell,
                         () =>
                         {
-                            shell.GetComponent<MovingObject>().moveTime = 0.01f;
+                            shell.GetComponent<MovingObject>().moveTime = 0.015f;
                             shell.GetComponent<MovingObject>().inverseMoveTime = 1 / shell.GetComponent<MovingObject>().moveTime;
                             shell.GetComponent<MovingObject>().Move(landPos, level.visible[feature.x, feature.y], null);
                             BoardEventController.instance.RemoveFinishedEvent();

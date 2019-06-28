@@ -199,9 +199,12 @@ public class TerrainTypes
                     level.CheckSurroundings(actor.x, actor.y, true,
                         (int x, int y) =>
                         {
-                            Feature cloud = new Feature(FeatureTypeEnum.featAcidCloud, x, y);
-                            cloud.counter = 5;
-                            BoardManager.instance.level.AddFeatureToLevel(cloud, cloud.x, cloud.y);
+                            if (!TerrainTypes.terrainTypes[BoardManager.instance.level.terrain[x, y]].blocksMovement)
+                            {
+                                Feature cloud = new Feature(FeatureTypeEnum.featAcidCloud, x, y);
+                                cloud.counter = 5;
+                                BoardManager.instance.level.AddFeatureToLevel(cloud, cloud.x, cloud.y);
+                            }
                         });
                 }
             });
