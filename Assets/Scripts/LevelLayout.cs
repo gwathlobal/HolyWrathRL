@@ -66,7 +66,8 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelShrink
             },
             null,
             null);
@@ -80,7 +81,8 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelShrink
             },
             (LevelLayout ll, Level level, BuildingLayoutType[,] reservedBuildings, MonsterLayoutEnum monsterLayout) =>
             {
@@ -132,7 +134,8 @@ public static class LevelLayouts
             new List<LevelModifierTypes.LevelModifierEnum>()
             {
                 LevelModifierTypes.LevelModifierEnum.LevModAngel, LevelModifierTypes.LevelModifierEnum.LevModDemon,
-                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain
+                LevelModifierTypes.LevelModifierEnum.LevModLevelCollapse, LevelModifierTypes.LevelModifierEnum.LevModAcidRain,
+                LevelModifierTypes.LevelModifierEnum.LevModLevelShrink
             },
             null,
             (LevelLayout ll, Level level) =>

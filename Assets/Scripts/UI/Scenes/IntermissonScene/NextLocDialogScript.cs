@@ -67,6 +67,7 @@ public class NextLocDialogScript : MonoBehaviour
                     availLevelModifiers.Add(lme);
             }
 
+            /*
             // 25% to pick a random level modifier, if picked - try to pick a next one until no more are available
             bool oneMoreLM = false;
             do
@@ -95,7 +96,7 @@ public class NextLocDialogScript : MonoBehaviour
                     oneMoreLM = false;
 
             } while (oneMoreLM);
-            
+            */
 
             string str = "";
             str += System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,

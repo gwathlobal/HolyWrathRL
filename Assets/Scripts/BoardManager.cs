@@ -320,7 +320,7 @@ public class BoardManager : MonoBehaviour {
                 break;
         }
         r = Random.Range(0, 100);
-        if (r <= 30)
+        if (r <= 30 && TerrainTypes.terrainTypes[level.terrain[(int)poolPos.x,(int)poolPos.y]].takesBlood)
         {
             Feature bloodPool = new Feature(FeatureTypeEnum.featBloodDrop, (int)poolPos.x, (int)poolPos.y);
             level.AddFeatureToLevel(bloodPool, bloodPool.x, bloodPool.y);
