@@ -44,9 +44,9 @@ public static class LevelLayouts
         levelLayouts = new Dictionary<LevelLayoutEnum, LevelLayout>();
 
         Add(LevelLayoutEnum.levelTest, "Test location", 0,
-            TerrainTypeEnum.terrainWall, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
+            TerrainTypeEnum.terrainStoneFloorBorder, TerrainTypeEnum.terrainStoneFloor, TerrainTypeEnum.terrainStoneFloorBright, TerrainTypeEnum.terrainStoneWall,
             TerrainTypeEnum.terrainSlimeFloor, TerrainTypeEnum.terrainSlimeFloorBright, TerrainTypeEnum.terrainWaterTar, TerrainTypeEnum.terrainCorruptedTree,
-            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty },
+            new List<BuildingLayoutType> { BuildingLayoutType.buildEmpty, BuildingLayoutType.buildShape },
             new List<MonsterLayoutEnum>(),
             new List<LevelModifierTypes.LevelModifierEnum>(),
             null,

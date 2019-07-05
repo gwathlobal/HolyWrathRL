@@ -476,10 +476,10 @@ public class MonsterLayoutTest : MonsterLayout
         //UIManager.instance.LeftPanel.blockAbilPanel.abilType = AbilityTypeEnum.abilReflectiveBlock;
 
         level.mobs[BoardManager.instance.player.x, BoardManager.instance.player.y] = null;
-        level.mobs[15, 6] = BoardManager.instance.player;
-        BoardManager.instance.player.x = 15;
-        BoardManager.instance.player.y = 6;
-        BoardManager.instance.player.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(15, 6));
+        level.mobs[5, 5] = BoardManager.instance.player;
+        BoardManager.instance.player.x = 5;
+        BoardManager.instance.player.y = 5;
+        BoardManager.instance.player.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(5, 5));
 
         Mob mob;
 
@@ -491,13 +491,13 @@ public class MonsterLayoutTest : MonsterLayout
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
         */
-        
+        /*
         mob = new Mob(MobTypeEnum.mobScout, 21, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
         BoardManager.instance.mobs.Add(mob.id, mob);
         level.AddMobToLevel(mob, mob.x, mob.y);
         //mob.curHP = 25;
-        
+        */
         /*
         mob = new Mob(MobTypeEnum.mobScout, 12, 5);
         mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);

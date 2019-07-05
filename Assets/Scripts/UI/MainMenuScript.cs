@@ -44,6 +44,18 @@ public class MainMenuScript : MonoBehaviour {
         GameManager.instance.monsterLayout = MonsterLayoutEnum.levelTest;
         GameManager.instance.objectiveLayout = ObjectiveLayoutEnum.levelTest;
         GameManager.instance.levelNum = 0;
+
+        /*
+        List<LevelModifier> levelModifiers = new List<LevelModifier>();
+
+        System.Type t = LevelModifierTypes.levelModifiers[LevelModifierTypes.LevelModifierEnum.LevModLevelShrink].GetType();
+        LevelModifier lm = (LevelModifier)System.Activator.CreateInstance(t);
+        lm.Initialize();
+        levelModifiers.Add(lm);
+
+        GameManager.instance.levelModifiers = levelModifiers;
+        */
+
         SceneManager.LoadScene("LevelScene");
     }
 
