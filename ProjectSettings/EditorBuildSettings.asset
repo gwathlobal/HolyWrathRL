@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/NameScene.unity
     guid: 0488113454cb1f1409571cde033ed81d
+  - enabled: 1
+    path: Assets/Scenes/PostMissionScene.unity
+    guid: 9efaa065c1df4f940a4a20cb6df124c5
   m_configObjects: {}

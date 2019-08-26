@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     public string msgLog;
 
     public List<Nemesis> nemeses;
+    public List<Nemesis> nemesesPresent;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -36,12 +37,12 @@ public class GameManager : MonoBehaviour {
         DontDestroyOnLoad(gameObject);
 
         AbilityCategoryTypes.InitializeAbilityCategories();
+        nemesesPresent = new List<Nemesis>();
 
     }
 
     public void SetUpNemeses()
     {
-
         nemeses = new List<Nemesis>();
 
         // add angels as nemeses
@@ -54,6 +55,9 @@ public class GameManager : MonoBehaviour {
                 deathStatus = Nemesis.DeathStatusEnum.alive
             };
             GameObject.Destroy(nemesis.mob.go);
+
+            nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
+            nemesis.AssignRandomActivity();
 
             nemeses.Add(nemesis);
         }
@@ -77,10 +81,13 @@ public class GameManager : MonoBehaviour {
             Nemesis nemesis = new Nemesis()
             {
                 mob = new Mob(mobType, 1, 1),
-                personalStatus = Nemesis.PersonalStatusEnum.hidden,
+                personalStatus = Nemesis.PersonalStatusEnum.revealedAbils,
                 deathStatus = Nemesis.DeathStatusEnum.alive
             };
             GameObject.Destroy(nemesis.mob.go);
+
+            nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
+            nemesis.AssignRandomActivity();
 
             nemeses.Add(nemesis);
         }

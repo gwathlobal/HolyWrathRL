@@ -233,7 +233,7 @@ public class PlayerInput : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
         {
-            UIManager.instance.GoToIntermissionScene();
+            UIManager.instance.GoToPostMissionScene();
         }
     }
 

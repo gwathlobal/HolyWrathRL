@@ -377,4 +377,23 @@ public class MobTypes
             mt.armorPR[dmgType] = armorPR[dmgType];
         }
     }
+
+    public static void UpgradeAngel(Mob angel)
+    {
+        List<Ability> availAbilities = new List<Ability>();
+        foreach (Ability ability in AbilityTypes.abilTypes.Values)
+        {
+            if (ability.CheckRequirements(angel, null) && !angel.abilities.ContainsKey(ability.id))
+                availAbilities.Add(ability);
+        }
+        if (availAbilities.Count > 0) {
+            int r = Random.Range(0, availAbilities.Count);
+            angel.abilities.Add(availAbilities[r].id, true);
+
+            if (availAbilities[r].slot == AbilitySlotEnum.abilMelee) angel.meleeAbil = availAbilities[r].id;
+            if (availAbilities[r].slot == AbilitySlotEnum.abilRanged) angel.rangedAbil = availAbilities[r].id;
+            if (availAbilities[r].slot == AbilitySlotEnum.abilDodge) angel.dodgeAbil = availAbilities[r].id;
+            if (availAbilities[r].slot == AbilitySlotEnum.abilBlock) angel.blockAbil = availAbilities[r].id;
+        }
+    }
 }

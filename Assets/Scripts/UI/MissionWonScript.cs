@@ -11,8 +11,8 @@ public class MissionWonScript : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void GoToIntermissionScene()
+    public void GoToPostMissionScene()
     {
-        UIManager.instance.GoToIntermissionScene();
+        UIManager.instance.GoToPostMissionScene();
     }
 }

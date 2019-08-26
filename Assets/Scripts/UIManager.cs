@@ -382,4 +382,10 @@ public class UIManager : MonoBehaviour {
         GameManager.instance.msgLog = BoardManager.instance.msgLog.GetFirstMessagesAsText(BoardManager.instance.msgLog.MsgLength());
         SceneManager.LoadScene("IntermissionScene");
     }
+
+    public void GoToPostMissionScene()
+    {
+        GameManager.instance.msgLog = BoardManager.instance.msgLog.GetFirstMessagesAsText(BoardManager.instance.msgLog.MsgLength());
+        SceneManager.LoadScene("PostMissionScene");
+    }
 }

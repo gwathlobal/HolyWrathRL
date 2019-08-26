@@ -43,16 +43,15 @@ public class AbilityDialogScript : MonoBehaviour {
         gameObject.SetActive(false);
 
         addedAbils = new List<AbilityTypeEnum>();
+
         if (GameManager.instance.levelNum == 0)
-        {
-            maxUnspentTP = 2;
-            curUnspentTP = maxUnspentTP;
-        }
+            GameManager.instance.player.unspentTP += 2;
         else
-        {
-            maxUnspentTP = 1;
-            curUnspentTP = maxUnspentTP;
-        }
+            GameManager.instance.player.unspentTP += 1;
+
+        maxUnspentTP = GameManager.instance.player.unspentTP;
+        curUnspentTP = maxUnspentTP;
+
         curCategory = AbilityPlayerCategoryEnum.abilCommon;
         availAbilPanels = new List<GameObject>();
 
@@ -164,6 +163,8 @@ public class AbilityDialogScript : MonoBehaviour {
             GameManager.instance.objectiveLayout = objectiveLayout;
         }
         */
+
+        GameManager.instance.player.unspentTP = curUnspentTP;
 
         intermissionScript.func();
 

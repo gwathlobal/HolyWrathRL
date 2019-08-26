@@ -111,7 +111,7 @@ public class LevelModifierAngel : LevelModifier
                 BoardManager.instance.mobs.Add(mob.id, mob);
                 level.AddMobToLevel(mob, loc.x, loc.y);
 
-                BoardManager.instance.nemesesPresent.Add(nemesis);
+                GameManager.instance.nemesesPresent.Add(nemesis);
             }
         }
     }

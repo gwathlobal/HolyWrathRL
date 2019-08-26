@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class PlayerMob : Mob {
 
     public Dictionary<AbilityPlayerCategoryEnum, int> categoryBonus;
+    public int unspentTP = 0;
 
     public PlayerMob(MobTypeEnum _idType, int _x, int _y) : base(_idType, _x, _y)
     {

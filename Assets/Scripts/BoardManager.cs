@@ -32,7 +32,7 @@ public class BoardManager : MonoBehaviour {
 
     private List<Mob> mobList;
 
-    public List<Nemesis> nemesesPresent;
+    //public List<Nemesis> nemesesPresent;
 
     public GameObject unexploredPrefab;
 
@@ -81,8 +81,6 @@ public class BoardManager : MonoBehaviour {
         items = new Dictionary<int, Item>();
         features = new Dictionary<int, Feature>();
         effects = new Dictionary<int, Effect>();
-
-        nemesesPresent = new List<Nemesis>();
 
         featuresToRemove = new List<Feature>();
 
@@ -229,6 +227,13 @@ public class BoardManager : MonoBehaviour {
         {
             GameManager.instance.levelNum++;
             UIManager.instance.ShowMissionWonWindow();
+            foreach (Mob mob in mobs.Values)
+            {
+                if (mob.idType == MobTypeEnum.mobAngel && !mob.CheckDead())
+                {
+                    MobTypes.UpgradeAngel(mob);
+                }
+            }
             playersTurn = true;
             return;
         }

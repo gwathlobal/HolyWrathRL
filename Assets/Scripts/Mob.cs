@@ -1114,7 +1114,7 @@ public class Mob
     {
         string str = "";
         if (hasPersonalName)
-            str += String.Format("{0}", name);
+            str += String.Format("{0} the {1}", name, typeName);
         else
             str += String.Format("{0}", name);
         return str;

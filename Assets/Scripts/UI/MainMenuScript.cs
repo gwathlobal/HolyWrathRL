@@ -61,6 +61,7 @@ public class MainMenuScript : MonoBehaviour {
 
     private void Initialize()
     {
+        NemesisActivityTypes.InitNemesisActivityTypes();
         Nemesis.InitializeNames();
         DmgTypes.InitializeDmgTypes();
         AIs.InitializeAIPackages();
