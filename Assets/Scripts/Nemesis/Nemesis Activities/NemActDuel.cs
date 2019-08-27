@@ -58,13 +58,13 @@ public class NemesisActivityDuel : NemesisActivity
         {
             // target is defeated
             nemesis.IncreaseLevel(1);
-            str += System.String.Format("{0} defeated {1} in a duel.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has defeated {1} in a duel.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         else
         {
             // attacker is defeated
             target.IncreaseLevel(1);
-            str += System.String.Format("{0} failed to defeat {1} in a duel.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has failed to defeat {1} in a duel.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
         nemesis.activityTarget = null;

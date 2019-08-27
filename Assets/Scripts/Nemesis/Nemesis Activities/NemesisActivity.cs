@@ -17,7 +17,7 @@ public static class NemesisActivityTypes
 {
     public enum ActivityEnum
     {
-        none, duel, assassinate, becomeSubordinate, leaveSubordinate
+        none, duel, assassinate, becomeSubordinate, leaveSubordinate, huntDemons
     }
 
     public static Dictionary<ActivityEnum, NemesisActivity> nemesisActivities;
@@ -30,6 +30,7 @@ public static class NemesisActivityTypes
         Add(new NemActAssassinate());
         Add(new NemActBecomeSubordinate());
         Add(new NemActLeaveSubordinate());
+        Add(new NemActHuntDemons());
     }
 
     public static void Add(NemesisActivity na)

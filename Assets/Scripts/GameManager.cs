@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
     public string msgLog;
 
     public List<Nemesis> nemeses;
-    public List<Nemesis> nemesesPresent;
+    public List<Nemesis> nemesesPresent; 
 
     //Awake is always called before any Start functions
     void Awake()
@@ -46,48 +46,18 @@ public class GameManager : MonoBehaviour {
         nemeses = new List<Nemesis>();
 
         // add angels as nemeses
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < Nemesis.MAX_ANGEL_NEMESIS; i++)
         {
-            Nemesis nemesis = new Nemesis()
-            {
-                mob = new Mob(MobTypeEnum.mobAngel, 1, 1),
-                personalStatus = Nemesis.PersonalStatusEnum.hidden,
-                deathStatus = Nemesis.DeathStatusEnum.alive
-            };
-            GameObject.Destroy(nemesis.mob.go);
-
-            nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
-            nemesis.AssignRandomActivity();
+            Nemesis nemesis = Nemesis.CreateAngelNemesis();
 
             nemeses.Add(nemesis);
         }
 
         // add demons as nemeses
-        for (int i = 0; i < 20; i++)
+        for (int i = 0; i < Nemesis.MAX_DEMON_NEMESIS; i++)
         {
 
-            int r = Random.Range(0, 2);
-            MobTypeEnum mobType;
-            switch (r)
-            {
-                case 1:
-                    mobType = MobTypeEnum.mobArchdemon;
-                    break;
-                default:
-                    mobType = MobTypeEnum.mobArchdevil;
-                    break;
-            }
-
-            Nemesis nemesis = new Nemesis()
-            {
-                mob = new Mob(mobType, 1, 1),
-                personalStatus = Nemesis.PersonalStatusEnum.revealedAbils,
-                deathStatus = Nemesis.DeathStatusEnum.alive
-            };
-            GameObject.Destroy(nemesis.mob.go);
-
-            nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
-            nemesis.AssignRandomActivity();
+            Nemesis nemesis = Nemesis.CreateDemonNemesis();
 
             nemeses.Add(nemesis);
         }

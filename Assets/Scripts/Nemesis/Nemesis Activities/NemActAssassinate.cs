@@ -59,7 +59,7 @@ public class NemActAssassinate : NemesisActivity
             target.mob.alreadyDied = true;
             target.deathStatus = Nemesis.DeathStatusEnum.deceased;
             nemesis.IncreaseLevel(1);
-            str += System.String.Format("{0} assassinates {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has assassinated {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         else
         {
@@ -68,7 +68,7 @@ public class NemActAssassinate : NemesisActivity
             nemesis.mob.alreadyDied = true;
             nemesis.deathStatus = Nemesis.DeathStatusEnum.deceased;
             target.IncreaseLevel(1);
-            str += System.String.Format("{0} is killed while trying to assassinate {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has been killed while trying to assassinate {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
         nemesis.activityTarget = null;

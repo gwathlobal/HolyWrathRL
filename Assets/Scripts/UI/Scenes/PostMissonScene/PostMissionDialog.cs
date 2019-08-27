@@ -19,11 +19,11 @@ public class PostMissionDialog : MonoBehaviour
         {
             if (nemesis.mob.CheckDead() && nemesis.personalStatus != Nemesis.PersonalStatusEnum.hidden)
             {
-                str += String.Format("{0} the {1} died!\n", nemesis.mob.name, MobTypes.mobTypes[nemesis.mob.idType].name);
+                str += String.Format("{0} the {1} has died!\n", nemesis.mob.name, MobTypes.mobTypes[nemesis.mob.idType].name);
             }
             if (!nemesis.mob.CheckDead() && nemesis.personalStatus != Nemesis.PersonalStatusEnum.hidden)
             {
-                str += String.Format("{0} the {1} survived and gained a level up!\n", nemesis.mob.name, MobTypes.mobTypes[nemesis.mob.idType].name);
+                str += String.Format("{0} the {1} has survived!\n", nemesis.mob.name, MobTypes.mobTypes[nemesis.mob.idType].name);
             }
 
             
@@ -44,14 +44,50 @@ public class PostMissionDialog : MonoBehaviour
 
     public void GoToIntermissionScene()
     {
+        int aliveAngels = 0;
+        int aliveDemons = 0;
+
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
             if (!nemesis.mob.CheckDead() && nemesis.activity == NemesisActivityTypes.ActivityEnum.none)
             {
                 nemesis.AssignRandomActivity();
             }
+
+            if (nemesis.deathStatus == Nemesis.DeathStatusEnum.alive && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
+                aliveAngels++;
+            if (nemesis.deathStatus == Nemesis.DeathStatusEnum.alive && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null)
+                aliveDemons++;
+
+            
         }
-        
+
+        if (aliveAngels < Nemesis.MAX_ANGEL_NEMESIS)
+        {
+            for (int i = 0; i < Nemesis.MAX_ANGEL_NEMESIS - aliveAngels; i++)
+            {
+                if (UnityEngine.Random.Range(0, 100) < 25)
+                {
+                    Nemesis nemesis = Nemesis.CreateAngelNemesis();
+
+                    GameManager.instance.nemeses.Add(nemesis);
+                }
+            }
+        }
+
+        if (aliveDemons < Nemesis.MAX_DEMON_NEMESIS)
+        {
+            for (int i = 0; i < Nemesis.MAX_DEMON_NEMESIS - aliveAngels; i++)
+            {
+                if (UnityEngine.Random.Range(0, 100) < 25)
+                {
+                    Nemesis nemesis = Nemesis.CreateAngelNemesis();
+
+                    GameManager.instance.nemeses.Add(nemesis);
+                }
+            }
+        }
+
 
         UIManager.instance.GoToIntermissionScene();
     }

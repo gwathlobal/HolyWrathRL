@@ -48,7 +48,7 @@ public class NemActLeaveSubordinate : NemesisActivity
             // mob failed to leave the target
             nemesis.superior = null;
             target.IncreaseLevel(1);
-            str += System.String.Format("{0} failed to leave the host of {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has failed to leave the host of {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
         nemesis.activityTarget = null;

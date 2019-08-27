@@ -58,12 +58,12 @@ public class NemActBecomeSubordinate : NemesisActivity
             nemesis.superior = target;
             nemesis.IncreaseLevel(1);
             target.IncreaseLevel(1);
-            str += System.String.Format("{0} becomes subordinate to {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has become subordinate to {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         else
         {
             // mob failed to become subordinate to target
-            str += System.String.Format("{0} is rejected as a subordinate to {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
+            str += System.String.Format("{0} has been rejected as a subordinate to {1}.", nemesis.mob.GetFullName(), target.mob.GetFullName());
         }
         nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
         nemesis.activityTarget = null;

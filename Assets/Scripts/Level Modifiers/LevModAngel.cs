@@ -17,7 +17,8 @@ public class LevelModifierAngel : LevelModifier
         int angelNum = 0;
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null &&
+                nemesis.activity == NemesisActivityTypes.ActivityEnum.huntDemons)
                 angelNum++;
         }
         if (angelNum != 0)
@@ -34,7 +35,8 @@ public class LevelModifierAngel : LevelModifier
         // collect a list of available angels
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilAngel) != null && 
+                nemesis.activity == NemesisActivityTypes.ActivityEnum.huntDemons)
             {
                 availAngels.Add(nemesis);
             }

@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Nemesis {
 
+    public static int MAX_ANGEL_NEMESIS = 10;
+    public static int MAX_DEMON_NEMESIS = 20;
+
     public enum PersonalStatusEnum
     {
         hidden, revealedAbils, revealedName
@@ -43,6 +46,50 @@ public class Nemesis {
             "Hesediel", "Jehoel", "Jerahmeel", "Jophiel", "Kushiel", "Leliel", "Metatron", "Nanael", "Nithael", "Netzach", "Ophaniel", "Puriel", "Qaphsiel", "Raziel",
             "Remiel", "Rikbiel", "Sachiel", "Samael", "Sandalphon", "Seraphiel", "Shamsiel", "Tzaphqiel", "Uriel", "Uzziel", "Vehuel", "Zophiel", "Azazel", "Azrael",
             "Sariel", "Gabriel", "Raphael", "Michael" };
+    }
+
+    public static Nemesis CreateDemonNemesis()
+    {
+        int r = UnityEngine.Random.Range(0, 2);
+        MobTypeEnum mobType;
+        switch (r)
+        {
+            case 1:
+                mobType = MobTypeEnum.mobArchdemon;
+                break;
+            default:
+                mobType = MobTypeEnum.mobArchdevil;
+                break;
+        }
+
+        Nemesis nemesis = new Nemesis()
+        {
+            mob = new Mob(mobType, 1, 1),
+            personalStatus = Nemesis.PersonalStatusEnum.revealedAbils,
+            deathStatus = Nemesis.DeathStatusEnum.alive
+        };
+        GameObject.Destroy(nemesis.mob.go);
+
+        nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
+        nemesis.AssignRandomActivity();
+
+        return nemesis;
+    }
+
+    public static Nemesis CreateAngelNemesis()
+    {
+        Nemesis nemesis = new Nemesis()
+        {
+            mob = new Mob(MobTypeEnum.mobAngel, 1, 1),
+            personalStatus = Nemesis.PersonalStatusEnum.revealedAbils,
+            deathStatus = Nemesis.DeathStatusEnum.alive
+        };
+        GameObject.Destroy(nemesis.mob.go);
+
+        nemesis.activity = NemesisActivityTypes.ActivityEnum.none;
+        nemesis.AssignRandomActivity();
+
+        return nemesis;
     }
 
     public string GetNemesisDescription()
