@@ -364,6 +364,27 @@ public class Level {
         else return false;
     }
 
+    public bool FindFreeSpotNearTarget(Vector2Int c, out Vector2Int loc)
+    {
+        int i = 0;
+        int rx, ry;
+        int x1 = (c.x - 4 < 0) ? 0 : c.x - 4;
+        int y1 = (c.y - 4 < 0) ? 0 : c.y - 4;
+        int x2 = (c.x + 5 >= maxX) ? maxX : c.x + 5;
+        int y2 = (c.y + 5 >= maxY) ? maxY : c.y + 5;
+        do
+        {
+            i++;
+            rx = Random.Range(x1, x2);
+            ry = Random.Range(y1, y2);
+            if (i >= 200) break;
+        } while (TerrainTypes.terrainTypes[terrain[rx, ry]].blocksMovement == true || mobs[rx, ry] != null);
+
+        loc = new Vector2Int(rx, ry);
+        if (i < 200) return true;
+        else return false;
+    }
+
     public bool IsTerrainImpassable(int x, int y)
     {
         return TerrainTypes.terrainTypes[terrain[x, y]].blocksMovement;

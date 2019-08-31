@@ -27,7 +27,7 @@ public class NemActBecomeSubordinate : NemesisActivity
         List<Nemesis> mobs = new List<Nemesis>();
         Nemesis target = null;
 
-        /// find an ally of higher level
+        // find an ally of higher level
         foreach (Nemesis ally in GameManager.instance.nemeses)
         {
             if (ally != nemesis && ally.level > nemesis.level && ally.mob.GetFactionRelation(nemesis.mob.faction))

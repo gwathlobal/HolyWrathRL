@@ -81,7 +81,7 @@ public class LevelModifierAngel : LevelModifier
             }
             else
             {
-                str += System.String.Format("An angel\n{0} {1} is present here.\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
+                str += System.String.Format("An angel\n{0} is present here.\n\n", nemesis.mob.GetFullName());
             }
         }
 

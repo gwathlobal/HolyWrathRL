@@ -17,7 +17,8 @@ public class LevelModifierDemon : LevelModifier
         int demonNum = 0;
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null && 
+                nemesis.activity != NemesisActivityTypes.ActivityEnum.duel)
                 demonNum++;
         }
         if (GameManager.instance.levelNum >= 5 && demonNum != 0)
@@ -34,7 +35,8 @@ public class LevelModifierDemon : LevelModifier
         // collect a list of available demons
         foreach (Nemesis nemesis in GameManager.instance.nemeses)
         {
-            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null)
+            if (nemesis.deathStatus != Nemesis.DeathStatusEnum.deceased && nemesis.mob.GetAbility(AbilityTypeEnum.abilDemon) != null &&
+                nemesis.activity != NemesisActivityTypes.ActivityEnum.duel)
             {
                 availDemons.Add(nemesis);
             }
@@ -50,8 +52,10 @@ public class LevelModifierDemon : LevelModifier
             {
                 int r = Random.Range(0, availDemons.Count);
 
-                demons.Add(availDemons[r]);
-                availDemons.RemoveAt(r);
+                Nemesis demon = availDemons[r];
+
+                demons.Add(demon);
+                availDemons.Remove(demon);
 
                 if (Random.Range(0, 100) <= 25)
                     oneMoreDemon = true;
@@ -64,6 +68,19 @@ public class LevelModifierDemon : LevelModifier
             }
         } while (oneMoreDemon);
 
+        List<Nemesis> addDemons = new List<Nemesis>();
+
+        foreach (Nemesis demon in demons)
+        {
+            foreach (Nemesis nemesis in GameManager.instance.nemeses)
+            {
+                if (nemesis.superior == demon)
+                {
+                    addDemons.Add(demon);
+                }
+            }
+        }
+        demons.AddRange(addDemons);
         //Debug.Log("demons.Count = " + demons.Count);
     }
 
@@ -79,7 +96,7 @@ public class LevelModifierDemon : LevelModifier
             }
             else
             {
-                str += System.String.Format("A demon\n{0} {1} is present here.\n\n", nemesis.mob.typeName, nemesis.mob.GetFullName());
+                str += System.String.Format("A demon\n{0} is present here.\n\n", nemesis.mob.GetFullName());
             }
         }
 
@@ -92,7 +109,32 @@ public class LevelModifierDemon : LevelModifier
         
         foreach (Nemesis nemesis in demons)
         {
-            if (level.FindFreeSpotInside(out loc))
+            if (nemesis.superior == null && level.FindFreeSpotInside(out loc))
+            {
+                Mob mob = nemesis.mob;
+
+                mob.id = BoardManager.instance.FindFreeID(BoardManager.instance.mobs);
+
+                mob.go = GameObject.Instantiate(MobTypes.mobTypes[mob.idType].prefab, new Vector3(loc.x, loc.y, 0f), Quaternion.identity);
+                mob.mo = mob.go.GetComponent<MovingObject>();
+
+                mob.curHP = mob.maxHP;
+                mob.curFP = mob.maxFP;
+                mob.curWP = 0;
+                mob.curAP = MobType.NORMAL_AP;
+
+                mob.effects = new Dictionary<EffectTypeEnum, Effect>();
+
+                BoardManager.instance.mobs.Add(mob.id, mob);
+                level.AddMobToLevel(mob, loc.x, loc.y);
+
+                GameManager.instance.nemesesPresent.Add(nemesis);
+            }
+        }
+
+        foreach (Nemesis nemesis in demons)
+        {
+            if (nemesis.superior != null && level.FindFreeSpotNearTarget(new Vector2Int(nemesis.superior.mob.x, nemesis.superior.mob.y), out loc))
             {
                 Mob mob = nemesis.mob;
 

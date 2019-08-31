@@ -297,9 +297,14 @@ public class EffectTypes
 
         Add(EffectTypeEnum.effectDominateMind, "Dominate Mind", "Your fight for someone else", new Color32(0, 255, 255, 255),
             null,
-            null,
             (Effect effect, Mob actor) =>
             {
+                effect.param1 = (int)actor.faction;
+                actor.faction = effect.actor.faction; 
+            },
+            (Effect effect, Mob actor) =>
+            {
+                actor.faction = (FactionEnum)effect.param1;
                 string str = String.Format("{0} no longer has its mind dominated. ", actor.name);
                 BoardManager.instance.msgLog.PlayerVisibleMsg(actor.x, actor.y, str);
             },

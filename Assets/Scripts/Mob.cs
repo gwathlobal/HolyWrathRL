@@ -101,14 +101,7 @@ public class Mob
         get { return MobTypes.mobTypes[idType].aiPackages; }
     }
 
-    public FactionEnum faction
-    {
-        get
-        {
-            if (GetEffect(EffectTypeEnum.effectDominateMind) != null) return GetEffect(EffectTypeEnum.effectDominateMind).actor.faction;
-            else return MobTypes.mobTypes[idType].faction;
-        }
-    }
+    public FactionEnum faction;
 
     public Mob(MobTypeEnum _idType, int _x, int _y)
     {
@@ -188,6 +181,8 @@ public class Mob
         regenHP = regenHPBase;
         curAP = MobType.NORMAL_AP;
         curMoveSpeed = MobTypes.mobTypes[idType].moveSpeed;
+
+        faction = MobTypes.mobTypes[idType].faction;
 
         CalculateArmor();
     }

@@ -7,7 +7,7 @@ public static class LevelModifierTypes
 {
     public enum LevelModifierEnum
     {
-        LevModAngel, LevModDemon, LevModLevelCollapse, LevModAcidRain, LevModLevelShrink
+        LevModAngel, LevModDemon, LevModLevelCollapse, LevModAcidRain, LevModLevelShrink, LevModDemonDuel
     }
 
     public static Dictionary<LevelModifierEnum, LevelModifier> levelModifiers;
@@ -21,6 +21,7 @@ public static class LevelModifierTypes
         Add(new LevelModifierLevelCollapse());
         Add(new LevelModifierAcidRain());
         Add(new LevelModifierLevelShrink());
+        Add(new LevelModifierDemonDuel());
     }
 
     public static void Add(LevelModifier lm)
