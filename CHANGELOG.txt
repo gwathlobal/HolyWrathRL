@@ -1,5 +1,6 @@
 
 - Added some background activities for named creatures.
+- You can now learn about names, abilities and locations of named creatures. Some demons on the field will drop pieces of knowledge for you to absorb.
 
 --------------------
 July 5, 2019 v0.3

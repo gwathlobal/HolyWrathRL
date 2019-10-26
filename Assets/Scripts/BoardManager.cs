@@ -137,6 +137,13 @@ public class BoardManager : MonoBehaviour {
             msgLog.FinalizeMsg();
         }
 
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.learntAbilities = 0;
+            GameManager.instance.learntLocations = 0;
+            GameManager.instance.learntNames = 0;
+        }
+
         UIManager.instance.RightPanel.ShowStatus();
     }
 
@@ -227,13 +234,6 @@ public class BoardManager : MonoBehaviour {
         {
             GameManager.instance.levelNum++;
             UIManager.instance.ShowMissionWonWindow();
-            foreach (Mob mob in mobs.Values)
-            {
-                if (mob.idType == MobTypeEnum.mobAngel && !mob.CheckDead())
-                {
-                    MobTypes.UpgradeAngel(mob);
-                }
-            }
             playersTurn = true;
             return;
         }

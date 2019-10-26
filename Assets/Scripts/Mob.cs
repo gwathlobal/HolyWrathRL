@@ -33,15 +33,9 @@ public class Mob
     public int y = 0;
 
     public int curHP = 1;
-    public int maxHP
-    {
-        get { return MobTypes.mobTypes[idType].maxHP; }
-    }
+    public int maxHP;
     public int curFP = 1;
-    public int maxFP
-    {
-        get { return MobTypes.mobTypes[idType].maxFP; }
-    }
+    public int maxFP;
     public int curSH = 0;
     public int regenHP = 1;
     public int regenHPBase
@@ -138,6 +132,15 @@ public class Mob
         if (dodgeAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(dodgeAbil)) abilities.Add(dodgeAbil, true);
         if (blockAbil != AbilityTypeEnum.abilNone && !abilities.ContainsKey(blockAbil)) abilities.Add(blockAbil, true);
 
+        foreach (AbilityTypeEnum abilityType in MobTypes.mobTypes[idType].probableAbilities.Keys)
+        {
+            int probability = MobTypes.mobTypes[idType].probableAbilities[abilityType];
+            if (UnityEngine.Random.Range(0, 100) < probability)
+            {
+                abilities.Add(abilityType, true);
+            }
+        }
+
         effects = new Dictionary<EffectTypeEnum, Effect>();
 
         armorDR = new Dictionary<DmgTypeEnum, int>();
@@ -175,6 +178,8 @@ public class Mob
 
         path = new List<Vector2Int>();
         pathDst = new Vector2Int(x, y);
+        maxHP = MobTypes.mobTypes[idType].maxHP;
+        maxFP = MobTypes.mobTypes[idType].maxFP;
         curHP = maxHP;
         curFP = maxFP;
         regenFP = regenFPBase;
@@ -183,6 +188,8 @@ public class Mob
         curMoveSpeed = MobTypes.mobTypes[idType].moveSpeed;
 
         faction = MobTypes.mobTypes[idType].faction;
+
+        
 
         CalculateArmor();
     }
@@ -780,6 +787,15 @@ public class Mob
         if (GetAbility(AbilityTypeEnum.abilNamed) != null)
             GetAbility(AbilityTypeEnum.abilNamed).AbilityInvoke(this, new TargetStruct(new Vector2Int(this.x, this.y), this));
 
+        if (GetAbility(AbilityTypeEnum.abilKnowledgeName) != null)
+            GetAbility(AbilityTypeEnum.abilKnowledgeName).AbilityInvoke(this, new TargetStruct(new Vector2Int(this.x, this.y), this));
+
+        if (GetAbility(AbilityTypeEnum.abilKnowledgeAbility) != null)
+            GetAbility(AbilityTypeEnum.abilKnowledgeAbility).AbilityInvoke(this, new TargetStruct(new Vector2Int(this.x, this.y), this));
+
+        if (GetAbility(AbilityTypeEnum.abilKnowledgeLocation) != null)
+            GetAbility(AbilityTypeEnum.abilKnowledgeLocation).AbilityInvoke(this, new TargetStruct(new Vector2Int(this.x, this.y), this));
+
         level.RemoveMobFromLevel(this);
 
         if (this is PlayerMob) PlayerMob.QuitGame();
@@ -842,7 +858,8 @@ public class Mob
 
     public Ability GetAbility(AbilityTypeEnum abilType)
     {
-        if (abilities.ContainsKey(abilType)) return AbilityTypes.abilTypes[abilType];
+        if (abilities.ContainsKey(abilType))
+            return AbilityTypes.abilTypes[abilType];
         else return null;
     }
 

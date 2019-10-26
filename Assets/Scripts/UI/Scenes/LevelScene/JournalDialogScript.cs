@@ -10,6 +10,7 @@ public class JournalDialogScript : MonoBehaviour {
     public Text DescrText;
 
     public List<GameObject> nemesisPanels;
+    public NemesisPanelScript selectedPanel;
 
     // Use this for initialization
     void Start()
@@ -20,7 +21,7 @@ public class JournalDialogScript : MonoBehaviour {
         nemesisPanels = new List<GameObject>();
     }
 
-    public void InitializeNemesis()
+    public void InitializeNemesis(List<Nemesis> nemeses)
     {
         foreach (GameObject go in nemesisPanels)
         {
@@ -34,27 +35,24 @@ public class JournalDialogScript : MonoBehaviour {
         float w = NemesisPanelPrefab.GetComponent<RectTransform>().sizeDelta.x;
         float h = NemesisPanelPrefab.GetComponent<RectTransform>().sizeDelta.y;
 
-        GameManager.instance.nemeses.Sort((a, b) => (a.deathStatus.CompareTo(b.deathStatus)));
+       nemeses.Sort((a, b) => (a.deathStatus.CompareTo(b.deathStatus)));
 
-        foreach (Nemesis nemesis in GameManager.instance.nemeses)
+        foreach (Nemesis nemesis in nemeses)
         {
-            if (nemesis.personalStatus != Nemesis.PersonalStatusEnum.hidden)
-            {
-                string str = "";
-                Color32 color = new Color32(255, 255, 255, 255);
-                str = System.String.Format("{0}\n{1}", nemesis.mob.GetFullName(), MobTypes.mobTypes[nemesis.mob.idType].name);
+            string str = "";
+            Color32 color = new Color32(255, 255, 255, 255);
+            str = System.String.Format("{0}\n{1}", nemesis.mob.name, MobTypes.mobTypes[nemesis.mob.idType].name);
 
-                if (nemesis.deathStatus == Nemesis.DeathStatusEnum.deceased)
-                    color = new Color32(135, 135, 135, 255);
+            if (nemesis.deathStatus == Nemesis.DeathStatusEnum.deceased)
+                color = new Color32(135, 135, 135, 255);
 
-                GameObject nemsisPanel = GameObject.Instantiate(NemesisPanelPrefab);
-                nemsisPanel.transform.SetParent(NemesisScrollPanel.transform, false);
-                nemsisPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0 + i * h * -1);
+            GameObject nemsisPanel = GameObject.Instantiate(NemesisPanelPrefab);
+            nemsisPanel.transform.SetParent(NemesisScrollPanel.transform, false);
+            nemsisPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0 + i * h * -1);
 
-                nemsisPanel.GetComponent<NemesisPanelScript>().InitializeUI(this, str, nemesis.GetNemesisDescription(), color);
-                i++;
-                nemesisPanels.Add(nemsisPanel);
-            }
+            nemsisPanel.GetComponent<NemesisPanelScript>().InitializeUI(this, nemesis, str, nemesis.GetNemesisDescription(), color);
+            i++;
+            nemesisPanels.Add(nemsisPanel);
         }
         if (nemesisPanels.Count > 0)
             nemesisPanels[0].GetComponent<NemesisPanelScript>().OnClick();

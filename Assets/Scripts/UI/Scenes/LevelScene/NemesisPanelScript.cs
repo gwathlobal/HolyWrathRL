@@ -11,8 +11,9 @@ public class NemesisPanelScript : MonoBehaviour, IPointerClickHandler, IPointerE
     private string descrTxt;
     private JournalDialogScript JournalDialog;
     public Color32 baseColor;
+    public Nemesis nemesis;
 
-    public void InitializeUI(JournalDialogScript dialog, string titleStr, string descrStr, Color32 color)
+    public void InitializeUI(JournalDialogScript dialog, Nemesis _nemsesis, string titleStr, string descrStr, Color32 color)
     {
         JournalDialog = dialog;
         panelTxt.text = titleStr;
@@ -20,6 +21,7 @@ public class NemesisPanelScript : MonoBehaviour, IPointerClickHandler, IPointerE
         descrTxt = descrStr;
         baseColor = color;
         panelTxt.color = baseColor;
+        nemesis = _nemsesis;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -30,6 +32,7 @@ public class NemesisPanelScript : MonoBehaviour, IPointerClickHandler, IPointerE
     public void OnClick()
     {
         JournalDialog.DescrText.text = descrTxt;
+        JournalDialog.selectedPanel = this;
     }
 
     public void OnPointerEnter(PointerEventData eventData)

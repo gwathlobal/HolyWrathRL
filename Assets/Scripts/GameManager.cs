@@ -16,7 +16,11 @@ public class GameManager : MonoBehaviour {
     public string msgLog;
 
     public List<Nemesis> nemeses;
-    public List<Nemesis> nemesesPresent; 
+    public List<Nemesis> nemesesPresent;
+
+    public int learntLocations;
+    public int learntNames = 1;
+    public int learntAbilities;
 
     //Awake is always called before any Start functions
     void Awake()
@@ -62,4 +66,5 @@ public class GameManager : MonoBehaviour {
             nemeses.Add(nemesis);
         }
     }
+
 }

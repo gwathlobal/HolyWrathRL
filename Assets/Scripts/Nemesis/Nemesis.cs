@@ -28,6 +28,7 @@ public class Nemesis {
     public Mob mob;
     public PersonalStatusEnum personalStatus;
     public DeathStatusEnum deathStatus;
+    public bool revealedLocation;
 
     public int level = 0;
 
@@ -65,8 +66,9 @@ public class Nemesis {
         Nemesis nemesis = new Nemesis()
         {
             mob = new Mob(mobType, 1, 1),
-            personalStatus = Nemesis.PersonalStatusEnum.revealedAbils,
-            deathStatus = Nemesis.DeathStatusEnum.alive
+            personalStatus = Nemesis.PersonalStatusEnum.hidden,
+            deathStatus = Nemesis.DeathStatusEnum.alive,
+            revealedLocation = false
         };
         GameObject.Destroy(nemesis.mob.go);
 
@@ -104,6 +106,11 @@ public class Nemesis {
         }
         else
         {
+            if (revealedLocation)
+            {
+                str += String.Format("You know the location of this creature.\n\n");
+            }
+
             if (superior != null)
             {
                 str += String.Format("Is subordinate to {0} the {1}.\n\n", superior.mob.name, MobTypes.mobTypes[superior.mob.idType].name);
@@ -190,5 +197,12 @@ public class Nemesis {
     public void IncreaseLevel(int step)
     {
         level += step;
+        mob.maxHP = MobTypes.mobTypes[mob.idType].maxHP + level * 5;
+        mob.maxFP = MobTypes.mobTypes[mob.idType].maxFP + level * 5;
+
+        if (mob.idType == MobTypeEnum.mobAngel && !mob.CheckDead())
+        {
+            //MobTypes.UpgradeAngel(mob);
+        }
     }
 }

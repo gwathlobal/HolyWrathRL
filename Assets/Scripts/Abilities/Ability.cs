@@ -45,7 +45,7 @@ public enum AbilityTypeEnum
     abilMindBurn, abilFear, abilMeditate, abilDominateMind, abilTrapMind, abilSplitSoul, abilSphereOfSilence,
     abilAbsorbingShield, abilForceShot, abilReflectiveBlock, abilCallArchangel, abilHolyRune, abilPurgeRitual, abilSpearOfLight,
     abilCharge,  abilCannibalize, abilRegenerate, abilNamed, abilTeleportOnHit, abilCorpseExplosion, abilPowerWordImmobilize, abilDemonicPortal, abilSummonImp,
-    abilMedkit, abilCallArtillery, abilMindless, abilAngel, abilDemon
+    abilMedkit, abilCallArtillery, abilMindless, abilAngel, abilDemon, abilKnowledgeName, abilKnowledgeAbility, abilKnowledgeLocation, abilAbsorbMind
 }
 
 
@@ -421,6 +421,12 @@ public class AbilityTypes
 
         Add(new AbilityDemon());
 
+        Add(new AbilityKnowledgeName());
+
+        Add(new AbilityKnowledgeAbility());
+
+        Add(new AbilityKnowledgeLocation());
+
         //============================
         //
         // COMMON ABILITIES
@@ -430,6 +436,8 @@ public class AbilityTypes
         Add(new AbilityDivineVengeance());
 
         Add(new AbilityAngel());
+
+        Add(new AbilityAbsorbMind());
 
         //============================
         //

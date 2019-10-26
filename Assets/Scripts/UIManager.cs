@@ -205,7 +205,14 @@ public class UIManager : MonoBehaviour {
 
     public void ShowJournalDialogWindow()
     {
-        JournalDialog.InitializeNemesis();
+        List<Nemesis> nemeses = new List<Nemesis>();
+        foreach (Nemesis nemesis in GameManager.instance.nemeses)
+        {
+            if (nemesis.personalStatus != Nemesis.PersonalStatusEnum.hidden)
+                nemeses.Add(nemesis);
+        }
+
+        JournalDialog.InitializeNemesis(nemeses);
 
         screenStatus = MainScreenStatus.statusJournalWindow;
         JournalDialog.gameObject.SetActive(true);

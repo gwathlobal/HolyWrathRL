@@ -208,6 +208,68 @@ public class NextLocDialogScript : MonoBehaviour
                     });
                 nextLocPanels.Add(nextLocPanel);
             }
+            
+        }
+
+        foreach (Nemesis nemesis in GameManager.instance.nemeses)
+        {
+            if (nemesis.revealedLocation && nemesis.deathStatus == Nemesis.DeathStatusEnum.alive)
+            {
+                layoutList = new List<LevelLayoutEnum>();
+                foreach (LevelLayoutEnum ll in System.Enum.GetValues(typeof(LevelLayoutEnum)))
+                {
+                    if (ll != LevelLayoutEnum.levelTest && GameManager.instance.levelNum >= LevelLayouts.levelLayouts[ll].minLvl)
+                        layoutList.Add(ll);
+                }
+
+                int r = Random.Range(0, layoutList.Count);
+                LevelLayoutEnum levelLayout = layoutList[r];
+
+                ObjectiveLayoutEnum objectiveLayout = ObjectiveLayoutEnum.levelKillAllEnemies;
+
+                MonsterLayoutEnum monsterLayout = LevelLayouts.levelLayouts[levelLayout].monsterLayouts[Random.Range(0, LevelLayouts.levelLayouts[levelLayout].monsterLayouts.Count)];
+
+                GameObject nextLocPanel = GameObject.Instantiate(NextLocPanelPrefab);
+                nextLocPanel.transform.SetParent(NextLocScrollPanel.transform, false);
+                nextLocPanel.GetComponent<RectTransform>().anchoredPosition = new Vector2(-1, 0 + i * -30);
+
+                string str = "";
+                str += System.String.Format("Location: {0}\nPopulation: {1}\nObjective: {2}", LevelLayouts.levelLayouts[levelLayout].name,
+                        MonsterLayouts.monsterLayouts[monsterLayout].name, ObjectiveLayouts.objectiveLayouts[objectiveLayout].name);
+
+                List<LevelModifier> levelModifiers = new List<LevelModifier>();
+                LevelModifierDemonLocation levMod = new LevelModifierDemonLocation();
+                levMod.SetInitDemon(nemesis);
+                levMod.Initialize();
+                levelModifiers.Add(levMod);
+
+                //Debug.Log(nemesis.mob.GetFullName());
+
+                bool firstLM = true;
+                foreach (LevelModifier lm in levelModifiers)
+                {
+                    if (firstLM)
+                    {
+                        str += "\n\nLevel features:\n";
+                        firstLM = false;
+                    }
+                    str += lm.Description();
+                }
+
+                //Debug.Log(str);
+
+                nextLocPanel.GetComponent<NextLocPanelDialog>().InitializeUI(this, LevelLayouts.levelLayouts[levelLayout].name,
+                    str,
+                    () =>
+                    {
+                        GameManager.instance.monsterLayout = monsterLayout;
+                        GameManager.instance.levelLayout = levelLayout;
+                        GameManager.instance.objectiveLayout = objectiveLayout;
+                        GameManager.instance.levelModifiers = levelModifiers;
+                    });
+                nextLocPanels.Add(nextLocPanel);
+                i++;
+            }
         }
         /*
         foreach (Nemesis nemesis in GameManager.instance.nemeses)

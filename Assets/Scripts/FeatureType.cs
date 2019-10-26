@@ -9,7 +9,7 @@ public delegate void FeatOnTick(Level level, Feature feature);
 
 public enum FeatureTypeEnum
 {
-    featBloodDrop, featBloodPool, featFire, featHolyRune, featAcidCloud, featArtilleryTarget
+    featBloodDrop, featBloodPool, featFire, featHolyRune, featAcidCloud, featArtilleryTarget, featKnowledgeName, featKnowledgeAbils, featKnowledgeLocation
 };
 
 public class FeatureType {
@@ -43,6 +43,7 @@ public class FeatureTypes
     public static GameObject featHolyRune;
     public static GameObject featAcidCloud;
     public static GameObject featArtilleryTarget;
+    public static GameObject featSoul;
     public static Dictionary<FeatureTypeEnum, FeatureType> featureTypes;
 
     public static void InitializeFeatureTypes()
@@ -52,6 +53,7 @@ public class FeatureTypes
         featHolyRune = Resources.Load("Prefabs/Features/Holy Rune") as GameObject;
         featAcidCloud = Resources.Load("Prefabs/Features/Acid Cloud") as GameObject;
         featArtilleryTarget = Resources.Load("Prefabs/Features/Target Dot") as GameObject;
+        featSoul = Resources.Load("Prefabs/Features/Soul") as GameObject;
 
         featureTypes = new Dictionary<FeatureTypeEnum, FeatureType>();
 
@@ -423,6 +425,102 @@ public class FeatureTypes
                         BoardEventController.instance.RemoveFinishedEvent();
                     }));
 
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                }
+            });
+
+        Add(FeatureTypeEnum.featKnowledgeName, "Knowledge: Name", "Picking this up will let you learn a name of a promninent character once this mission is complete.", featSoul, featSoul.GetComponent<SpriteRenderer>().color,
+            null,
+            null,
+            (Level level, Feature feature) =>
+            {
+
+                if (level.mobs[feature.x, feature.y] != null)
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+
+                    if (mob.GetAbility(AbilityTypeEnum.abilAbsorbMind) != null)
+                    {
+                        GameManager.instance.learntNames++;
+
+                        string str = String.Format("{0} absorbs the knowledge about a name of a prominent character. ", mob.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
+
+                        level.RemoveFeatureFromLevel(feature);
+                        BoardManager.instance.featuresToRemove.Add(feature);
+                        return;
+                    }
+
+                }
+
+                feature.counter--;
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                }
+            });
+
+        Add(FeatureTypeEnum.featKnowledgeAbils, "Knowledge: Abilities", "Picking this up will let you learn the name & abilities of a promninent character once this mission is complete.", featSoul, featSoul.GetComponent<SpriteRenderer>().color,
+            null,
+            null,
+            (Level level, Feature feature) =>
+            {
+
+                if (level.mobs[feature.x, feature.y] != null)
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+
+                    if (mob.GetAbility(AbilityTypeEnum.abilAbsorbMind) != null)
+                    {
+                        GameManager.instance.learntAbilities++;
+
+                        string str = String.Format("{0} absorbs the knowledge about abilities of a prominent character. ", mob.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
+
+                        level.RemoveFeatureFromLevel(feature);
+                        BoardManager.instance.featuresToRemove.Add(feature);
+                        return;
+                    }
+
+                }
+
+                feature.counter--;
+                if (feature.counter <= 0)
+                {
+                    level.RemoveFeatureFromLevel(feature);
+                    BoardManager.instance.featuresToRemove.Add(feature);
+                }
+            });
+
+        Add(FeatureTypeEnum.featKnowledgeLocation, "Knowledge: Location", "Picking this up will let you learn the location of a promninent character once this mission is complete.", featSoul, featSoul.GetComponent<SpriteRenderer>().color,
+            null,
+            null,
+            (Level level, Feature feature) =>
+            {
+
+                if (level.mobs[feature.x, feature.y] != null)
+                {
+                    Mob mob = level.mobs[feature.x, feature.y];
+
+                    if (mob.GetAbility(AbilityTypeEnum.abilAbsorbMind) != null)
+                    {
+                        GameManager.instance.learntLocations++;
+
+                        string str = String.Format("{0} absorbs the knowledge about a location of a prominent character. ", mob.name);
+                        BoardManager.instance.msgLog.PlayerVisibleMsg(mob.x, mob.y, str);
+
+                        level.RemoveFeatureFromLevel(feature);
+                        BoardManager.instance.featuresToRemove.Add(feature);
+                        return;
+                    }
+
+                }
+
+                feature.counter--;
                 if (feature.counter <= 0)
                 {
                     level.RemoveFeatureFromLevel(feature);
