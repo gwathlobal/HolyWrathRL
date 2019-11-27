@@ -433,7 +433,8 @@ public class MobTypes
         List<Ability> availAbilities = new List<Ability>();
         foreach (Ability ability in AbilityTypes.abilTypes.Values)
         {
-            if (ability.CheckRequirements(angel, null) && !angel.abilities.ContainsKey(ability.id))
+            if (ability.CheckRequirements(angel, new List<AbilityTypeEnum>()) && 
+                !angel.abilities.ContainsKey(ability.id))
                 availAbilities.Add(ability);
         }
         if (availAbilities.Count > 0) {

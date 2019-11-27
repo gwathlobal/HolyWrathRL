@@ -24,13 +24,17 @@ public abstract class MonsterLayout {
         if (GameManager.instance == null) createPlayer = true;
         if (GameManager.instance != null && GameManager.instance.player == null) createPlayer = true;
 
+        GameObject selector;
+
         if (createPlayer)
         {
             player = new PlayerMob(MobTypeEnum.mobPCAngel, 1, 1);
-            GameObject selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
+            selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
             // NOTE: for unknown reason it gets shift -1,-1 so I cant put it to 0, 0
-            selector.transform.position = new Vector3(1, 1, 0);
+            selector.transform.localPosition = new Vector3(0, 0, 0);
             selector.GetComponent<SpriteRenderer>().color = new Color32(0, 100, 0, 255);
+
+            Debug.Log($"Created Player = ({player.go.transform.position.x},{player.go.transform.position.y}), Selector = ({selector.transform.position.x}, {selector.transform.position.y})");
 
         }
         else
@@ -39,10 +43,13 @@ public abstract class MonsterLayout {
             player.go = GameObject.Instantiate(MobTypes.mobTypes[player.idType].prefab, new Vector3(player.x, player.y, 0f), Quaternion.identity);
             player.mo = player.go.GetComponent<MovingObject>();
 
-            GameObject selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
+            selector = GameObject.Instantiate(UIManager.instance.selectorPrefab, player.go.transform) as GameObject;
             // NOTE: for unknown reason it gets shift -1,-1 so I cant put it to 0, 0
-            selector.transform.position = new Vector3(1, 1, 0);
+            selector.transform.localPosition = new Vector3(0, 0, 0);
             selector.GetComponent<SpriteRenderer>().color = new Color32(0, 100, 0, 255);
+
+            Debug.Log($"Not-Created Player = ({player.go.transform.position.x},{player.go.transform.position.y}), Selector = ({selector.transform.position.x}, {selector.transform.position.y})");
+
 
             player.curHP = player.maxHP;
             player.curFP = player.maxFP;
@@ -64,7 +71,12 @@ public abstract class MonsterLayout {
             player.y = loc.y;
         }
 
+
         level.AddMobToLevel(player, player.x, player.y);
+
+        Debug.Log($"Player Coords = ({player.x},{player.y})");
+        Debug.Log($"Final Player = ({player.go.GetComponent<Rigidbody2D>().position.x},{player.go.GetComponent<Rigidbody2D>().position.y}), Selector = ({selector.transform.position.x}, {selector.transform.position.y})");
+
     }
 
     protected void PlaceLevelLayoutMobs(Level level, LevelGeneratorResult levelGeneratorResult, Dictionary<MobTypeEnum, int> mobsToSpawn)

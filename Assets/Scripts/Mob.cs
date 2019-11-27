@@ -349,8 +349,8 @@ public class Mob
 
     public bool Move(int xDir, int yDir)
     {
-        if (this == BoardManager.instance.player)
-            Debug.Log(String.Format("Player Move ({0}, {1}) + ({2}, {3})", x, y, xDir, yDir));
+        //if (this == BoardManager.instance.player)
+        //    Debug.Log(String.Format("Player Move ({0}, {1}) + ({2}, {3})", x, y, xDir, yDir));
         if (GetEffect(EffectTypeEnum.effectImmobilize) != null)
         {
             Vector2 end = new Vector2(x, y);

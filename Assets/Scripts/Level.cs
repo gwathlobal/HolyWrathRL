@@ -85,7 +85,8 @@ public class Level {
         mobs[x, y] = mob;
         mob.go.SetActive(true);
         //mob.go.GetComponent<SpriteRenderer>().color = MobTypes.mobTypes[mob.idType].prefab.GetComponent<SpriteRenderer>().color;
-        mob.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(x, y));
+        mob.go.transform.position = new Vector2(x, y);
+        //mob.go.GetComponent<Rigidbody2D>().MovePosition(new Vector2(x, y));
         return true;
     }
 
